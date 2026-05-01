@@ -13,6 +13,7 @@ final class WebImagePickerViewModelUserMessageTests: XCTestCase {
             .noImagesFound,
             .imageTooLarge,
             .downloadFailed,
+            .unsupportedImageType,
         ]
         var seen = Set<String>()
         for err in cases {

@@ -65,6 +65,12 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     /// Optional maximum pixel width and height. When non-`nil`, a component `<= 0` means no maximum on that axis. Applied after discovery sort and before ``maximumDiscoveredImagesPerPage`` using a lightweight ranged GET per candidate (see ``DiscoveredImageDimensionFiltering``).
     public var maximumImageDimensions: CGSize?
 
+    /// Allowed image formats as `UTType` identifier strings (for example ``UTType/jpeg`` `.identifier`). When `nil` or empty, discovery and downloads do not filter by type. When non-empty, URLs whose extension maps to a non-image type are dropped; image types must conform to at least one listed type. Extension-less URLs follow ``unknownImageTypePolicy``.
+    public var allowedImageTypeIdentifiers: Set<String>?
+
+    /// When ``allowedImageTypeIdentifiers`` is active, controls handling of types that cannot be inferred from the URL or from `Content-Type`. Default ``WebImageUnknownTypePolicy/allow``.
+    public var unknownImageTypePolicy: WebImageUnknownTypePolicy
+
     /// Session used for HTML fetches and image downloads. Defaults to `URLSession.shared`.
     public var urlSession: URLSession
 
@@ -85,6 +91,8 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     ///   - similarImageDeduplication: How aggressively to merge URLs that may reference the same asset.
     ///   - minimumImageDimensions: Optional lower pixel bounds per axis (`<= 0` on an axis disables that side).
     ///   - maximumImageDimensions: Optional upper pixel bounds per axis (`<= 0` on an axis disables that side).
+    ///   - allowedImageTypeIdentifiers: Optional `UTType` identifier allowlist; `nil` or empty disables type filtering.
+    ///   - unknownImageTypePolicy: Behavior for unknown types when an allowlist is active.
     ///   - urlSession: Session used for fetches; defaults to `URLSession.shared`.
     public init(
         selectionLimit: Int = 10,
@@ -102,6 +110,8 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         similarImageDeduplication: SimilarImageDeduplicationStrategy = .disabled,
         minimumImageDimensions: CGSize? = nil,
         maximumImageDimensions: CGSize? = nil,
+        allowedImageTypeIdentifiers: Set<String>? = nil,
+        unknownImageTypePolicy: WebImageUnknownTypePolicy = .allow,
         urlSession: URLSession = .shared
     ) {
         self.selectionLimit = max(1, selectionLimit)
@@ -119,6 +129,8 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         self.similarImageDeduplication = similarImageDeduplication
         self.minimumImageDimensions = minimumImageDimensions
         self.maximumImageDimensions = maximumImageDimensions
+        self.allowedImageTypeIdentifiers = allowedImageTypeIdentifiers.flatMap { $0.isEmpty ? nil : $0 }
+        self.unknownImageTypePolicy = unknownImageTypePolicy
         self.urlSession = urlSession
     }
 
@@ -140,6 +152,8 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
             && lhs.similarImageDeduplication == rhs.similarImageDeduplication
             && lhs.minimumImageDimensions == rhs.minimumImageDimensions
             && lhs.maximumImageDimensions == rhs.maximumImageDimensions
+            && lhs.allowedImageTypeIdentifiers == rhs.allowedImageTypeIdentifiers
+            && lhs.unknownImageTypePolicy == rhs.unknownImageTypePolicy
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -158,6 +172,8 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         hasher.combine(similarImageDeduplication)
         Self.hashCGSizeOptional(minimumImageDimensions, into: &hasher)
         Self.hashCGSizeOptional(maximumImageDimensions, into: &hasher)
+        hasher.combine(allowedImageTypeIdentifiers)
+        hasher.combine(unknownImageTypePolicy)
     }
 
     private static func hashCGSizeOptional(_ size: CGSize?, into hasher: inout Hasher) {

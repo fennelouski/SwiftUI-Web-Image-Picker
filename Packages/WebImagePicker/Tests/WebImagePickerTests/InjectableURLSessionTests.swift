@@ -1,3 +1,4 @@
+import UniformTypeIdentifiers
 import XCTest
 @testable import WebImagePicker
 
@@ -97,5 +98,31 @@ final class InjectableURLSessionTests: XCTestCase {
         XCTAssertEqual(selection.data, payload)
         XCTAssertEqual(selection.contentType, "image/jpeg")
         XCTAssertEqual(selection.sourceURL, imageURL)
+    }
+
+    func testImageDownloadServiceRejectsDisallowedContentType() async throws {
+        let imageURL = URL(string: "https://example.com/photo.bin")!
+        let payload = Data([0x00, 0x01])
+        StubURLProtocol.setHandler { request in
+            XCTAssertEqual(request.url, imageURL)
+            let response = HTTPURLResponse(
+                url: imageURL,
+                statusCode: 200,
+                httpVersion: nil,
+                headerFields: ["Content-Type": "image/png"]
+            )!
+            return (response, payload)
+        }
+
+        var config = WebImagePickerConfiguration(allowedURLSchemes: ["https"])
+        config.allowedImageTypeIdentifiers = [UTType.jpeg.identifier]
+        config.urlSession = urlSessionWithStub()
+
+        do {
+            _ = try await ImageDownloadService.download(from: imageURL, configuration: config)
+            XCTFail("expected unsupportedImageType")
+        } catch let error as WebImagePickerError {
+            XCTAssertEqual(error, .unsupportedImageType)
+        }
     }
 }

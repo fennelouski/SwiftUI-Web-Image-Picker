@@ -1,3 +1,4 @@
+import UniformTypeIdentifiers
 import XCTest
 @testable import WebImagePicker
 
@@ -218,6 +219,31 @@ final class AggregatedPageImageDiscoveryTests: XCTestCase {
         )
 
         XCTAssertEqual(merge.images.map(\.sourceURL), [portrait, square])
+    }
+
+    func testAllowlistedImageTypesFilterDiscoveredURLs() async throws {
+        let page = URL(string: "https://one.example/")!
+        let jpg = URL(string: "https://cdn.example/a.jpg")!
+        let png = URL(string: "https://cdn.example/b.png")!
+
+        let extractor = MockPageImageExtractor(pageResults: [
+            page: .success([
+                DiscoveredImage(sourceURL: jpg, accessibilityLabel: nil),
+                DiscoveredImage(sourceURL: png, accessibilityLabel: nil),
+            ]),
+        ])
+
+        var config = WebImagePickerConfiguration.default
+        config.allowedImageTypeIdentifiers = [UTType.jpeg.identifier]
+
+        let merge = await AggregatedPageImageDiscovery.discoverImages(
+            pageURLs: [page],
+            configuration: config,
+            extractor: extractor
+        )
+
+        XCTAssertTrue(merge.failedPageURLs.isEmpty)
+        XCTAssertEqual(merge.images.map(\.sourceURL), [jpg])
     }
 
     func testSimilarityDedupMergesQueryVariantsAcrossPages() async throws {

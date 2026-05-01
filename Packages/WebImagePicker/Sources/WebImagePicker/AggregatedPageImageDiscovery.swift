@@ -22,6 +22,7 @@ enum AggregatedPageImageDiscovery {
             do {
                 var items = try await extractor.discoverImages(from: pageURL, configuration: configuration)
                 items = configuration.discoveredImageSort.orderedImages(items)
+                items = items.filter { ImageTypeAllowlist.passesDiscovery(url: $0.sourceURL, configuration: configuration) }
                 items = await DiscoveredImageDimensionFiltering.filtered(images: items, configuration: configuration)
                 if let cap = configuration.maximumDiscoveredImagesPerPage {
                     items = Array(items.prefix(cap))
