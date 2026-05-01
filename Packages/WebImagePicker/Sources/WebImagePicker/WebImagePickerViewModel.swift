@@ -37,10 +37,16 @@ final class WebImagePickerViewModel {
         case .success(let resolved):
             url = resolved
         case .disallowedScheme:
-            errorMessage = "This URL scheme is not allowed."
+            errorMessage = String(
+                localized: String.LocalizationValue("webimage.error.schemeNotAllowed"),
+                bundle: WebImagePickerBundle.module
+            )
             return
         case .invalid:
-            errorMessage = "Enter a valid URL."
+            errorMessage = String(
+                localized: String.LocalizationValue("webimage.error.enterValidURL"),
+                bundle: WebImagePickerBundle.module
+            )
             return
         }
 
@@ -48,7 +54,10 @@ final class WebImagePickerViewModel {
         do {
             let items = try await extractor.discoverImages(from: url, configuration: configuration)
             if items.isEmpty {
-                errorMessage = "No images were found on this page."
+                errorMessage = String(
+                    localized: String.LocalizationValue("webimage.error.noImagesFound"),
+                    bundle: WebImagePickerBundle.module
+                )
                 phase = .urlEntry
                 return
             }
@@ -86,23 +95,50 @@ final class WebImagePickerViewModel {
         if let err = error as? WebImagePickerError {
             switch err {
             case .invalidURL:
-                return "That URL is not allowed or invalid."
+                return String(
+                    localized: String.LocalizationValue("webimage.error.invalidURL"),
+                    bundle: WebImagePickerBundle.module
+                )
             case .invalidHTTPResponse:
-                return "The server did not return the page."
+                return String(
+                    localized: String.LocalizationValue("webimage.error.invalidHTTPResponse"),
+                    bundle: WebImagePickerBundle.module
+                )
             case .htmlTooLarge:
-                return "The page is too large to load safely."
+                return String(
+                    localized: String.LocalizationValue("webimage.error.htmlTooLarge"),
+                    bundle: WebImagePickerBundle.module
+                )
             case .htmlDecodingFailed:
-                return "Could not read the page text."
+                return String(
+                    localized: String.LocalizationValue("webimage.error.htmlDecodingFailed"),
+                    bundle: WebImagePickerBundle.module
+                )
             case .extractionFailed:
-                return "Could not read images from this page."
+                return String(
+                    localized: String.LocalizationValue("webimage.error.extractionFailed"),
+                    bundle: WebImagePickerBundle.module
+                )
             case .noImagesFound:
-                return "No images were found on this page."
+                return String(
+                    localized: String.LocalizationValue("webimage.error.noImagesFound"),
+                    bundle: WebImagePickerBundle.module
+                )
             case .imageTooLarge:
-                return "An image was too large to download."
+                return String(
+                    localized: String.LocalizationValue("webimage.error.imageTooLarge"),
+                    bundle: WebImagePickerBundle.module
+                )
             case .downloadFailed:
-                return "Could not download an image."
+                return String(
+                    localized: String.LocalizationValue("webimage.error.downloadFailed"),
+                    bundle: WebImagePickerBundle.module
+                )
             }
         }
-        return "Something went wrong."
+        return String(
+            localized: String.LocalizationValue("webimage.error.generic"),
+            bundle: WebImagePickerBundle.module
+        )
     }
 }

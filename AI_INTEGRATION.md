@@ -188,6 +188,12 @@ Platform helpers (import still `WebImagePicker`):
 - **iOS / tvOS / visionOS:** `selection.makeUIImage() -> UIImage?`
 - **macOS:** `selection.makeNSImage() -> NSImage?`
 
+## Localization
+
+- **Tables:** `Packages/WebImagePicker/Sources/WebImagePicker/Resources/<locale>.lproj/Localizable.strings` (keys prefixed with `webimage.`). The package declares `defaultLocalization: "en"` and ships **English** plus **Spanish** as reference locales.
+- **Runtime:** Strings resolve from **WebImagePicker’s resource bundle** (`Bundle.module` inside the library). The host app does not need to copy those files; system language / locale drives which translation loads when available.
+- **Contributors:** Add locales by adding a new `.lproj` folder with `Localizable.strings` (or extending an existing one) and submitting a PR. For one-off custom copy, wrap or fork the UI; there is no public string-replacement API.
+
 ## Behavioral constraints (tell the user / product owner)
 
 1. **Static HTML only** in v1: images that appear only after JavaScript runs may be **missing**. This is expected for many SPAs.
