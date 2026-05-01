@@ -42,6 +42,10 @@ This project is under the [Mozilla Public License 2.0](LICENSE).
 - Run **`swift test`** (root or `Packages/WebImagePicker`) before opening a PR and note any platform-only checks you could not run.
 - Describe **what** changed and **why** in the PR body.
 
+## Release readiness (maintainers)
+
+Before a release—especially one that introduces **binary** artifacts (XCFramework, etc.)—complete the privacy and manifest checklist in **[docs/PRIVACY_MANIFEST.md](docs/PRIVACY_MANIFEST.md)** so `PrivacyInfo.xcprivacy` and distribution expectations stay accurate.
+
 ## Questions
 
 Open a [GitHub issue](https://github.com/fennelouski/SwiftUI-Web-Image-Picker/issues) for bugs or design discussion before very large refactors.
