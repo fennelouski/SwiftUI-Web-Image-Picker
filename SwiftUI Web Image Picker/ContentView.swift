@@ -28,8 +28,9 @@ struct ContentView: View {
                         .font(.headline)
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 12) {
-                            ForEach(Array(selections.enumerated()), id: \.offset) { index, selection in
-                                selectionRow(selection, index: index)
+                            // `WebImagePicker` completes with at most one row per `sourceURL` (selection is URL-deduped). If that ever changes, use an `Identifiable` wrapper with stable UUIDs instead of `id: \.sourceURL`.
+                            ForEach(selections, id: \.sourceURL) { selection in
+                                selectionRow(selection)
                             }
                         }
                     }
@@ -45,7 +46,7 @@ struct ContentView: View {
     }
 
     @ViewBuilder
-    private func selectionRow(_ selection: WebImageSelection, index: Int) -> some View {
+    private func selectionRow(_ selection: WebImageSelection) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(selection.sourceURL.absoluteString)
                 .font(.caption)
