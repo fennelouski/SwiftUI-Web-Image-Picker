@@ -36,6 +36,9 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
 
     public var extractionMode: WebImageExtractionMode
 
+    /// Session used for HTML fetches and image downloads. Defaults to `URLSession.shared`.
+    public var urlSession: URLSession
+
     public init(
         selectionLimit: Int = 10,
         maximumConcurrentImageLoads: Int = 4,
@@ -44,7 +47,8 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         userAgent: String? = nil,
         maximumHTMLDownloadBytes: Int = 2_000_000,
         maximumImageDownloadBytes: Int = 25_000_000,
-        extractionMode: WebImageExtractionMode = .staticHTML
+        extractionMode: WebImageExtractionMode = .staticHTML,
+        urlSession: URLSession = .shared
     ) {
         self.selectionLimit = max(1, selectionLimit)
         self.maximumConcurrentImageLoads = max(1, maximumConcurrentImageLoads)
@@ -54,7 +58,30 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         self.maximumHTMLDownloadBytes = maximumHTMLDownloadBytes
         self.maximumImageDownloadBytes = maximumImageDownloadBytes
         self.extractionMode = extractionMode
+        self.urlSession = urlSession
     }
 
     public static let `default` = WebImagePickerConfiguration()
+
+    public static func == (lhs: WebImagePickerConfiguration, rhs: WebImagePickerConfiguration) -> Bool {
+        lhs.selectionLimit == rhs.selectionLimit
+            && lhs.maximumConcurrentImageLoads == rhs.maximumConcurrentImageLoads
+            && lhs.requestTimeout == rhs.requestTimeout
+            && lhs.allowedURLSchemes == rhs.allowedURLSchemes
+            && lhs.userAgent == rhs.userAgent
+            && lhs.maximumHTMLDownloadBytes == rhs.maximumHTMLDownloadBytes
+            && lhs.maximumImageDownloadBytes == rhs.maximumImageDownloadBytes
+            && lhs.extractionMode == rhs.extractionMode
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(selectionLimit)
+        hasher.combine(maximumConcurrentImageLoads)
+        hasher.combine(requestTimeout)
+        hasher.combine(allowedURLSchemes)
+        hasher.combine(userAgent)
+        hasher.combine(maximumHTMLDownloadBytes)
+        hasher.combine(maximumImageDownloadBytes)
+        hasher.combine(extractionMode)
+    }
 }

@@ -8,7 +8,7 @@ enum ImageDownloadService {
             request.setValue(ua, forHTTPHeaderField: "User-Agent")
         }
 
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await configuration.urlSession.data(for: request)
         guard let http = response as? HTTPURLResponse, (200...299).contains(http.statusCode) else {
             throw WebImagePickerError.downloadFailed
         }

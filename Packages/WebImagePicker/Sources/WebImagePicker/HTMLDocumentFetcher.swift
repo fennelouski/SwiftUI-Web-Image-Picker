@@ -8,7 +8,7 @@ enum HTMLDocumentFetcher {
             request.setValue(ua, forHTTPHeaderField: "User-Agent")
         }
 
-        let (bytes, response) = try await URLSession.shared.bytes(for: request)
+        let (bytes, response) = try await configuration.urlSession.bytes(for: request)
         guard let http = response as? HTTPURLResponse, (200...299).contains(http.statusCode) else {
             throw WebImagePickerError.invalidHTTPResponse
         }
