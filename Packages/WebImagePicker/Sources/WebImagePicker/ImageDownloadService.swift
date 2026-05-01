@@ -16,6 +16,9 @@ enum ImageDownloadService {
             throw WebImagePickerError.imageTooLarge
         }
         let contentType = http.value(forHTTPHeaderField: "Content-Type")
+        guard ImageTypeAllowlist.passesDownload(contentTypeHeader: contentType, configuration: configuration) else {
+            throw WebImagePickerError.unsupportedImageType
+        }
         return WebImageSelection(data: data, contentType: contentType, sourceURL: url)
     }
 

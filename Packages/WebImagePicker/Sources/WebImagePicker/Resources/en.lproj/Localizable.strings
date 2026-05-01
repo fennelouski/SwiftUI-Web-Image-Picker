@@ -3,6 +3,7 @@
 "webimage.changeURL" = "Change URL";
 "webimage.done" = "Done";
 "webimage.error.downloadFailed" = "Could not download an image.";
+"webimage.error.unsupportedImageType" = "This image type is not allowed.";
 "webimage.error.enterValidURL" = "Enter a valid URL.";
 "webimage.error.extractionFailed" = "Could not read images from this page.";
 "webimage.error.generic" = "Something went wrong.";

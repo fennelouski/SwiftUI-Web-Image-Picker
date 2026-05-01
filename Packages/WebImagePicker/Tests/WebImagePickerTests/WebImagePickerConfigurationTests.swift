@@ -1,4 +1,5 @@
 import CoreGraphics
+import UniformTypeIdentifiers
 import XCTest
 @testable import WebImagePicker
 
@@ -87,6 +88,30 @@ final class WebImagePickerConfigurationTests: XCTestCase {
     func testImageDimensionBoundsAffectEquality() {
         let a = WebImagePickerConfiguration(minimumImageDimensions: CGSize(width: 10, height: 10))
         let b = WebImagePickerConfiguration(minimumImageDimensions: CGSize(width: 11, height: 10))
+        XCTAssertNotEqual(a, b)
+    }
+
+    func testDefaultAllowedImageTypeIdentifiersNil() {
+        XCTAssertNil(WebImagePickerConfiguration.default.allowedImageTypeIdentifiers)
+    }
+
+    func testDefaultUnknownImageTypePolicyAllow() {
+        XCTAssertEqual(WebImagePickerConfiguration.default.unknownImageTypePolicy, .allow)
+    }
+
+    func testEmptyImageTypeAllowlistNormalizedToNil() {
+        XCTAssertNil(WebImagePickerConfiguration(allowedImageTypeIdentifiers: []).allowedImageTypeIdentifiers)
+    }
+
+    func testImageTypeAllowlistAffectsEquality() {
+        let a = WebImagePickerConfiguration(allowedImageTypeIdentifiers: [UTType.jpeg.identifier])
+        let b = WebImagePickerConfiguration(allowedImageTypeIdentifiers: [UTType.png.identifier])
+        XCTAssertNotEqual(a, b)
+    }
+
+    func testUnknownImageTypePolicyAffectsEquality() {
+        let a = WebImagePickerConfiguration(unknownImageTypePolicy: .allow)
+        let b = WebImagePickerConfiguration(unknownImageTypePolicy: .reject)
         XCTAssertNotEqual(a, b)
     }
 
