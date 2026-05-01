@@ -8,7 +8,7 @@ Use it when you want users to pull images from the web without leaving your app 
 
 - **Photos-like sheet** — Navigation stack with Cancel, Done (multi-select), and “Change URL” while browsing.
 - **URL entry first** — Text field with URL-friendly keyboard options where supported; loads the page on demand. Bare hosts (e.g. `example.com/path`) are **best-effort normalized** by prepending an allowed scheme (`https` preferred, then `http`, then other schemes in `allowedURLSchemes`). Users can still type an explicit `http://` URL when `http` is allowed.
-- **Static HTML extraction** — Collects `<img>`, `srcset`, `<picture>` sources, Open Graph, and Twitter card images; resolves relative URLs and deduplicates.
+- **Static HTML extraction** — Collects `<img>`, `srcset`, `<picture>` sources, Open Graph, Twitter card images, and **`url(...)` targets** from inline `style` attributes plus `<style>` blocks for `background-image` / `background` declarations; resolves relative URLs and deduplicates.
 - **WebView extraction mode** — Optional `WKWebView`-based discovery for JavaScript-rendered pages.
 - **Masonry layout** — Custom SwiftUI `Layout` with staggered columns (column count adapts by platform / size class).
 - **Configurable** — Selection limit, timeouts, size caps, allowed URL schemes, user agent, and extraction mode (extensible for future strategies).
@@ -128,6 +128,10 @@ UI strings and errors load from **`Localizable.strings`** under `Packages/WebIma
 
 1. **Fetch** — The active **`PageImageExtractor`** either downloads and parses raw HTML (**`.staticHTML`**, default, using [SwiftSoup](https://github.com/scinfu/SwiftSoup)) or loads the page in **`WKWebView`** (**`.webView`**) before collecting image candidates from the rendered DOM.
 2. **Discover** — Image candidates are parsed from the markup, normalized to absolute URLs, filtered by allowed schemes, and deduplicated.
+
+**Static HTML — what is included:** `<img>` / `srcset`, `<picture>` `<source>`, Open Graph and Twitter image meta tags, and CSS `url(...)` strings taken from (1) any inline `style` attribute and (2) `background-image` / `background` values inside `<style>` elements.
+
+**Static HTML — what is excluded (by design):** **`data:` URLs** (including `data:image/svg+xml`, …) are dropped so extraction stays bounded and avoids inlining huge payloads. **Same-document references** (`url(#id)`) are ignored because they do not name a network image. **Inline `<svg>` markup** is not traversed for nested raster `<image>` references in static mode (use **`.webView`** if you need the live DOM). External `.svg` files linked like any other `https` URL remain eligible when the scheme is allowed. Stylesheets loaded only via `<link rel="stylesheet">` are not fetched or parsed in static mode.
 3. **Present** — **`AsyncImage`** loads thumbnails in a **`MasonryLayout`**; the user selects one or more items (subject to the limit).
 4. **Deliver** — On Done (or single-tap when limit is 1), selected URLs are downloaded in bounded concurrency into **`WebImageSelection`** values.
 
