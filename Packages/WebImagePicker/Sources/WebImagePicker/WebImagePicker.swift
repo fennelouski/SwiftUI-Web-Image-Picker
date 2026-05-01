@@ -2,6 +2,10 @@ import Foundation
 import SwiftUI
 
 /// A Photos-style flow for picking images discovered on a web page.
+///
+/// The picker loads a URL you provide, discovers image candidates (see ``WebImagePickerConfiguration/extractionMode``),
+/// and presents them in a masonry grid. Use ``init(configuration:onCancel:onPick:)`` for full control over dismissal,
+/// or ``View/webImagePicker(isPresented:configuration:onPick:)`` to present in a sheet that dismisses after a successful pick.
 public struct WebImagePicker: View {
     private let configuration: WebImagePickerConfiguration
     private let onCancel: () -> Void
@@ -13,6 +17,11 @@ public struct WebImagePicker: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 #endif
 
+    /// Creates a picker with configuration and completion handlers.
+    /// - Parameters:
+    ///   - configuration: Limits, timeouts, allowed schemes, and HTML vs. WebView extraction. Default is ``WebImagePickerConfiguration/default``.
+    ///   - onCancel: Called when the user cancels (toolbar).
+    ///   - onPick: Called with one or more ``WebImageSelection`` values after a successful pick.
     public init(
         configuration: WebImagePickerConfiguration = .default,
         onCancel: @escaping () -> Void,
@@ -273,6 +282,12 @@ private struct DiscoveredImageTile: View {
 
 public extension View {
     /// Presents ``WebImagePicker`` in a sheet and dismisses it after a successful pick.
+    ///
+    /// Cancel dismisses the sheet without calling `onPick`. On success, `onPick` receives the selections and the sheet is dismissed.
+    /// - Parameters:
+    ///   - isPresented: Controls sheet visibility.
+    ///   - configuration: Behavior and network limits; defaults to ``WebImagePickerConfiguration/default``.
+    ///   - onPick: Invoked with downloaded ``WebImageSelection`` values when the user confirms (or single-taps when the limit is 1).
     func webImagePicker(
         isPresented: Binding<Bool>,
         configuration: WebImagePickerConfiguration = .default,

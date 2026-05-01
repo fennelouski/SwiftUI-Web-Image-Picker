@@ -12,6 +12,9 @@ public enum WebImageExtractionMode: Sendable, Hashable {
     case webView
 }
 
+/// Tunable behavior for ``WebImagePicker`` and ``View/webImagePicker(isPresented:configuration:onPick:)``.
+///
+/// Use ``default`` for HTTPS-only pages, multi-select up to 10, static HTML extraction, and shared `URLSession`.
 public struct WebImagePickerConfiguration: Sendable, Hashable {
     /// Maximum number of images the user may select. Use `1` for single selection.
     public var selectionLimit: Int
@@ -39,6 +42,17 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     /// Session used for HTML fetches and image downloads. Defaults to `URLSession.shared`.
     public var urlSession: URLSession
 
+    /// Creates a configuration with explicit limits and networking options.
+    /// - Parameters:
+    ///   - selectionLimit: Maximum selections; clamped to at least `1`.
+    ///   - maximumConcurrentImageLoads: Parallel downloads when confirming a multi-select.
+    ///   - requestTimeout: Per-request timeout for HTML and image fetches.
+    ///   - allowedURLSchemes: Schemes allowed for page and image URLs (e.g. `https` only by default).
+    ///   - userAgent: Optional HTTP `User-Agent` header.
+    ///   - maximumHTMLDownloadBytes: Upper bound on HTML response size.
+    ///   - maximumImageDownloadBytes: Upper bound on each image response.
+    ///   - extractionMode: ``WebImageExtractionMode/staticHTML`` or ``WebImageExtractionMode/webView``.
+    ///   - urlSession: Session used for fetches; defaults to `URLSession.shared`.
     public init(
         selectionLimit: Int = 10,
         maximumConcurrentImageLoads: Int = 4,
