@@ -6,7 +6,10 @@ import UIKit
 extension WebImageSelection {
     /// Decodes the downloaded bytes as a `UIImage` when possible.
     public func makeUIImage() -> UIImage? {
-        UIImage(data: data)
+        if data.isEmpty, let temp = temporaryFileURL, let fileData = try? Data(contentsOf: temp) {
+            return UIImage(data: fileData)
+        }
+        return UIImage(data: data)
     }
 }
 #endif
@@ -17,7 +20,10 @@ import AppKit
 extension WebImageSelection {
     /// Decodes the downloaded bytes as an `NSImage` when possible.
     public func makeNSImage() -> NSImage? {
-        NSImage(data: data)
+        if data.isEmpty, let temp = temporaryFileURL, let fileData = try? Data(contentsOf: temp) {
+            return NSImage(data: fileData)
+        }
+        return NSImage(data: data)
     }
 }
 #endif

@@ -71,6 +71,9 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     /// When ``allowedImageTypeIdentifiers`` is active, controls handling of types that cannot be inferred from the URL or from `Content-Type`. Default ``WebImageUnknownTypePolicy/allow``.
     public var unknownImageTypePolicy: WebImageUnknownTypePolicy
 
+    /// How completed downloads are exposed in ``WebImageSelection`` (default ``WebImageSelectionOutputMode/dataOnly``).
+    public var selectionOutputMode: WebImageSelectionOutputMode
+
     /// Session used for HTML fetches and image downloads. Defaults to `URLSession.shared`.
     public var urlSession: URLSession
 
@@ -93,6 +96,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     ///   - maximumImageDimensions: Optional upper pixel bounds per axis (`<= 0` on an axis disables that side).
     ///   - allowedImageTypeIdentifiers: Optional `UTType` identifier allowlist; `nil` or empty disables type filtering.
     ///   - unknownImageTypePolicy: Behavior for unknown types when an allowlist is active.
+    ///   - selectionOutputMode: How ``WebImageSelection`` values are filled after download.
     ///   - urlSession: Session used for fetches; defaults to `URLSession.shared`.
     public init(
         selectionLimit: Int = 10,
@@ -112,6 +116,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         maximumImageDimensions: CGSize? = nil,
         allowedImageTypeIdentifiers: Set<String>? = nil,
         unknownImageTypePolicy: WebImageUnknownTypePolicy = .allow,
+        selectionOutputMode: WebImageSelectionOutputMode = .dataOnly,
         urlSession: URLSession = .shared
     ) {
         self.selectionLimit = max(1, selectionLimit)
@@ -131,6 +136,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         self.maximumImageDimensions = maximumImageDimensions
         self.allowedImageTypeIdentifiers = allowedImageTypeIdentifiers.flatMap { $0.isEmpty ? nil : $0 }
         self.unknownImageTypePolicy = unknownImageTypePolicy
+        self.selectionOutputMode = selectionOutputMode
         self.urlSession = urlSession
     }
 
@@ -154,6 +160,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
             && lhs.maximumImageDimensions == rhs.maximumImageDimensions
             && lhs.allowedImageTypeIdentifiers == rhs.allowedImageTypeIdentifiers
             && lhs.unknownImageTypePolicy == rhs.unknownImageTypePolicy
+            && lhs.selectionOutputMode == rhs.selectionOutputMode
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -174,6 +181,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         Self.hashCGSizeOptional(maximumImageDimensions, into: &hasher)
         hasher.combine(allowedImageTypeIdentifiers)
         hasher.combine(unknownImageTypePolicy)
+        hasher.combine(selectionOutputMode)
     }
 
     private static func hashCGSizeOptional(_ size: CGSize?, into hasher: inout Hasher) {

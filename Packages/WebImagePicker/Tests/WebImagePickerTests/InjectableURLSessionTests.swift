@@ -125,4 +125,57 @@ final class InjectableURLSessionTests: XCTestCase {
             XCTAssertEqual(error, .unsupportedImageType)
         }
     }
+
+    func testTemporaryFileOutputModeWritesPayloadAndClearsData() async throws {
+        let imageURL = URL(string: "https://example.com/photo.jpg")!
+        let payload = Data([0xFF, 0xD8, 0xFF, 0xD9])
+        StubURLProtocol.setHandler { request in
+            XCTAssertEqual(request.url, imageURL)
+            let response = HTTPURLResponse(
+                url: imageURL,
+                statusCode: 200,
+                httpVersion: nil,
+                headerFields: ["Content-Type": "image/jpeg"]
+            )!
+            return (response, payload)
+        }
+
+        var config = WebImagePickerConfiguration(allowedURLSchemes: ["https"])
+        config.selectionOutputMode = .temporaryFileURL
+        config.urlSession = urlSessionWithStub()
+
+        let selection = try await ImageDownloadService.download(from: imageURL, configuration: config)
+        let temp = try XCTUnwrap(selection.temporaryFileURL)
+        XCTAssertTrue(selection.data.isEmpty)
+        XCTAssertEqual(selection.sourceURL, imageURL)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: temp.path))
+        XCTAssertEqual(try Data(contentsOf: temp), payload)
+        try? FileManager.default.removeItem(at: temp)
+    }
+
+    func testPlatformImageOutputModeRejectsUndecodablePayload() async throws {
+        let imageURL = URL(string: "https://example.com/bad.jpg")!
+        let payload = Data([0x00, 0x01, 0x02])
+        StubURLProtocol.setHandler { request in
+            XCTAssertEqual(request.url, imageURL)
+            let response = HTTPURLResponse(
+                url: imageURL,
+                statusCode: 200,
+                httpVersion: nil,
+                headerFields: ["Content-Type": "image/jpeg"]
+            )!
+            return (response, payload)
+        }
+
+        var config = WebImagePickerConfiguration(allowedURLSchemes: ["https"])
+        config.selectionOutputMode = .platformImage
+        config.urlSession = urlSessionWithStub()
+
+        do {
+            _ = try await ImageDownloadService.download(from: imageURL, configuration: config)
+            XCTFail("expected imageDecodeFailed")
+        } catch let error as WebImagePickerError {
+            XCTAssertEqual(error, .imageDecodeFailed)
+        }
+    }
 }
