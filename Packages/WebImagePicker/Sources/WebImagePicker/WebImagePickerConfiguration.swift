@@ -4,6 +4,12 @@ import Foundation
 public enum WebImageExtractionMode: Sendable, Hashable {
     /// Parse the raw HTML response (no JavaScript execution).
     case staticHTML
+
+    /// Load the page in `WKWebView` and collect image URLs after JavaScript runs.
+    ///
+    /// Use this for client-rendered pages where images are injected at runtime.
+    /// This mode has higher memory/runtime cost than `.staticHTML`.
+    case webView
 }
 
 public struct WebImagePickerConfiguration: Sendable, Hashable {

@@ -9,6 +9,7 @@ Use it when you want users to pull images from the web without leaving your app 
 - **Photos-like sheet** — Navigation stack with Cancel, Done (multi-select), and “Change URL” while browsing.
 - **URL entry first** — Text field with URL-friendly keyboard options where supported; loads the page on demand.
 - **Static HTML extraction** — Collects `<img>`, `srcset`, `<picture>` sources, Open Graph, and Twitter card images; resolves relative URLs and deduplicates.
+- **WebView extraction mode** — Optional `WKWebView`-based discovery for JavaScript-rendered pages.
 - **Masonry layout** — Custom SwiftUI `Layout` with staggered columns (column count adapts by platform / size class).
 - **Configurable** — Selection limit, timeouts, size caps, allowed URL schemes, user agent, and extraction mode (extensible for future strategies).
 - **Cross-platform** — iOS, macOS, visionOS, and tvOS (see [Requirements](#requirements)).
@@ -109,7 +110,7 @@ var config = WebImagePickerConfiguration(
     userAgent: nil,
     maximumHTMLDownloadBytes: 2_000_000,
     maximumImageDownloadBytes: 25_000_000,
-    extractionMode: .staticHTML
+    extractionMode: .staticHTML // or .webView for JS-rendered pages
 )
 
 .webImagePicker(isPresented: $showPicker, configuration: config) { selections in
@@ -121,12 +122,17 @@ With **`selectionLimit == 1`**, tapping an image downloads it immediately and co
 
 ## How it works
 
-1. **Fetch** — The active **`PageImageExtractor`** downloads the HTML document (with a byte limit and timeout). Default mode is **`.staticHTML`** (**`StaticHTMLExtractor`**), backed by [SwiftSoup](https://github.com/scinfu/SwiftSoup).
+1. **Fetch** — The active **`PageImageExtractor`** either downloads and parses raw HTML (**`.staticHTML`**, default, using [SwiftSoup](https://github.com/scinfu/SwiftSoup)) or loads the page in **`WKWebView`** (**`.webView`**) before collecting image candidates from the rendered DOM.
 2. **Discover** — Image candidates are parsed from the markup, normalized to absolute URLs, filtered by allowed schemes, and deduplicated.
 3. **Present** — **`AsyncImage`** loads thumbnails in a **`MasonryLayout`**; the user selects one or more items (subject to the limit).
 4. **Deliver** — On Done (or single-tap when limit is 1), selected URLs are downloaded in bounded concurrency into **`WebImageSelection`** values.
 
-**JavaScript-rendered pages** may not expose images in the initial HTML; only server-rendered (or statically embedded) images are found today. The **`PageImageExtractor`** / **`WebImageExtractionMode`** design is intended to allow a future WebKit-based extractor without breaking callers.
+Use **`.staticHTML`** for fastest extraction on server-rendered pages. Use **`.webView`** when content is injected by JavaScript and missing from initial HTML.
+
+`WKWebView` mode considerations:
+- Runs WebKit work on the main actor and can use more memory/CPU than static parsing.
+- Subject to platform sandbox/network policy (for example, App Sandbox outgoing network permission on macOS).
+- Embedded/isolated content (cross-origin iframes, blocked resources, CSP constraints) may still limit what becomes discoverable.
 
 ## Demo app
 
