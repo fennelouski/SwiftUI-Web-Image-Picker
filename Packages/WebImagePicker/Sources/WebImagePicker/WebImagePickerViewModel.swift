@@ -28,12 +28,19 @@ final class WebImagePickerViewModel {
     func loadPage() async {
         errorMessage = nil
         let trimmed = urlString.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard let url = URL(string: trimmed), url.scheme != nil else {
-            errorMessage = "Enter a valid URL."
-            return
-        }
-        guard let scheme = url.scheme?.lowercased(), configuration.allowedURLSchemes.contains(scheme) else {
+        let resolution = PageURLNormalization.resolve(
+            trimmedInput: trimmed,
+            allowedURLSchemes: configuration.allowedURLSchemes
+        )
+        let url: URL
+        switch resolution {
+        case .success(let resolved):
+            url = resolved
+        case .disallowedScheme:
             errorMessage = "This URL scheme is not allowed."
+            return
+        case .invalid:
+            errorMessage = "Enter a valid URL."
             return
         }
 
