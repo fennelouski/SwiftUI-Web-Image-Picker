@@ -57,7 +57,11 @@ final class WebImagePickerViewModel {
 
     /// Images shown in the grid after applying ``imageMetadataSearchQuery``.
     var discoveredForDisplay: [DiscoveredImage] {
-        DiscoveredImageMetadataSearch.filteredDiscoveries(discovered, rawQuery: imageMetadataSearchQuery)
+        DiscoveredImageMetadataSearch.filteredDiscoveries(
+            discovered,
+            rawQuery: imageMetadataSearchQuery,
+            configuration: configuration
+        )
     }
 
     var canStartLoad: Bool {
