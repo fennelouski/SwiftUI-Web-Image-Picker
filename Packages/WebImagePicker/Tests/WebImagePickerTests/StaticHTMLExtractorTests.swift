@@ -33,6 +33,22 @@ final class StaticHTMLExtractorTests: XCTestCase {
         XCTAssertEqual(items.count, 1)
     }
 
+    /// Document order for static extraction: `<img>` elements (DOM order) before Open Graph / Twitter meta images.
+    func testImgElementsPrecedeOgImageInDiscoveryOrder() throws {
+        let html = #"""
+        <html><body>
+        <img src="https://example.com/first.png" alt="">
+        <meta property="og:image" content="https://example.com/og.png">
+        </body></html>
+        """#
+        let page = URL(string: "https://example.com/")!
+        let items = try StaticHTMLExtractor.discover(from: html, pageURL: page, configuration: defaultConfig)
+        XCTAssertEqual(items.map(\.sourceURL.absoluteString), [
+            "https://example.com/first.png",
+            "https://example.com/og.png",
+        ])
+    }
+
     func testFiltersByAllowedScheme() throws {
         let html = #"<img src="ftp://bad.example/a.png">"#
         let page = URL(string: "https://example.com/")!

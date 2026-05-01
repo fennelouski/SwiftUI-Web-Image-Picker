@@ -20,7 +20,10 @@ enum AggregatedPageImageDiscovery {
 
         for pageURL in pageURLs {
             do {
-                let items = try await extractor.discoverImages(from: pageURL, configuration: configuration)
+                var items = try await extractor.discoverImages(from: pageURL, configuration: configuration)
+                if let cap = configuration.maximumDiscoveredImagesPerPage {
+                    items = Array(items.prefix(cap))
+                }
                 for item in items {
                     let key = item.sourceURL.absoluteString
                     guard !seenImageKeys.contains(key) else { continue }

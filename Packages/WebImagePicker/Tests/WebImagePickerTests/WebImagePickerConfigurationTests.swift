@@ -70,6 +70,21 @@ final class WebImagePickerConfigurationTests: XCTestCase {
         XCTAssertTrue(WebImagePickerConfiguration.default.additionalPageURLs.isEmpty)
     }
 
+    func testDefaultMaximumDiscoveredImagesPerPageIsNil() {
+        XCTAssertNil(WebImagePickerConfiguration.default.maximumDiscoveredImagesPerPage)
+    }
+
+    func testMaximumDiscoveredImagesPerPageNonPositiveBecomesNil() {
+        XCTAssertNil(WebImagePickerConfiguration(maximumDiscoveredImagesPerPage: 0).maximumDiscoveredImagesPerPage)
+        XCTAssertNil(WebImagePickerConfiguration(maximumDiscoveredImagesPerPage: -1).maximumDiscoveredImagesPerPage)
+    }
+
+    func testMaximumDiscoveredImagesPerPageAffectsEquality() {
+        let capped = WebImagePickerConfiguration(maximumDiscoveredImagesPerPage: 5)
+        let uncapped = WebImagePickerConfiguration(maximumDiscoveredImagesPerPage: nil)
+        XCTAssertNotEqual(capped, uncapped)
+    }
+
     func testAdditionalPageURLsAffectsEquality() throws {
         let u = try XCTUnwrap(URL(string: "https://a.example/"))
         let withExtra = WebImagePickerConfiguration(additionalPageURLs: [u])

@@ -133,6 +133,8 @@ var config = WebImagePickerConfiguration(
 
 With **`selectionLimit == 1`**, tapping an image downloads it immediately and completes the pick (no separate Done step).
 
+**`maximumDiscoveredImagesPerPage`** — Optional cap on how many image candidates are kept from **each** loaded page after discovery (default `nil` = unlimited). Truncation keeps the first N URLs in extractor order. For **`.staticHTML`**, that order is: `<img>` / `srcset` and `<picture>` sources in DOM order, then Open Graph and Twitter image tags, then `url(...)` values from inline `style` attributes and `<style>` blocks. In **multi-URL** mode (primary field + `additionalPageURLs` + extra rows), the limit applies **per page** before results are merged and de-duplicated across pages.
+
 ### Localization
 
 UI strings and errors load from **`Localizable.strings`** under `Packages/WebImagePicker/Sources/WebImagePicker/Resources/` (e.g. `en.lproj`, `es.lproj`). The picker follows the user’s preferred language when a matching localization exists. To add or adjust translations, edit those files in the package and ship an updated dependency revision.
@@ -140,7 +142,7 @@ UI strings and errors load from **`Localizable.strings`** under `Packages/WebIma
 ## How it works
 
 1. **Fetch** — The active **`PageImageExtractor`** either downloads and parses raw HTML (**`.staticHTML`**, default, using [SwiftSoup](https://github.com/scinfu/SwiftSoup)) or loads the page in **`WKWebView`** (**`.webView`**) before collecting image candidates from the rendered DOM.
-2. **Discover** — Image candidates are parsed from the markup, normalized to absolute URLs, filtered by allowed schemes, and deduplicated.
+2. **Discover** — Image candidates are parsed from the markup, normalized to absolute URLs, filtered by allowed schemes, and deduplicated. If **`maximumDiscoveredImagesPerPage`** is set, each page’s list is truncated to that many candidates (in discovery order) before the grid is shown.
 
 **Static HTML — what is included:** `<img>` / `srcset`, `<picture>` `<source>`, Open Graph and Twitter image meta tags, and CSS `url(...)` strings taken from (1) any inline `style` attribute and (2) `background-image` / `background` values inside `<style>` elements.
 
