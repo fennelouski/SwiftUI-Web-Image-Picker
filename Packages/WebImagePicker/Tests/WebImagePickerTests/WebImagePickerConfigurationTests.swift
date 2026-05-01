@@ -78,6 +78,16 @@ final class WebImagePickerConfigurationTests: XCTestCase {
         XCTAssertEqual(WebImagePickerConfiguration.default.similarImageDeduplication, .disabled)
     }
 
+    func testDefaultDiscoveredImageSortIsDiscoveryOrder() {
+        XCTAssertEqual(WebImagePickerConfiguration.default.discoveredImageSort, .discoveryOrder)
+    }
+
+    func testDiscoveredImageSortAffectsEquality() {
+        let a = WebImagePickerConfiguration(discoveredImageSort: .discoveryOrder)
+        let b = WebImagePickerConfiguration(discoveredImageSort: .sourceURLAscending)
+        XCTAssertNotEqual(a, b)
+    }
+
     func testSimilarImageDeduplicationAffectsEquality() {
         let a = WebImagePickerConfiguration(similarImageDeduplication: .disabled)
         let b = WebImagePickerConfiguration(similarImageDeduplication: .normalizedResourceURL)

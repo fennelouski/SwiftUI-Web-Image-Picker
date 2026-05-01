@@ -49,8 +49,11 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
 
     /// Upper bound on how many images to keep from each page after discovery, before they are merged into the grid.
     ///
-    /// When `nil` (the default), no truncation is applied. When set to a positive value, only the first N candidates from that page are kept, in the order produced by the active ``PageImageExtractor`` (see package documentation for static HTML ordering). The cap applies **per page**: in multi-URL mode, each loaded page contributes at most N images (after per-page deduplication).
+    /// When `nil` (the default), no truncation is applied. When set to a positive value, only the first N candidates from that page are kept **after** ``discoveredImageSort`` is applied (default ``DiscoveredImageSort/discoveryOrder`` matches extractor order; see package documentation for static HTML ordering). The cap applies **per page**: in multi-URL mode, each loaded page contributes at most N images (after per-page deduplication).
     public var maximumDiscoveredImagesPerPage: Int?
+
+    /// How to order each page’s deduplicated images before ``maximumDiscoveredImagesPerPage`` truncation. Default ``DiscoveredImageSort/discoveryOrder`` preserves extractor order.
+    public var discoveredImageSort: DiscoveredImageSort
 
     /// Optional collapsing of URLs that likely name the same resource (for example cache-busting query pairs). See ``SimilarImageDeduplicationStrategy``.
     public var similarImageDeduplication: SimilarImageDeduplicationStrategy
@@ -71,6 +74,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     ///   - initialURLString: Optional URL string shown in the entry field when the picker first appears.
     ///   - additionalPageURLs: Ordered extra pages to aggregate with the primary URL and any user-added URLs.
     ///   - maximumDiscoveredImagesPerPage: Optional maximum images retained per page after discovery; `nil` means unlimited.
+    ///   - discoveredImageSort: Order applied per page after deduplication and before the per-page cap.
     ///   - similarImageDeduplication: How aggressively to merge URLs that may reference the same asset.
     ///   - urlSession: Session used for fetches; defaults to `URLSession.shared`.
     public init(
@@ -85,6 +89,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         initialURLString: String? = nil,
         additionalPageURLs: [URL] = [],
         maximumDiscoveredImagesPerPage: Int? = nil,
+        discoveredImageSort: DiscoveredImageSort = .discoveryOrder,
         similarImageDeduplication: SimilarImageDeduplicationStrategy = .disabled,
         urlSession: URLSession = .shared
     ) {
@@ -99,6 +104,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         self.initialURLString = initialURLString
         self.additionalPageURLs = additionalPageURLs
         self.maximumDiscoveredImagesPerPage = maximumDiscoveredImagesPerPage.flatMap { $0 > 0 ? $0 : nil }
+        self.discoveredImageSort = discoveredImageSort
         self.similarImageDeduplication = similarImageDeduplication
         self.urlSession = urlSession
     }
@@ -114,9 +120,10 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
             && lhs.maximumHTMLDownloadBytes == rhs.maximumHTMLDownloadBytes
             && lhs.maximumImageDownloadBytes == rhs.maximumImageDownloadBytes
             && lhs.extractionMode == rhs.extractionMode
-            &&         lhs.initialURLString == rhs.initialURLString
+            && lhs.initialURLString == rhs.initialURLString
             && lhs.additionalPageURLs == rhs.additionalPageURLs
             && lhs.maximumDiscoveredImagesPerPage == rhs.maximumDiscoveredImagesPerPage
+            && lhs.discoveredImageSort == rhs.discoveredImageSort
             && lhs.similarImageDeduplication == rhs.similarImageDeduplication
     }
 
@@ -132,6 +139,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         hasher.combine(initialURLString)
         hasher.combine(additionalPageURLs)
         hasher.combine(maximumDiscoveredImagesPerPage)
+        hasher.combine(discoveredImageSort)
         hasher.combine(similarImageDeduplication)
     }
 }

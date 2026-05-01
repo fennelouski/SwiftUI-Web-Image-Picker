@@ -138,6 +138,88 @@ final class AggregatedPageImageDiscoveryTests: XCTestCase {
         )
     }
 
+    func testSourceURLAscendingSortRunsBeforePerPageCap() async throws {
+        let page = URL(string: "https://one.example/")!
+        let zebra = URL(string: "https://cdn.example/z.png")!
+        let alpha = URL(string: "https://cdn.example/a.png")!
+        let beta = URL(string: "https://cdn.example/b.png")!
+
+        let extractor = MockPageImageExtractor(pageResults: [
+            page: .success([
+                DiscoveredImage(sourceURL: zebra, accessibilityLabel: nil),
+                DiscoveredImage(sourceURL: beta, accessibilityLabel: nil),
+                DiscoveredImage(sourceURL: alpha, accessibilityLabel: nil),
+            ]),
+        ])
+
+        var config = WebImagePickerConfiguration.default
+        config.discoveredImageSort = .sourceURLAscending
+        config.maximumDiscoveredImagesPerPage = 2
+
+        let merge = await AggregatedPageImageDiscovery.discoverImages(
+            pageURLs: [page],
+            configuration: config,
+            extractor: extractor
+        )
+
+        XCTAssertTrue(merge.failedPageURLs.isEmpty)
+        XCTAssertEqual(merge.images.map(\.sourceURL), [alpha, beta])
+    }
+
+    func testInferredPixelWidthDescendingSortBeforeCap() async throws {
+        let page = URL(string: "https://one.example/")!
+        let narrow = URL(string: "https://cdn.example/n.jpg?w=400")!
+        let wide = URL(string: "https://cdn.example/w.jpg?w=1200")!
+        let mid = URL(string: "https://cdn.example/m.jpg?width=800")!
+
+        let extractor = MockPageImageExtractor(pageResults: [
+            page: .success([
+                DiscoveredImage(sourceURL: narrow, accessibilityLabel: nil),
+                DiscoveredImage(sourceURL: mid, accessibilityLabel: nil),
+                DiscoveredImage(sourceURL: wide, accessibilityLabel: nil),
+            ]),
+        ])
+
+        var config = WebImagePickerConfiguration.default
+        config.discoveredImageSort = .inferredPixelWidthDescending
+        config.maximumDiscoveredImagesPerPage = 2
+
+        let merge = await AggregatedPageImageDiscovery.discoverImages(
+            pageURLs: [page],
+            configuration: config,
+            extractor: extractor
+        )
+
+        XCTAssertEqual(merge.images.map(\.sourceURL), [wide, mid])
+    }
+
+    func testAspectRatioBucketPortraitFirstOrdersBeforeCap() async throws {
+        let page = URL(string: "https://one.example/")!
+        let landscape = URL(string: "https://cdn.example/l.jpg?w=1200&h=400")!
+        let portrait = URL(string: "https://cdn.example/p.jpg?w=400&h=1200")!
+        let square = URL(string: "https://cdn.example/s.jpg?w=500&h=500")!
+
+        let extractor = MockPageImageExtractor(pageResults: [
+            page: .success([
+                DiscoveredImage(sourceURL: landscape, accessibilityLabel: nil),
+                DiscoveredImage(sourceURL: square, accessibilityLabel: nil),
+                DiscoveredImage(sourceURL: portrait, accessibilityLabel: nil),
+            ]),
+        ])
+
+        var config = WebImagePickerConfiguration.default
+        config.discoveredImageSort = .aspectRatioBucketPortraitFirst
+        config.maximumDiscoveredImagesPerPage = 2
+
+        let merge = await AggregatedPageImageDiscovery.discoverImages(
+            pageURLs: [page],
+            configuration: config,
+            extractor: extractor
+        )
+
+        XCTAssertEqual(merge.images.map(\.sourceURL), [portrait, square])
+    }
+
     func testSimilarityDedupMergesQueryVariantsAcrossPages() async throws {
         let a = URL(string: "https://one.example/")!
         let b = URL(string: "https://two.example/")!
