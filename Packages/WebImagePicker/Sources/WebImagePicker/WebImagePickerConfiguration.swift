@@ -77,6 +77,18 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     /// When using ``DiscoveredImageSort/faceCountDescending`` or ``faceCountAscending``, the maximum number of images **per page** (in discovery order) to probe and analyze with on-device Vision. Additional images keep discovery order after the sorted prefix. Use `0` to skip analysis (no face-based reordering). Default `40`.
     public var maximumFaceCountAnalysisImages: Int
 
+    /// When `true`, runs on-device text recognition (Vision) on up to ``maximumImageTextSearchImages`` discovered images so the browsing search field can match text **inside** raster images. Default `false` (privacy / performance).
+    public var isImageTextSearchEnabled: Bool
+
+    /// Upper bound on how many discovered images (in discovery order) receive OCR when ``isImageTextSearchEnabled`` is `true`. `0` skips OCR. Default `32`.
+    public var maximumImageTextSearchImages: Int
+
+    /// Optional BCP-47 language identifiers for ``VNRecognizeTextRequest`` (for example `"en-US"`). `nil` or empty lets Vision choose defaults.
+    public var imageTextRecognitionLanguages: [String]?
+
+    /// Parallel ranged GET + Vision requests while building the in-image text index. Default `2`.
+    public var maximumConcurrentImageTextRecognition: Int
+
     /// Session used for HTML fetches and image downloads. Defaults to `URLSession.shared`.
     public var urlSession: URLSession
 
@@ -101,6 +113,10 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     ///   - unknownImageTypePolicy: Behavior for unknown types when an allowlist is active.
     ///   - selectionOutputMode: How ``WebImageSelection`` values are filled after download.
     ///   - maximumFaceCountAnalysisImages: Vision face-sort budget per page; `0` disables analysis.
+    ///   - isImageTextSearchEnabled: When `true`, OCR indexes a prefix of discovered images for search.
+    ///   - maximumImageTextSearchImages: Cap on OCR’d images when image text search is enabled.
+    ///   - imageTextRecognitionLanguages: Optional Vision recognition language tags.
+    ///   - maximumConcurrentImageTextRecognition: Parallelism for OCR ranged GETs + Vision.
     ///   - urlSession: Session used for fetches; defaults to `URLSession.shared`.
     public init(
         selectionLimit: Int = 1,
@@ -122,6 +138,10 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         unknownImageTypePolicy: WebImageUnknownTypePolicy = .allow,
         selectionOutputMode: WebImageSelectionOutputMode = .dataOnly,
         maximumFaceCountAnalysisImages: Int = 40,
+        isImageTextSearchEnabled: Bool = false,
+        maximumImageTextSearchImages: Int = 32,
+        imageTextRecognitionLanguages: [String]? = nil,
+        maximumConcurrentImageTextRecognition: Int = 2,
         urlSession: URLSession = .shared
     ) {
         self.selectionLimit = max(1, selectionLimit)
@@ -143,6 +163,10 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         self.unknownImageTypePolicy = unknownImageTypePolicy
         self.selectionOutputMode = selectionOutputMode
         self.maximumFaceCountAnalysisImages = max(0, maximumFaceCountAnalysisImages)
+        self.isImageTextSearchEnabled = isImageTextSearchEnabled
+        self.maximumImageTextSearchImages = max(0, maximumImageTextSearchImages)
+        self.imageTextRecognitionLanguages = imageTextRecognitionLanguages.flatMap { $0.isEmpty ? nil : $0 }
+        self.maximumConcurrentImageTextRecognition = max(1, maximumConcurrentImageTextRecognition)
         self.urlSession = urlSession
     }
 
@@ -168,6 +192,10 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
             && lhs.unknownImageTypePolicy == rhs.unknownImageTypePolicy
             && lhs.selectionOutputMode == rhs.selectionOutputMode
             && lhs.maximumFaceCountAnalysisImages == rhs.maximumFaceCountAnalysisImages
+            && lhs.isImageTextSearchEnabled == rhs.isImageTextSearchEnabled
+            && lhs.maximumImageTextSearchImages == rhs.maximumImageTextSearchImages
+            && lhs.imageTextRecognitionLanguages == rhs.imageTextRecognitionLanguages
+            && lhs.maximumConcurrentImageTextRecognition == rhs.maximumConcurrentImageTextRecognition
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -190,6 +218,10 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         hasher.combine(unknownImageTypePolicy)
         hasher.combine(selectionOutputMode)
         hasher.combine(maximumFaceCountAnalysisImages)
+        hasher.combine(isImageTextSearchEnabled)
+        hasher.combine(maximumImageTextSearchImages)
+        hasher.combine(imageTextRecognitionLanguages)
+        hasher.combine(maximumConcurrentImageTextRecognition)
     }
 
     private static func hashCGSizeOptional(_ size: CGSize?, into hasher: inout Hasher) {

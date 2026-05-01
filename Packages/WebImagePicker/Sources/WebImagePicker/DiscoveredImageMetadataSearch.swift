@@ -25,8 +25,12 @@ enum DiscoveredImageMetadataSearch {
         return (s, tokens)
     }
 
-    /// Returns `true` when the trimmed query is empty or when the image matches alt, title, URL path, or full URL string (case-insensitive).
-    static func matches(_ image: DiscoveredImage, rawQuery: String) -> Bool {
+    /// Returns `true` when the trimmed query is empty or when the image matches alt, title, URL path, full URL string, or optional Vision OCR text (case-insensitive).
+    static func matches(
+        _ image: DiscoveredImage,
+        rawQuery: String,
+        recognizedTextByURL: [URL: String]? = nil
+    ) -> Bool {
         let q = normalizedQuery(rawQuery)
         guard !q.isEmpty else { return true }
         if let alt = image.accessibilityLabel, alt.lowercased().contains(q) {
@@ -41,13 +45,17 @@ enum DiscoveredImageMetadataSearch {
         if image.sourceURL.absoluteString.lowercased().contains(q) {
             return true
         }
+        if let blob = recognizedTextByURL?[image.sourceURL], blob.lowercased().contains(q) {
+            return true
+        }
         return false
     }
 
     static func filteredDiscoveries(
         _ images: [DiscoveredImage],
         rawQuery: String,
-        configuration: WebImagePickerConfiguration = .default
+        configuration: WebImagePickerConfiguration = .default,
+        recognizedTextByURL: [URL: String]? = nil
     ) -> [DiscoveredImage] {
         let (textPart, formatTokens) = splitFormatTokens(from: rawQuery)
         let trimmedText = textPart.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -63,7 +71,7 @@ enum DiscoveredImageMetadataSearch {
             if hasFormats, !urlMatchesAnyFormatToken(image.sourceURL, tokens: formatTokens, configuration: configuration) {
                 return false
             }
-            if hasText, !matches(image, rawQuery: trimmedText) {
+            if hasText, !matches(image, rawQuery: trimmedText, recognizedTextByURL: recognizedTextByURL) {
                 return false
             }
             return true

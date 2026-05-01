@@ -99,4 +99,13 @@ final class DiscoveredImageMetadataSearchTests: XCTestCase {
         let out = DiscoveredImageMetadataSearch.filteredDiscoveries([png], rawQuery: "format:notarealext")
         XCTAssertTrue(out.isEmpty)
     }
+
+    func testRecognizedImageTextParticipatesInSearch() {
+        let url = URL(string: "https://x.com/photo.jpg")!
+        let img = DiscoveredImage(sourceURL: url, accessibilityLabel: nil, title: nil)
+        let ocr: [URL: String] = [url: "Quarterly Report 2024"]
+        XCTAssertTrue(DiscoveredImageMetadataSearch.matches(img, rawQuery: "quarterly", recognizedTextByURL: ocr))
+        let out = DiscoveredImageMetadataSearch.filteredDiscoveries([img], rawQuery: "2024", recognizedTextByURL: ocr)
+        XCTAssertEqual(out.count, 1)
+    }
 }
