@@ -126,22 +126,33 @@ public struct WebImagePicker: View {
 
     private var browsingView: some View {
         ScrollView {
-            MasonryLayout(columns: masonryColumnCount, spacing: 8) {
-                ForEach(model.discovered) { item in
-                    DiscoveredImageTile(
-                        item: item,
-                        selected: model.selectedURLs.contains(item.sourceURL),
-                        onTap: {
-                            if configuration.selectionLimit == 1 {
-                                Task { await pickSingle(item) }
-                            } else {
-                                model.toggleSelection(item)
-                            }
-                        }
-                    )
+            VStack(alignment: .leading, spacing: 8) {
+                if let message = model.errorMessage {
+                    Text(message)
+                        .font(.subheadline)
+                        .foregroundStyle(.red)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(12)
+                        .background(Color.red.opacity(0.1), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        .accessibilityIdentifier("webimage.browsingDownloadError")
                 }
+                MasonryLayout(columns: masonryColumnCount, spacing: 8) {
+                    ForEach(model.discovered) { item in
+                        DiscoveredImageTile(
+                            item: item,
+                            selected: model.selectedURLs.contains(item.sourceURL),
+                            onTap: {
+                                if configuration.selectionLimit == 1 {
+                                    Task { await pickSingle(item) }
+                                } else {
+                                    model.toggleSelection(item)
+                                }
+                            }
+                        )
+                    }
+                }
+                .frame(maxWidth: .infinity)
             }
-            .frame(maxWidth: .infinity)
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
         }
