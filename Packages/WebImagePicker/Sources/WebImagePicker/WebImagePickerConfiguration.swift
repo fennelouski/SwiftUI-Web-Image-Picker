@@ -1,3 +1,4 @@
+import CoreGraphics
 import Foundation
 
 /// How HTML is processed to find image URLs. Additional modes may be added without breaking the public enum.
@@ -58,6 +59,12 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     /// Optional collapsing of URLs that likely name the same resource (for example cache-busting query pairs). See ``SimilarImageDeduplicationStrategy``.
     public var similarImageDeduplication: SimilarImageDeduplicationStrategy
 
+    /// Optional minimum pixel width and height. When non-`nil`, a component `<= 0` means no minimum on that axis. Applied after discovery sort and before ``maximumDiscoveredImagesPerPage`` using a lightweight ranged GET per candidate (see ``DiscoveredImageDimensionFiltering``).
+    public var minimumImageDimensions: CGSize?
+
+    /// Optional maximum pixel width and height. When non-`nil`, a component `<= 0` means no maximum on that axis. Applied after discovery sort and before ``maximumDiscoveredImagesPerPage`` using a lightweight ranged GET per candidate (see ``DiscoveredImageDimensionFiltering``).
+    public var maximumImageDimensions: CGSize?
+
     /// Session used for HTML fetches and image downloads. Defaults to `URLSession.shared`.
     public var urlSession: URLSession
 
@@ -76,6 +83,8 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     ///   - maximumDiscoveredImagesPerPage: Optional maximum images retained per page after discovery; `nil` means unlimited.
     ///   - discoveredImageSort: Order applied per page after deduplication and before the per-page cap.
     ///   - similarImageDeduplication: How aggressively to merge URLs that may reference the same asset.
+    ///   - minimumImageDimensions: Optional lower pixel bounds per axis (`<= 0` on an axis disables that side).
+    ///   - maximumImageDimensions: Optional upper pixel bounds per axis (`<= 0` on an axis disables that side).
     ///   - urlSession: Session used for fetches; defaults to `URLSession.shared`.
     public init(
         selectionLimit: Int = 10,
@@ -91,6 +100,8 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         maximumDiscoveredImagesPerPage: Int? = nil,
         discoveredImageSort: DiscoveredImageSort = .discoveryOrder,
         similarImageDeduplication: SimilarImageDeduplicationStrategy = .disabled,
+        minimumImageDimensions: CGSize? = nil,
+        maximumImageDimensions: CGSize? = nil,
         urlSession: URLSession = .shared
     ) {
         self.selectionLimit = max(1, selectionLimit)
@@ -106,6 +117,8 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         self.maximumDiscoveredImagesPerPage = maximumDiscoveredImagesPerPage.flatMap { $0 > 0 ? $0 : nil }
         self.discoveredImageSort = discoveredImageSort
         self.similarImageDeduplication = similarImageDeduplication
+        self.minimumImageDimensions = minimumImageDimensions
+        self.maximumImageDimensions = maximumImageDimensions
         self.urlSession = urlSession
     }
 
@@ -125,6 +138,8 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
             && lhs.maximumDiscoveredImagesPerPage == rhs.maximumDiscoveredImagesPerPage
             && lhs.discoveredImageSort == rhs.discoveredImageSort
             && lhs.similarImageDeduplication == rhs.similarImageDeduplication
+            && lhs.minimumImageDimensions == rhs.minimumImageDimensions
+            && lhs.maximumImageDimensions == rhs.maximumImageDimensions
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -141,5 +156,17 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         hasher.combine(maximumDiscoveredImagesPerPage)
         hasher.combine(discoveredImageSort)
         hasher.combine(similarImageDeduplication)
+        Self.hashCGSizeOptional(minimumImageDimensions, into: &hasher)
+        Self.hashCGSizeOptional(maximumImageDimensions, into: &hasher)
+    }
+
+    private static func hashCGSizeOptional(_ size: CGSize?, into hasher: inout Hasher) {
+        guard let size else {
+            hasher.combine(0 as UInt8)
+            return
+        }
+        hasher.combine(1 as UInt8)
+        hasher.combine(Double(size.width))
+        hasher.combine(Double(size.height))
     }
 }
