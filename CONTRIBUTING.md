@@ -41,6 +41,21 @@ This project is under the [Mozilla Public License 2.0](LICENSE).
 - Keep changes **focused** on one concern when possible.
 - Run **`swift test`** (root or `Packages/WebImagePicker`) before opening a PR and note any platform-only checks you could not run.
 - Describe **what** changed and **why** in the PR body.
+- Use the PR template so reviewers get **summary**, **test plan**, and **linked issues**.
+
+## Labels (triage)
+
+Maintainers use labels to sort work. Typical meanings:
+
+| Label | When to use |
+| --- | --- |
+| `bug` | Incorrect behavior, regression, or spec violation |
+| `enhancement` | New capability, API, or meaningful improvement |
+| `documentation` | README, DocC, guides, or contributor-facing docs |
+| `good first issue` | Small, well-scoped task suitable for a first contribution |
+| `needs-repro` | Report is plausible but missing steps, environment, or a minimal repro |
+
+Issue templates apply **`bug`** and **`enhancement`** automatically when you pick those forms; other labels are added during triage.
 
 ## Release readiness (maintainers)
 
