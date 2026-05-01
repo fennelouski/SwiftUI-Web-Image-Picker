@@ -192,7 +192,8 @@ Platform helpers (import still `WebImagePicker`):
 
 1. **Static HTML only** in v1: images that appear only after JavaScript runs may be **missing**. This is expected for many SPAs.
 2. **HTTPS-only by default:** `http` pages/images are rejected unless `allowedURLSchemes` includes `"http"`.
-3. **Errors** surface as user-visible strings in the picker UI; thrown errors use **`WebImagePickerError`** for programmatic handling in your own wrappers.
+3. **Bare domains in the URL field:** If the user omits a scheme (e.g. `example.com/article`), the picker **prepends a scheme** when possible: **`https://`** first if allowed, then **`http://`**, then other entries in `allowedURLSchemes`. This is **best-effort** (invalid hosts still fail); users should use an explicit `http://` or `https://` when they need a specific scheme.
+4. **Errors** surface as user-visible strings in the picker UI; thrown errors use **`WebImagePickerError`** for programmatic handling in your own wrappers.
 
 ## Verification checklist (agent should confirm)
 

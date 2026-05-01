@@ -7,7 +7,7 @@ Use it when you want users to pull images from the web without leaving your app 
 ## Features
 
 - **Photos-like sheet** — Navigation stack with Cancel, Done (multi-select), and “Change URL” while browsing.
-- **URL entry first** — Text field with URL-friendly keyboard options where supported; loads the page on demand.
+- **URL entry first** — Text field with URL-friendly keyboard options where supported; loads the page on demand. Bare hosts (e.g. `example.com/path`) are **best-effort normalized** by prepending an allowed scheme (`https` preferred, then `http`, then other schemes in `allowedURLSchemes`). Users can still type an explicit `http://` URL when `http` is allowed.
 - **Static HTML extraction** — Collects `<img>`, `srcset`, `<picture>` sources, Open Graph, and Twitter card images; resolves relative URLs and deduplicates.
 - **WebView extraction mode** — Optional `WKWebView`-based discovery for JavaScript-rendered pages.
 - **Masonry layout** — Custom SwiftUI `Layout` with staggered columns (column count adapts by platform / size class).
