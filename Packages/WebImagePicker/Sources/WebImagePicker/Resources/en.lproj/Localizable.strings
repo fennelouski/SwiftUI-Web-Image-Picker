@@ -19,3 +19,9 @@
 "webimage.selectionSummaryFormat" = "%lld of %lld selected";
 "webimage.urlEntryFooter" = "Paste a page URL. Images from the HTML response are shown (JavaScript-only images may be missing).";
 "webimage.urlPlaceholder" = "https://example.com";
+"webimage.additionalPagesSection" = "Additional pages";
+"webimage.additionalPagesFooter" = "Optional: add more page URLs to combine images from several pages in one grid. Your host app can also set WebImagePickerConfiguration.additionalPageURLs.";
+"webimage.addPage" = "Add page";
+"webimage.extraPagePlaceholder" = "https://another.example.com";
+"webimage.error.allPagesFailed" = "Could not load images from any of the pages.";
+"webimage.partialPageFailuresFormat" = "%lld page(s) could not be loaded. Images from the other pages are shown.";

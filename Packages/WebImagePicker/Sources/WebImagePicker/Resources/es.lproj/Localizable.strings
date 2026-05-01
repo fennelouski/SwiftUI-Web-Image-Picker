@@ -19,3 +19,9 @@
 "webimage.selectionSummaryFormat" = "%1$lld de %2$lld seleccionadas";
 "webimage.urlEntryFooter" = "Pega la URL de una página. Se muestran las imágenes de la respuesta HTML (las que solo carga JavaScript pueden no aparecer).";
 "webimage.urlPlaceholder" = "https://example.com";
+"webimage.additionalPagesSection" = "Páginas adicionales";
+"webimage.additionalPagesFooter" = "Opcional: añade más URLs de página para combinar imágenes de varias páginas en una sola cuadrícula. La app también puede usar WebImagePickerConfiguration.additionalPageURLs.";
+"webimage.addPage" = "Añadir página";
+"webimage.extraPagePlaceholder" = "https://otro.ejemplo.com";
+"webimage.error.allPagesFailed" = "No se pudieron cargar imágenes de ninguna de las páginas.";
+"webimage.partialPageFailuresFormat" = "No se pudieron cargar %lld página(s). Se muestran imágenes de las demás.";

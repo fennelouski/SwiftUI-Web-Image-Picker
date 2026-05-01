@@ -42,6 +42,11 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     /// Optional text pre-filled in the URL field when the picker appears (whitespace trimmed). Empty or `nil` means a blank field.
     public var initialURLString: String?
 
+    /// Extra page URLs to load after the primary field (and any user-added rows), in order. Images are merged into one grid with duplicates removed.
+    ///
+    /// Host apps can pre-seed several pages; invalid schemes are skipped. Discovery runs sequentially to keep ordering predictable.
+    public var additionalPageURLs: [URL]
+
     /// Session used for HTML fetches and image downloads. Defaults to `URLSession.shared`.
     public var urlSession: URLSession
 
@@ -56,6 +61,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     ///   - maximumImageDownloadBytes: Upper bound on each image response.
     ///   - extractionMode: ``WebImageExtractionMode/staticHTML`` or ``WebImageExtractionMode/webView``.
     ///   - initialURLString: Optional URL string shown in the entry field when the picker first appears.
+    ///   - additionalPageURLs: Ordered extra pages to aggregate with the primary URL and any user-added URLs.
     ///   - urlSession: Session used for fetches; defaults to `URLSession.shared`.
     public init(
         selectionLimit: Int = 10,
@@ -67,6 +73,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         maximumImageDownloadBytes: Int = 25_000_000,
         extractionMode: WebImageExtractionMode = .staticHTML,
         initialURLString: String? = nil,
+        additionalPageURLs: [URL] = [],
         urlSession: URLSession = .shared
     ) {
         self.selectionLimit = max(1, selectionLimit)
@@ -78,6 +85,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         self.maximumImageDownloadBytes = maximumImageDownloadBytes
         self.extractionMode = extractionMode
         self.initialURLString = initialURLString
+        self.additionalPageURLs = additionalPageURLs
         self.urlSession = urlSession
     }
 
@@ -93,6 +101,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
             && lhs.maximumImageDownloadBytes == rhs.maximumImageDownloadBytes
             && lhs.extractionMode == rhs.extractionMode
             && lhs.initialURLString == rhs.initialURLString
+            && lhs.additionalPageURLs == rhs.additionalPageURLs
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -105,5 +114,6 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         hasher.combine(maximumImageDownloadBytes)
         hasher.combine(extractionMode)
         hasher.combine(initialURLString)
+        hasher.combine(additionalPageURLs)
     }
 }
