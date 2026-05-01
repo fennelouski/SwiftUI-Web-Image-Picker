@@ -6,75 +6,81 @@
 //
 
 import SwiftUI
-import SwiftData
+import WebImagePicker
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @State private var showPicker = false
+    @State private var selections: [WebImageSelection] = []
 
     var body: some View {
-        NavigationViewWrapper {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+        NavigationStack {
+            VStack(spacing: 20) {
+                Button("Pick from web") {
+                    showPicker = true
+                }
+                .buttonStyle(.borderedProminent)
+
+                if selections.isEmpty {
+                    Text("No images selected yet.")
+                        .foregroundStyle(.secondary)
+                } else {
+                    Text("\(selections.count) image(s) selected")
+                        .font(.headline)
+                    ScrollView {
+                        LazyVStack(alignment: .leading, spacing: 12) {
+                            ForEach(Array(selections.enumerated()), id: \.offset) { index, selection in
+                                selectionRow(selection, index: index)
+                            }
+                        }
                     }
                 }
-                .onDelete(perform: deleteItems)
+                Spacer(minLength: 0)
             }
+            .padding()
+            .navigationTitle("Web Image Picker")
+        }
+        .webImagePicker(isPresented: $showPicker, configuration: .init(selectionLimit: 5)) { newSelections in
+            selections = newSelections
+        }
+    }
+
+    @ViewBuilder
+    private func selectionRow(_ selection: WebImageSelection, index: Int) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(selection.sourceURL.absoluteString)
+                .font(.caption)
+                .lineLimit(2)
+                .textSelection(.enabled)
 #if os(macOS)
-            .navigationSplitViewColumnWidth(min: 180, ideal: 200)
-#endif
-            .toolbar {
-#if os(iOS)
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-#endif
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
+            if let image = selection.makeNSImage() {
+                Image(nsImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxHeight: 200)
+                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
             }
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+#elseif canImport(UIKit)
+            if let image = selection.makeUIImage() {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxHeight: 200)
+                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
             }
-        }
-    }
-}
-
-fileprivate struct NavigationViewWrapper<Content: View>: View {
-    let content: () -> Content
-
-    var body: some View {
-#if os(macOS)
-        NavigationSplitView {
-            content()
-        } detail: {
-            Text("Select an item")
-        }
-#else
-        content()
 #endif
+            if let type = selection.contentType {
+                Text(type)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+            Text("\(selection.data.count) bytes")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+        }
+        .padding(.vertical, 4)
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
 }

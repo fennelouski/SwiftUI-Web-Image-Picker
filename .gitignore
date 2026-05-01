@@ -1,0 +1,5 @@
+.DS_Store
+.build/
+Packages/WebImagePicker/.build/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/

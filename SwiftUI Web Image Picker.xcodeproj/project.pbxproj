@@ -125,6 +125,7 @@
 			);
 			name = "SwiftUI Web Image Picker";
 			packageProductDependencies = (
+				9F2A8B102FA4A0FE009E986C /* XCSwiftPackageProductDependency */,
 			);
 			productName = "SwiftUI Web Image Picker";
 			productReference = 80129DEC2FA4A0FB009E986C /* SwiftUI Web Image Picker.app */;
@@ -208,6 +209,9 @@
 			);
 			mainGroup = 80129DE32FA4A0FB009E986C;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9F2A8B101FA4A0FE009E986C /* XCLocalSwiftPackageReference */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 80129DED2FA4A0FB009E986C /* Products */;
 			projectDirPath = "";
@@ -219,6 +223,21 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		9F2A8B101FA4A0FE009E986C /* XCLocalSwiftPackageReference */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/WebImagePicker;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9F2A8B102FA4A0FE009E986C /* XCSwiftPackageProductDependency */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9F2A8B101FA4A0FE009E986C /* XCLocalSwiftPackageReference */;
+			productName = WebImagePicker;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin PBXResourcesBuildPhase section */
 		80129DEA2FA4A0FB009E986C /* Resources */ = {
