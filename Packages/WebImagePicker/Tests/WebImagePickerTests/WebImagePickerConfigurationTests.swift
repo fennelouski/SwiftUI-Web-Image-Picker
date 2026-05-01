@@ -180,6 +180,22 @@ final class WebImagePickerConfigurationTests: XCTestCase {
         XCTAssertNotEqual(a, b)
     }
 
+    func testDefaultMetadataExclusionListsEmpty() {
+        XCTAssertTrue(WebImagePickerConfiguration.default.excludedImageMetadataSubstrings.isEmpty)
+        XCTAssertTrue(WebImagePickerConfiguration.default.excludedImageMetadataRegularExpressionPatterns.isEmpty)
+    }
+
+    func testMetadataExclusionSubstringsAffectEquality() {
+        let a = WebImagePickerConfiguration(excludedImageMetadataSubstrings: ["ads"])
+        let b = WebImagePickerConfiguration(excludedImageMetadataSubstrings: ["tracker"])
+        XCTAssertNotEqual(a, b)
+    }
+
+    func testWhitespaceOnlyMetadataExclusionNormalizedAway() {
+        let c = WebImagePickerConfiguration(excludedImageMetadataSubstrings: ["  ", "\t"])
+        XCTAssertTrue(c.excludedImageMetadataSubstrings.isEmpty)
+    }
+
     func testSimilarImageDeduplicationAffectsEquality() {
         let a = WebImagePickerConfiguration(similarImageDeduplication: .disabled)
         let b = WebImagePickerConfiguration(similarImageDeduplication: .normalizedResourceURL)

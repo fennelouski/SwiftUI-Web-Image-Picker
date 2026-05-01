@@ -89,6 +89,12 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     /// Parallel ranged GET + Vision requests while building the in-image text index. Default `2`.
     public var maximumConcurrentImageTextRecognition: Int
 
+    /// Case-insensitive substring blocklist: images whose absolute URL, path, alt text, `title`, or OCR text (when available) contains **any** entry are omitted from the browsing grid. Applied after discovery (and uses OCR text when ``isImageTextSearchEnabled`` has populated the index). Runs **before** the user’s search field. Default empty.
+    public var excludedImageMetadataSubstrings: [String]
+
+    /// Regular-expression blocklist using ``NSRegularExpression`` syntax, matched case-insensitively against the same haystacks as ``excludedImageMetadataSubstrings``. Invalid patterns are ignored. Regex evaluation adds CPU cost proportional to the number of patterns and candidate strings—keep this list short.
+    public var excludedImageMetadataRegularExpressionPatterns: [String]
+
     /// Session used for HTML fetches and image downloads. Defaults to `URLSession.shared`.
     public var urlSession: URLSession
 
@@ -117,6 +123,8 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     ///   - maximumImageTextSearchImages: Cap on OCR’d images when image text search is enabled.
     ///   - imageTextRecognitionLanguages: Optional Vision recognition language tags.
     ///   - maximumConcurrentImageTextRecognition: Parallelism for OCR ranged GETs + Vision.
+    ///   - excludedImageMetadataSubstrings: Substrings that hide matching images from the grid.
+    ///   - excludedImageMetadataRegularExpressionPatterns: Regex patterns that hide matching images.
     ///   - urlSession: Session used for fetches; defaults to `URLSession.shared`.
     public init(
         selectionLimit: Int = 1,
@@ -142,6 +150,8 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         maximumImageTextSearchImages: Int = 32,
         imageTextRecognitionLanguages: [String]? = nil,
         maximumConcurrentImageTextRecognition: Int = 2,
+        excludedImageMetadataSubstrings: [String] = [],
+        excludedImageMetadataRegularExpressionPatterns: [String] = [],
         urlSession: URLSession = .shared
     ) {
         self.selectionLimit = max(1, selectionLimit)
@@ -167,6 +177,12 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         self.maximumImageTextSearchImages = max(0, maximumImageTextSearchImages)
         self.imageTextRecognitionLanguages = imageTextRecognitionLanguages.flatMap { $0.isEmpty ? nil : $0 }
         self.maximumConcurrentImageTextRecognition = max(1, maximumConcurrentImageTextRecognition)
+        self.excludedImageMetadataSubstrings = excludedImageMetadataSubstrings
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+        self.excludedImageMetadataRegularExpressionPatterns = excludedImageMetadataRegularExpressionPatterns
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
         self.urlSession = urlSession
     }
 
@@ -196,6 +212,8 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
             && lhs.maximumImageTextSearchImages == rhs.maximumImageTextSearchImages
             && lhs.imageTextRecognitionLanguages == rhs.imageTextRecognitionLanguages
             && lhs.maximumConcurrentImageTextRecognition == rhs.maximumConcurrentImageTextRecognition
+            && lhs.excludedImageMetadataSubstrings == rhs.excludedImageMetadataSubstrings
+            && lhs.excludedImageMetadataRegularExpressionPatterns == rhs.excludedImageMetadataRegularExpressionPatterns
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -222,6 +240,8 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         hasher.combine(maximumImageTextSearchImages)
         hasher.combine(imageTextRecognitionLanguages)
         hasher.combine(maximumConcurrentImageTextRecognition)
+        hasher.combine(excludedImageMetadataSubstrings)
+        hasher.combine(excludedImageMetadataRegularExpressionPatterns)
     }
 
     private static func hashCGSizeOptional(_ size: CGSize?, into hasher: inout Hasher) {
