@@ -1,3 +1,4 @@
+import CoreGraphics
 import XCTest
 @testable import WebImagePicker
 
@@ -76,6 +77,17 @@ final class WebImagePickerConfigurationTests: XCTestCase {
 
     func testDefaultSimilarImageDeduplicationIsDisabled() {
         XCTAssertEqual(WebImagePickerConfiguration.default.similarImageDeduplication, .disabled)
+    }
+
+    func testDefaultImageDimensionBoundsAreNil() {
+        XCTAssertNil(WebImagePickerConfiguration.default.minimumImageDimensions)
+        XCTAssertNil(WebImagePickerConfiguration.default.maximumImageDimensions)
+    }
+
+    func testImageDimensionBoundsAffectEquality() {
+        let a = WebImagePickerConfiguration(minimumImageDimensions: CGSize(width: 10, height: 10))
+        let b = WebImagePickerConfiguration(minimumImageDimensions: CGSize(width: 11, height: 10))
+        XCTAssertNotEqual(a, b)
     }
 
     func testDefaultDiscoveredImageSortIsDiscoveryOrder() {
