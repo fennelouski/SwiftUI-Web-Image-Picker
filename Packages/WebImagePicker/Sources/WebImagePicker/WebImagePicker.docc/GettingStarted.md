@@ -27,7 +27,7 @@ struct ContentView: View {
 
 ## Configure limits and extraction
 
-Build a ``WebImagePickerConfiguration`` to cap selection count, tune network limits, restrict URL schemes, and choose ``WebImageExtractionMode`` (static HTML vs. WebView). Pass it into ``View/webImagePicker(isPresented:configuration:onPick:)`` or ``WebImagePicker/init(configuration:onCancel:onPick:)``.
+Build a ``WebImagePickerConfiguration`` to tune selection count (default **1** for single-tap pick; raise the limit for multi-select), network limits, URL schemes, and ``WebImageExtractionMode`` (static HTML vs. WebView). Pass it into ``View/webImagePicker(isPresented:configuration:onPick:)`` or ``WebImagePicker/init(configuration:onCancel:onPick:)``.
 
 ## Use the selection
 

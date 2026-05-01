@@ -13,7 +13,7 @@ import WebImagePicker
 struct ContentView: View {
     @State private var showPicker = false
     @State private var selections: [WebImageSelection] = []
-    @State private var pickerConfiguration = WebImagePickerConfiguration(selectionLimit: 5)
+    @State private var pickerConfiguration = WebImagePickerConfiguration()
 
     /// Static HTML–heavy pages that work well with default `.staticHTML` extraction.
     private enum SamplePage: String, CaseIterable {
@@ -72,10 +72,7 @@ struct ContentView: View {
     }
 
     private func presentPicker(initialURL: String?) {
-        pickerConfiguration = WebImagePickerConfiguration(
-            selectionLimit: 5,
-            initialURLString: initialURL
-        )
+        pickerConfiguration = WebImagePickerConfiguration(initialURLString: initialURL)
         showPicker = true
     }
 
