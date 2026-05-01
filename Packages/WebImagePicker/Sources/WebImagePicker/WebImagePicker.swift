@@ -88,7 +88,8 @@ public struct WebImagePicker: View {
     }
 
     private var urlEntryView: some View {
-        Form {
+        @Bindable var model = model
+        return Form {
             Section {
                 TextField(
                     String(localized: String.LocalizationValue("webimage.urlPlaceholder"), bundle: WebImagePickerBundle.module),
@@ -119,7 +120,7 @@ public struct WebImagePicker: View {
                         )
                     }
                 }
-                .disabled(model.phase == .loadingPage || model.urlString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                .disabled(!model.canStartLoad)
             } footer: {
                 if let message = model.errorMessage {
                     Text(message)
@@ -130,12 +131,58 @@ public struct WebImagePicker: View {
                     )
                 }
             }
+
+            Section {
+                ForEach($model.extraPageRows) { $row in
+                    TextField(
+                        String(localized: String.LocalizationValue("webimage.extraPagePlaceholder"), bundle: WebImagePickerBundle.module),
+                        text: $row.text
+                    )
+                    .textContentType(.URL)
+#if os(iOS) || os(tvOS) || os(visionOS)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .keyboardType(.URL)
+#endif
+#if os(macOS)
+                    .textFieldStyle(.roundedBorder)
+#endif
+                }
+                .onDelete(perform: model.removeExtraPageRows)
+
+                Button {
+                    model.addExtraPageRow()
+                } label: {
+                    Text(
+                        String(localized: String.LocalizationValue("webimage.addPage"), bundle: WebImagePickerBundle.module)
+                    )
+                }
+            } header: {
+                Text(
+                    String(localized: String.LocalizationValue("webimage.additionalPagesSection"), bundle: WebImagePickerBundle.module)
+                )
+            } footer: {
+                Text(
+                    String(localized: String.LocalizationValue("webimage.additionalPagesFooter"), bundle: WebImagePickerBundle.module)
+                )
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+            }
         }
     }
 
     private var browsingView: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 8) {
+                if let notice = model.aggregationNotice {
+                    Text(notice)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(12)
+                        .background(Color.secondary.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        .accessibilityIdentifier("webimage.aggregationNotice")
+                }
                 if let message = model.errorMessage {
                     Text(message)
                         .font(.subheadline)

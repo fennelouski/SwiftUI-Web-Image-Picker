@@ -65,4 +65,15 @@ final class WebImagePickerConfigurationTests: XCTestCase {
     func testDefaultInitialURLStringIsNil() {
         XCTAssertNil(WebImagePickerConfiguration.default.initialURLString)
     }
+
+    func testDefaultAdditionalPageURLsEmpty() {
+        XCTAssertTrue(WebImagePickerConfiguration.default.additionalPageURLs.isEmpty)
+    }
+
+    func testAdditionalPageURLsAffectsEquality() throws {
+        let u = try XCTUnwrap(URL(string: "https://a.example/"))
+        let withExtra = WebImagePickerConfiguration(additionalPageURLs: [u])
+        let without = WebImagePickerConfiguration(additionalPageURLs: [])
+        XCTAssertNotEqual(withExtra, without)
+    }
 }
