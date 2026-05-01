@@ -1,6 +1,6 @@
 import Foundation
 
-/// Loads image candidates from several page URLs, merges them in page order, and deduplicates by image URL.
+/// Loads image candidates from several page URLs, merges them in page order, and deduplicates using ``WebImagePickerConfiguration/similarImageDeduplication``.
 enum AggregatedPageImageDiscovery {
     struct MergeResult: Sendable {
         let images: [DiscoveredImage]
@@ -25,7 +25,10 @@ enum AggregatedPageImageDiscovery {
                     items = Array(items.prefix(cap))
                 }
                 for item in items {
-                    let key = item.sourceURL.absoluteString
+                    let key = DiscoveredImageDeduplicationKey.string(
+                        for: item.sourceURL,
+                        strategy: configuration.similarImageDeduplication
+                    )
                     guard !seenImageKeys.contains(key) else { continue }
                     seenImageKeys.insert(key)
                     merged.append(item)

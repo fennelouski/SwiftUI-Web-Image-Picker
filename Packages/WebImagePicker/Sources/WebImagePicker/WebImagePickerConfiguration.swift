@@ -52,6 +52,9 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     /// When `nil` (the default), no truncation is applied. When set to a positive value, only the first N candidates from that page are kept, in the order produced by the active ``PageImageExtractor`` (see package documentation for static HTML ordering). The cap applies **per page**: in multi-URL mode, each loaded page contributes at most N images (after per-page deduplication).
     public var maximumDiscoveredImagesPerPage: Int?
 
+    /// Optional collapsing of URLs that likely name the same resource (for example cache-busting query pairs). See ``SimilarImageDeduplicationStrategy``.
+    public var similarImageDeduplication: SimilarImageDeduplicationStrategy
+
     /// Session used for HTML fetches and image downloads. Defaults to `URLSession.shared`.
     public var urlSession: URLSession
 
@@ -68,6 +71,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     ///   - initialURLString: Optional URL string shown in the entry field when the picker first appears.
     ///   - additionalPageURLs: Ordered extra pages to aggregate with the primary URL and any user-added URLs.
     ///   - maximumDiscoveredImagesPerPage: Optional maximum images retained per page after discovery; `nil` means unlimited.
+    ///   - similarImageDeduplication: How aggressively to merge URLs that may reference the same asset.
     ///   - urlSession: Session used for fetches; defaults to `URLSession.shared`.
     public init(
         selectionLimit: Int = 10,
@@ -81,6 +85,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         initialURLString: String? = nil,
         additionalPageURLs: [URL] = [],
         maximumDiscoveredImagesPerPage: Int? = nil,
+        similarImageDeduplication: SimilarImageDeduplicationStrategy = .disabled,
         urlSession: URLSession = .shared
     ) {
         self.selectionLimit = max(1, selectionLimit)
@@ -94,6 +99,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         self.initialURLString = initialURLString
         self.additionalPageURLs = additionalPageURLs
         self.maximumDiscoveredImagesPerPage = maximumDiscoveredImagesPerPage.flatMap { $0 > 0 ? $0 : nil }
+        self.similarImageDeduplication = similarImageDeduplication
         self.urlSession = urlSession
     }
 
@@ -111,6 +117,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
             &&         lhs.initialURLString == rhs.initialURLString
             && lhs.additionalPageURLs == rhs.additionalPageURLs
             && lhs.maximumDiscoveredImagesPerPage == rhs.maximumDiscoveredImagesPerPage
+            && lhs.similarImageDeduplication == rhs.similarImageDeduplication
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -125,5 +132,6 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         hasher.combine(initialURLString)
         hasher.combine(additionalPageURLs)
         hasher.combine(maximumDiscoveredImagesPerPage)
+        hasher.combine(similarImageDeduplication)
     }
 }

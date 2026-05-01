@@ -33,6 +33,30 @@ final class StaticHTMLExtractorTests: XCTestCase {
         XCTAssertEqual(items.count, 1)
     }
 
+    func testQueryOnlyVariantsStayDistinctWhenSimilarityDedupDisabled() throws {
+        let html = #"""
+        <img src="https://cdn.example.com/x.png?v=1" alt="first">
+        <img src="https://cdn.example.com/x.png?v=2" alt="second">
+        """#
+        let page = URL(string: "https://example.com/")!
+        let items = try StaticHTMLExtractor.discover(from: html, pageURL: page, configuration: defaultConfig)
+        XCTAssertEqual(items.count, 2)
+    }
+
+    func testSimilarityDedupCollapsesQueryOnlyVariants() throws {
+        let html = #"""
+        <img src="https://cdn.example.com/x.png?v=1" alt="first">
+        <img src="https://cdn.example.com/x.png?v=2" alt="second">
+        """#
+        let page = URL(string: "https://example.com/")!
+        var config = defaultConfig
+        config.similarImageDeduplication = .normalizedResourceURL
+        let items = try StaticHTMLExtractor.discover(from: html, pageURL: page, configuration: config)
+        XCTAssertEqual(items.count, 1)
+        XCTAssertEqual(items[0].sourceURL.absoluteString, "https://cdn.example.com/x.png?v=1")
+        XCTAssertEqual(items[0].accessibilityLabel, "first")
+    }
+
     /// Document order for static extraction: `<img>` elements (DOM order) before Open Graph / Twitter meta images.
     func testImgElementsPrecedeOgImageInDiscoveryOrder() throws {
         let html = #"""
