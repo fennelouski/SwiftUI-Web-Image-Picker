@@ -19,7 +19,7 @@ enum ImageDownloadService {
         guard ImageTypeAllowlist.passesDownload(contentTypeHeader: contentType, configuration: configuration) else {
             throw WebImagePickerError.unsupportedImageType
         }
-        return WebImageSelection(data: data, contentType: contentType, sourceURL: url)
+        return try makeSelection(data: data, contentType: contentType, sourceURL: url, configuration: configuration)
     }
 
     static func downloadSelections(

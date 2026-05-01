@@ -4,6 +4,7 @@
 "webimage.done" = "Listo";
 "webimage.error.downloadFailed" = "No se pudo descargar una imagen.";
 "webimage.error.unsupportedImageType" = "Este tipo de imagen no está permitido.";
+"webimage.error.imageDecodeFailed" = "Los datos descargados no se pudieron decodificar como imagen.";
 "webimage.error.enterValidURL" = "Introduce una URL válida.";
 "webimage.error.extractionFailed" = "No se pudieron leer las imágenes de esta página.";
 "webimage.error.generic" = "Algo salió mal.";

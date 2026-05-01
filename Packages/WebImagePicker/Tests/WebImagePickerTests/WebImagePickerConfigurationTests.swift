@@ -115,6 +115,16 @@ final class WebImagePickerConfigurationTests: XCTestCase {
         XCTAssertNotEqual(a, b)
     }
 
+    func testDefaultSelectionOutputModeIsDataOnly() {
+        XCTAssertEqual(WebImagePickerConfiguration.default.selectionOutputMode, .dataOnly)
+    }
+
+    func testSelectionOutputModeAffectsEquality() {
+        let a = WebImagePickerConfiguration(selectionOutputMode: .dataOnly)
+        let b = WebImagePickerConfiguration(selectionOutputMode: .temporaryFileURL)
+        XCTAssertNotEqual(a, b)
+    }
+
     func testDefaultDiscoveredImageSortIsDiscoveryOrder() {
         XCTAssertEqual(WebImagePickerConfiguration.default.discoveredImageSort, .discoveryOrder)
     }

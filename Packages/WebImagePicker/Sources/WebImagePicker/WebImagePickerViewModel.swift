@@ -255,6 +255,11 @@ final class WebImagePickerViewModel {
                     localized: String.LocalizationValue("webimage.error.unsupportedImageType"),
                     bundle: WebImagePickerBundle.module
                 )
+            case .imageDecodeFailed:
+                return String(
+                    localized: String.LocalizationValue("webimage.error.imageDecodeFailed"),
+                    bundle: WebImagePickerBundle.module
+                )
             }
         }
         return String(
