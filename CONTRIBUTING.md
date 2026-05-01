@@ -59,6 +59,8 @@ Issue templates apply **`bug`** and **`enhancement`** automatically when you pic
 
 ## Release readiness (maintainers)
 
+For **versioning, changelog, tagging, and the automated GitHub Release workflow**, follow **[docs/RELEASE.md](docs/RELEASE.md)**.
+
 Before a release—especially one that introduces **binary** artifacts (XCFramework, etc.)—complete the privacy and manifest checklist in **[docs/PRIVACY_MANIFEST.md](docs/PRIVACY_MANIFEST.md)** so `PrivacyInfo.xcprivacy` and distribution expectations stay accurate.
 
 ## Questions
