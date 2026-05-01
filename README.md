@@ -146,6 +146,14 @@ Use **`.staticHTML`** for fastest extraction on server-rendered pages. Use **`.w
 
 This repository includes a small **SwiftUI** demo target (**SwiftUI Web Image Picker**) that links the local package and shows selected images. Open **`SwiftUI Web Image Picker.xcodeproj`** in Xcode and run the scheme on your chosen destination.
 
+## API reference (DocC)
+
+The Swift package ships a **DocC** catalog for the public API:
+
+- **Location:** [`Packages/WebImagePicker/Sources/WebImagePicker/WebImagePicker.docc/`](Packages/WebImagePicker/Sources/WebImagePicker/WebImagePicker.docc/)
+
+**Browse in Xcode:** open `SwiftUI Web Image Picker.xcodeproj` or add the package, then choose **Product → Build Documentation** and open the **WebImagePicker** documentation in the Documentation navigator. Entry points include `WebImagePicker`, the `webImagePicker` view modifier, `WebImagePickerConfiguration`, and `WebImageSelection`.
+
 ## Development
 
 From the **repository root** (canonical for CI and URL-based SPM):
