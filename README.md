@@ -120,6 +120,10 @@ var config = WebImagePickerConfiguration(
 
 With **`selectionLimit == 1`**, tapping an image downloads it immediately and completes the pick (no separate Done step).
 
+### Localization
+
+UI strings and errors load from **`Localizable.strings`** under `Packages/WebImagePicker/Sources/WebImagePicker/Resources/` (e.g. `en.lproj`, `es.lproj`). The picker follows the user’s preferred language when a matching localization exists. To add or adjust translations, edit those files in the package and ship an updated dependency revision.
+
 ## How it works
 
 1. **Fetch** — The active **`PageImageExtractor`** either downloads and parses raw HTML (**`.staticHTML`**, default, using [SwiftSoup](https://github.com/scinfu/SwiftSoup)) or loads the page in **`WKWebView`** (**`.webView`**) before collecting image candidates from the rendered DOM.

@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "WebImagePicker",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v17),
         .macOS(.v14),
@@ -21,7 +22,8 @@ let package = Package(
         .target(
             name: "WebImagePicker",
             dependencies: ["SwiftSoup"],
-            path: "Packages/WebImagePicker/Sources/WebImagePicker"
+            path: "Packages/WebImagePicker/Sources/WebImagePicker",
+            resources: [.process("Resources")]
         ),
         .testTarget(
             name: "WebImagePickerTests",

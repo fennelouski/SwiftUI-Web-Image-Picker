@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 
 /// A Photos-style flow for picking images discovered on a web page.
@@ -33,23 +34,33 @@ public struct WebImagePicker: View {
                     browsingView
                 }
             }
-            .navigationTitle("Web images")
+            .navigationTitle(
+                String(localized: String.LocalizationValue("webimage.navTitle"), bundle: WebImagePickerBundle.module)
+            )
 #if os(iOS) || os(visionOS)
             .navigationBarTitleDisplayMode(.inline)
 #endif
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel", action: onCancel)
+                    Button(
+                        String(localized: String.LocalizationValue("webimage.cancel"), bundle: WebImagePickerBundle.module),
+                        action: onCancel
+                    )
                 }
                 if model.phase == .browsing {
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") {
+                        Button(
+                            String(localized: String.LocalizationValue("webimage.done"), bundle: WebImagePickerBundle.module)
+                        ) {
                             Task { await confirmMultiSelection() }
                         }
                         .disabled(model.selectedURLs.isEmpty || model.isConfirming)
                     }
                     ToolbarItem(placement: .primaryAction) {
-                        Button("Change URL", action: model.beginChangingURL)
+                        Button(
+                            String(localized: String.LocalizationValue("webimage.changeURL"), bundle: WebImagePickerBundle.module),
+                            action: model.beginChangingURL
+                        )
                     }
                 }
             }
@@ -70,7 +81,10 @@ public struct WebImagePicker: View {
     private var urlEntryView: some View {
         Form {
             Section {
-                TextField("https://example.com", text: $model.urlString)
+                TextField(
+                    String(localized: String.LocalizationValue("webimage.urlPlaceholder"), bundle: WebImagePickerBundle.module),
+                    text: $model.urlString
+                )
                     .textContentType(.URL)
 #if os(iOS) || os(tvOS) || os(visionOS)
                     .textInputAutocapitalization(.never)
@@ -86,10 +100,14 @@ public struct WebImagePicker: View {
                     if model.phase == .loadingPage {
                         HStack {
                             ProgressView()
-                            Text("Loading")
+                            Text(
+                                String(localized: String.LocalizationValue("webimage.loading"), bundle: WebImagePickerBundle.module)
+                            )
                         }
                     } else {
-                        Text("Load page")
+                        Text(
+                            String(localized: String.LocalizationValue("webimage.loadPage"), bundle: WebImagePickerBundle.module)
+                        )
                     }
                 }
                 .disabled(model.phase == .loadingPage || model.urlString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
@@ -98,7 +116,9 @@ public struct WebImagePicker: View {
                     Text(message)
                         .foregroundStyle(.red)
                 } else {
-                    Text("Paste a page URL. Images from the HTML response are shown (JavaScript-only images may be missing).")
+                    Text(
+                        String(localized: String.LocalizationValue("webimage.urlEntryFooter"), bundle: WebImagePickerBundle.module)
+                    )
                 }
             }
         }
@@ -140,7 +160,11 @@ public struct WebImagePicker: View {
     private var selectionSummary: String {
         let n = model.selectedURLs.count
         let limit = configuration.selectionLimit
-        return "\(n) of \(limit) selected"
+        let format = String(
+            localized: String.LocalizationValue("webimage.selectionSummaryFormat"),
+            bundle: WebImagePickerBundle.module
+        )
+        return String.localizedStringWithFormat(format, n, limit)
     }
 
     private var masonryColumnCount: Int {
@@ -226,7 +250,10 @@ private struct DiscoveredImageTile: View {
         .contentShape(Rectangle())
         .onTapGesture(perform: onTap)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(item.accessibilityLabel ?? "Image from web")
+        .accessibilityLabel(
+            item.accessibilityLabel
+                ?? String(localized: String.LocalizationValue("webimage.a11y.imageFromWeb"), bundle: WebImagePickerBundle.module)
+        )
         .accessibilityAddTraits(selected ? .isSelected : [])
     }
 }
