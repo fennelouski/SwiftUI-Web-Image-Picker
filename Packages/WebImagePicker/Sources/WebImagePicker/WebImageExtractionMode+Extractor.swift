@@ -6,6 +6,8 @@ extension WebImageExtractionMode {
         switch self {
         case .staticHTML:
             StaticHTMLExtractor()
+        case .webView:
+            WebViewPageImageExtractor()
         }
     }
 }
