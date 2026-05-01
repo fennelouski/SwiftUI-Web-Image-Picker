@@ -21,7 +21,7 @@ Use it when you want users to pull images from the web without leaving your app 
 
 ## Installation
 
-The Swift package lives under **`Packages/WebImagePicker/`** in this repository.
+Library sources live under **`Packages/WebImagePicker/`**. SwiftPM manifests exist at the **repository root** (`Package.swift`, for URL-based dependencies) and under **`Packages/WebImagePicker/Package.swift`** (for path dependencies that point only at the package folder).
 
 For **exact, step-by-step integration** (including SPM path rules, Xcode, entitlements, and verification), see **[AI_INTEGRATION.md](AI_INTEGRATION.md)**.
 
@@ -29,13 +29,11 @@ For **exact, step-by-step integration** (including SPM path rules, Xcode, entitl
 
 **Repository:** [github.com/fennelouski/SwiftUI-Web-Image-Picker](https://github.com/fennelouski/SwiftUI-Web-Image-Picker)
 
-The Swift manifest is under **`Packages/WebImagePicker/`**, not the git root, so **`package(url:)` does not work yet** for this layout. Use a **path** dependency (clone or submodule) or **Add Local…** in Xcode until a root `Package.swift` (and version tags) is published for URL-based SPM.
-
-Path dependency (adjust the path to where you cloned the repo):
+**URL-based (recommended for most apps):** depend on the repo root and a [SemVer tag](https://github.com/fennelouski/SwiftUI-Web-Image-Picker/tags) (e.g. `1.0.0`):
 
 ```swift
 dependencies: [
-    .package(name: "WebImagePicker", path: "./vendor/SwiftUI-Web-Image-Picker/Packages/WebImagePicker"),
+    .package(name: "WebImagePicker", url: "https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git", from: "1.0.0"),
 ]
 ```
 
@@ -48,22 +46,20 @@ dependencies: [
 ),
 ```
 
-**Future (URL-based):** After `Package.swift` exists at the repository root and you tag releases, you will be able to use:
+**Path dependency** (monorepo, submodule, or vendored clone — adjust paths to your layout):
 
 ```swift
-.package(name: "WebImagePicker", url: "https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git", from: "1.0.0"),
-```
+// Repo root (same manifest URL-based consumers use)
+.package(name: "WebImagePicker", path: "./vendor/SwiftUI-Web-Image-Picker"),
 
-If the package manifest is not at the repository root, use a **path** dependency in Xcode or in `Package.swift`:
-
-```swift
-.package(path: "Packages/WebImagePicker")  // relative to your project/repo root
+// Or only the package subtree (uses Packages/WebImagePicker/Package.swift)
+.package(name: "WebImagePicker", path: "./vendor/SwiftUI-Web-Image-Picker/Packages/WebImagePicker"),
 ```
 
 ### Xcode (local clone)
 
 1. **File → Add Package Dependencies…**
-2. Choose **Add Local…** and select the `Packages/WebImagePicker` folder (or the repo root if you add a root `Package.swift` later).
+2. Choose **Add Local…** and select the **repository root** (recommended, matches URL-based resolution) or the **`Packages/WebImagePicker`** folder.
 3. Add the **WebImagePicker** product to your app target.
 
 ## Quick start
@@ -138,7 +134,14 @@ This repository includes a small **SwiftUI** demo target (**SwiftUI Web Image Pi
 
 ## Development
 
-From the package directory:
+From the **repository root** (canonical for CI and URL-based SPM):
+
+```bash
+swift build
+swift test
+```
+
+Or from the nested package directory (equivalent manifest):
 
 ```bash
 cd Packages/WebImagePicker

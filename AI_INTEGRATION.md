@@ -5,82 +5,41 @@ This document is written for **AI coding agents** and **scripted tooling**. Foll
 ## What you are integrating
 
 - **Product (library) name:** `WebImagePicker` (SwiftPM product and `import WebImagePicker`).
-- **Package manifest location:** the directory that contains **`Package.swift`** for the library:  
-  **`Packages/WebImagePicker/`** in this repo.
-- **Transitive dependency:** [SwiftSoup](https://github.com/scinfu/SwiftSoup) (declared in that `Package.swift`). Do not add SwiftSoup manually unless you have a conflict to resolve.
+- **Package manifests in this repo:**
+  - **Repository root** `Package.swift` — use with **remote** `.package(url:)` (SemVer tags on the default branch).
+  - **`Packages/WebImagePicker/Package.swift`** — same products/targets; use when the host’s path dependency points **only** at the `WebImagePicker` package folder.
+  Keep dependency versions and platforms aligned between the two manifests.
+- **Transitive dependency:** [SwiftSoup](https://github.com/scinfu/SwiftSoup) (declared in those manifests). Do not add SwiftSoup manually unless you have a conflict to resolve.
 - **License:** MPL-2.0 — preserve notices; see [LICENSE](LICENSE).
 
 ## Preconditions (verify before editing)
 
-1. **Host app deployment target** must be at least: **iOS 17**, **macOS 14**, **visionOS 1**, **tvOS 17** (see `Packages/WebImagePicker/Package.swift` `platforms`).
-2. **Swift** toolchain compatible with `// swift-tools-version: 5.9` in that `Package.swift`.
+1. **Host app deployment target** must be at least: **iOS 17**, **macOS 14**, **visionOS 1**, **tvOS 17** (see `platforms` in the root `Package.swift` or `Packages/WebImagePicker/Package.swift`).
+2. **Swift** toolchain compatible with `// swift-tools-version: 5.9` in those manifests.
 3. **Network:** The feature loads HTML and image bytes over HTTP(S). Ensure the host process may open outbound connections:
    - **macOS App Sandbox:** entitlement **`com.apple.security.network.client`** = `true` (boolean).
    - **iOS / others:** Usually sufficient for HTTPS; no extra WebImagePicker-specific plist keys required for default ATS.
 
 ## Monorepo fact (critical for SPM path)
 
-In **this** repository, **`Package.swift` is not at the git root**. It lives at:
+This repository has **`Package.swift` at the git root** and a second copy at **`Packages/WebImagePicker/Package.swift`** (same library product).
 
-`Packages/WebImagePicker/Package.swift`
+- **Remote `.package(url:)`** resolves the **root** manifest after checkout.
+- **Path dependencies** may point at either the **repository root** or **`Packages/WebImagePicker`**, depending on what you vendored; the path must be the directory that contains the **`Package.swift` you intend to use** for that dependency.
 
-Any SPM **path** or Xcode **Add Local…** selection must target the folder **`Packages/WebImagePicker`**, not the repository root.
-
-If the consumer’s project only vendors the library subtree, the path is whatever folder contains **that** `Package.swift` (might be `./WebImagePicker` after copy).
+If the consumer only vendors the library subtree, the path is whatever folder contains **that** `Package.swift` (often `./WebImagePicker` or `./Packages/WebImagePicker` after copy).
 
 ---
 
 ## Integration method A — Swift Package Manager (`Package.swift` of the host)
 
-**Goal:** Add a dependency that points at the directory containing the library’s `Package.swift`, then link the product **`WebImagePicker`**.
+**Goal:** Add a dependency on **WebImagePicker**, then link the product **`WebImagePicker`**.
 
-### A1. Same machine / monorepo / vendored folder
+### A1. Remote Git URL (preferred for published consumers)
 
-Use a **path** dependency. The path is **relative to the host package’s `Package.swift` location**.
+**Repository:** **https://github.com/fennelouski/SwiftUI-Web-Image-Picker**
 
-Example (host `Package.swift` lives in a sibling structure):
-
-```swift
-// swift-tools-version: 5.9
-import PackageDescription
-
-let package = Package(
-    name: "HostApp",
-    platforms: [.iOS(.v17), .macOS(.v14)],
-    products: [
-        .library(name: "HostApp", targets: ["HostApp"]),
-    ],
-    dependencies: [
-        .package(path: "Packages/WebImagePicker"), // adjust relative path to the folder that contains WebImagePicker's Package.swift
-    ],
-    targets: [
-        .target(
-            name: "HostApp",
-            dependencies: [
-                .product(name: "WebImagePicker", package: "WebImagePicker"),
-            ]
-        ),
-    ]
-)
-```
-
-**Naming rule:** The string `package: "WebImagePicker"` in `.product(...)` must match the **`name:`** in `.package(...)`. If you omit `name:` on `.package(path:)`, SwiftPM infers a name from the path (often the last path component). To avoid ambiguity, prefer:
-
-```swift
-.package(name: "WebImagePicker", path: "Packages/WebImagePicker"),
-```
-
-then:
-
-```swift
-.product(name: "WebImagePicker", package: "WebImagePicker"),
-```
-
-### A2. Remote Git URL (only when publish layout allows it)
-
-SwiftPM **remote** `.package(url:)` expects a **`Package.swift` at the repository root** (or you must use a fork that does). **This repo, as laid out today, does not put `Package.swift` at the git root**, so **do not** point a remote URL at this repo unless the publisher adds a root manifest or you use a **path** / **local** dependency.
-
-If a root `Package.swift` exists in the future (this repo today: **https://github.com/fennelouski/SwiftUI-Web-Image-Picker**), remote consumption becomes:
+Use a **version requirement** that matches a **tag** on the default branch (e.g. `from: "1.0.0"`).
 
 ```swift
 .package(
@@ -94,6 +53,44 @@ If a root `Package.swift` exists in the future (this repo today: **https://githu
 .product(name: "WebImagePicker", package: "WebImagePicker"),
 ```
 
+### A2. Same machine / monorepo / vendored folder (path)
+
+Use a **path** dependency. The path is **relative to the host package’s `Package.swift` location**.
+
+Example — depend on the **clone root** (same layout remote consumers get):
+
+```swift
+.package(name: "WebImagePicker", path: "../SwiftUI-Web-Image-Picker"), // adjust
+```
+
+Example — depend on **only** the package folder (uses `Packages/WebImagePicker/Package.swift`):
+
+```swift
+// swift-tools-version: 5.9
+import PackageDescription
+
+let package = Package(
+    name: "HostApp",
+    platforms: [.iOS(.v17), .macOS(.v14)],
+    products: [
+        .library(name: "HostApp", targets: ["HostApp"]),
+    ],
+    dependencies: [
+        .package(name: "WebImagePicker", path: "Packages/WebImagePicker"),
+    ],
+    targets: [
+        .target(
+            name: "HostApp",
+            dependencies: [
+                .product(name: "WebImagePicker", package: "WebImagePicker"),
+            ]
+        ),
+    ]
+)
+```
+
+**Naming rule:** The string `package: "WebImagePicker"` in `.product(...)` must match the **`name:`** in `.package(...)`. If you omit `name:` on `.package(path:)`, SwiftPM infers a name from the path (often the last path component). To avoid ambiguity, prefer an explicit `name:` as above.
+
 ---
 
 ## Integration method B — Xcode (GUI)
@@ -102,8 +99,8 @@ Use when the host is an **`.xcodeproj`** / **`.xcworkspace`** app, not necessari
 
 1. Open the host project in Xcode.
 2. **File → Add Package Dependencies…**
-3. Choose **Add Local…** (not a remote URL unless root `Package.swift` exists on the server).
-4. Select the folder **`Packages/WebImagePicker`** inside this repository (the folder that contains `Package.swift` for WebImagePicker).
+3. For a **remote** dependency: enter **https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git** and a **version rule** (e.g. **Up to Next Major** from **1.0.0**).
+4. For **Add Local…**: select the **repository root** (recommended; uses root `Package.swift`) or **`Packages/WebImagePicker`**.
 5. Add the product **`WebImagePicker`** to the **application** target (or the framework target that needs the UI).
 6. **macOS:** Enable **App Sandbox** → check **Outgoing Connections (Client)** (maps to `com.apple.security.network.client`).
 7. Build. Fix **deployment target** if Xcode warns; raise to iOS 17 / macOS 14 / etc.
@@ -112,7 +109,7 @@ Use when the host is an **`.xcodeproj`** / **`.xcworkspace`** app, not necessari
 
 If generating or patching `project.pbxproj`, a local package reference typically looks like:
 
-- `XCLocalSwiftPackageReference` with `relativePath = Packages/WebImagePicker;` **relative to the `.xcodeproj`’s parent directory** (the directory that contains both the `.xcodeproj` and `Packages/`). Adjust if the consumer’s layout differs.
+- `XCLocalSwiftPackageReference` with `relativePath = .;` **when the `.xcodeproj` sits next to the root `Package.swift`** (this repo’s demo), or `relativePath = Packages/WebImagePicker;` when linking only the nested manifest — paths are **relative to the `.xcodeproj`’s parent directory**.
 - `XCSwiftPackageProductDependency` with `productName = WebImagePicker;` linked to that reference.
 
 Do **not** set `relativePath = ..` unless `Package.swift` truly lives one level above the `.xcodeproj`.
@@ -203,7 +200,7 @@ Platform helpers (import still `WebImagePicker`):
 - [ ] `import WebImagePicker` compiles.
 - [ ] Deployment targets ≥ package minimums.
 - [ ] macOS sandbox **Outgoing Connections** enabled if sandboxed.
-- [ ] Path dependency points at **`Packages/WebImagePicker`** (folder containing `Package.swift`), not repo root (for this monorepo).
+- [ ] Path dependency points at the directory whose **`Package.swift`** you intend to use (**repository root** or **`Packages/WebImagePicker`**); remote URL dependencies use the root manifest automatically.
 - [ ] Run app: open picker, enter a known-good **HTTPS** page with `<img>` tags, confirm grid and selection callback.
 
 ## Reference implementation in this repo
@@ -213,7 +210,13 @@ Platform helpers (import still `WebImagePicker`):
 
 ## Running library tests (sanity)
 
-From repository root:
+From **repository root**:
+
+```bash
+swift test
+```
+
+Or from the nested package directory:
 
 ```bash
 cd Packages/WebImagePicker && swift test
