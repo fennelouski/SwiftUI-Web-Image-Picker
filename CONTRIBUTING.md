@@ -30,7 +30,7 @@ Thanks for helping improve **SwiftUI Web Image Picker**.
 
    On iOS, tvOS, or visionOS destinations, snapshot tests are skipped (`XCTSkip`) because baselines are macOS PNGs.
 
-4. **Demo app** — open **`SwiftUI Web Image Picker.xcodeproj`** in Xcode, choose the **SwiftUI Web Image Picker** scheme, and run on your Mac or a simulator.
+4. **Demo app** — open **`SwiftUI Web Image Picker.xcodeproj`** in Xcode, choose the **SwiftUI Web Image Picker** scheme, and run on your Mac, a simulator, or visionOS. Use **Try a sample page** in the demo for pre-filled URLs, or type your own. The root README **Quick try** section is the onboarding path for new contributors.
 
 ### Code signing (demo target)
 

@@ -39,6 +39,9 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
 
     public var extractionMode: WebImageExtractionMode
 
+    /// Optional text pre-filled in the URL field when the picker appears (whitespace trimmed). Empty or `nil` means a blank field.
+    public var initialURLString: String?
+
     /// Session used for HTML fetches and image downloads. Defaults to `URLSession.shared`.
     public var urlSession: URLSession
 
@@ -52,6 +55,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     ///   - maximumHTMLDownloadBytes: Upper bound on HTML response size.
     ///   - maximumImageDownloadBytes: Upper bound on each image response.
     ///   - extractionMode: ``WebImageExtractionMode/staticHTML`` or ``WebImageExtractionMode/webView``.
+    ///   - initialURLString: Optional URL string shown in the entry field when the picker first appears.
     ///   - urlSession: Session used for fetches; defaults to `URLSession.shared`.
     public init(
         selectionLimit: Int = 10,
@@ -62,6 +66,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         maximumHTMLDownloadBytes: Int = 2_000_000,
         maximumImageDownloadBytes: Int = 25_000_000,
         extractionMode: WebImageExtractionMode = .staticHTML,
+        initialURLString: String? = nil,
         urlSession: URLSession = .shared
     ) {
         self.selectionLimit = max(1, selectionLimit)
@@ -72,6 +77,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         self.maximumHTMLDownloadBytes = maximumHTMLDownloadBytes
         self.maximumImageDownloadBytes = maximumImageDownloadBytes
         self.extractionMode = extractionMode
+        self.initialURLString = initialURLString
         self.urlSession = urlSession
     }
 
@@ -86,6 +92,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
             && lhs.maximumHTMLDownloadBytes == rhs.maximumHTMLDownloadBytes
             && lhs.maximumImageDownloadBytes == rhs.maximumImageDownloadBytes
             && lhs.extractionMode == rhs.extractionMode
+            && lhs.initialURLString == rhs.initialURLString
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -97,5 +104,6 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         hasher.combine(maximumHTMLDownloadBytes)
         hasher.combine(maximumImageDownloadBytes)
         hasher.combine(extractionMode)
+        hasher.combine(initialURLString)
     }
 }

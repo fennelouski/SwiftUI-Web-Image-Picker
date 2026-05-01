@@ -55,4 +55,14 @@ final class WebImagePickerConfigurationTests: XCTestCase {
         let b = WebImagePickerConfiguration(urlSession: custom)
         XCTAssertEqual(a, b)
     }
+
+    func testInitialURLStringAffectsEquality() {
+        let a = WebImagePickerConfiguration(initialURLString: "https://a.example")
+        let b = WebImagePickerConfiguration(initialURLString: "https://b.example")
+        XCTAssertNotEqual(a, b)
+    }
+
+    func testDefaultInitialURLStringIsNil() {
+        XCTAssertNil(WebImagePickerConfiguration.default.initialURLString)
+    }
 }

@@ -4,6 +4,19 @@ A Swift Package that brings **web pages into an image-picking flow** similar to 
 
 Use it when you want users to pull images from the web without leaving your app or juggling Safari and the clipboard.
 
+## Quick try (~5 minutes)
+
+**Start here:** the repo ships a small SwiftUI app that links **WebImagePicker** locally so you can learn the flow without wiring SPM into your own project first.
+
+1. **Clone** — `git clone https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git` and `cd` into the folder.
+2. **Open** — **`SwiftUI Web Image Picker.xcodeproj`** in Xcode.
+3. **Scheme** — choose **SwiftUI Web Image Picker** in the scheme picker next to Run/Stop.
+4. **Destination** — an **iOS Simulator**, **My Mac**, or a **visionOS** simulator (the demo is multiplatform).
+5. **Signing** — if Xcode complains, select the app target → **Signing & Capabilities** → enable **Automatically manage signing** and pick a **Team** (Personal Team is fine for local runs). See **[CONTRIBUTING.md](CONTRIBUTING.md#code-signing-demo-target)**—do not commit team IDs.
+6. **Run** — **Product → Run** (⌘R). Tap **Pick from web** and type a URL, or open **Try a sample page** for a pre-filled HTTPS URL, then **Load page**, select thumbnails, and **Done**.
+
+When you are ready to integrate, follow **[Installation](#installation)** and **[Quick start](#quick-start)** below.
+
 ## Features
 
 - **Photos-like sheet** — Navigation stack with Cancel, Done (multi-select), and “Change URL” while browsing.
@@ -141,10 +154,6 @@ Use **`.staticHTML`** for fastest extraction on server-rendered pages. Use **`.w
 - Runs WebKit work on the main actor and can use more memory/CPU than static parsing.
 - Subject to platform sandbox/network policy (for example, App Sandbox outgoing network permission on macOS).
 - Embedded/isolated content (cross-origin iframes, blocked resources, CSP constraints) may still limit what becomes discoverable.
-
-## Demo app
-
-This repository includes a small **SwiftUI** demo target (**SwiftUI Web Image Picker**) that links the local package and shows selected images. Open **`SwiftUI Web Image Picker.xcodeproj`** in Xcode and run the scheme on your chosen destination.
 
 ## API reference (DocC)
 

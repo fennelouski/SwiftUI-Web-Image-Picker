@@ -23,6 +23,9 @@ final class WebImagePickerViewModel {
     init(configuration: WebImagePickerConfiguration) {
         self.configuration = configuration
         extractor = configuration.extractionMode.makeExtractor()
+        if let raw = configuration.initialURLString?.trimmingCharacters(in: .whitespacesAndNewlines), !raw.isEmpty {
+            urlString = raw
+        }
     }
 
     func loadPage() async {
