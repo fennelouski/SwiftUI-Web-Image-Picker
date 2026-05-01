@@ -169,3 +169,9 @@ This project is licensed under the **Mozilla Public License 2.0** — see [LICEN
 
 - Users supply URLs; treat untrusted input like any other network feature in your threat model.
 - Only fetch and display content your users are allowed to access; respect site terms and copyright.
+
+## Privacy and `PrivacyInfo.xcprivacy`
+
+This package loads remote HTML and images over the network and can use **`WKWebView`** when you enable **`.webView`** extraction. Your app is responsible for App Store privacy labels and for any privacy manifests required by **your** code and **binary** dependencies.
+
+If we ship **precompiled** binaries (for example an XCFramework), those artifacts will need an accurate **`PrivacyInfo.xcprivacy`** per Apple’s rules. Source-only SwiftPM consumption today does not add a manifest file in-repo; see **[docs/PRIVACY_MANIFEST.md](docs/PRIVACY_MANIFEST.md)** for policy detail and a **maintainer release checklist**.
