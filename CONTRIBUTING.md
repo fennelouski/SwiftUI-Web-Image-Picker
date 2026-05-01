@@ -17,7 +17,20 @@ Thanks for helping improve **SwiftUI Web Image Picker**.
    swift test
    ```
 
-3. **Demo app** — open **`SwiftUI Web Image Picker.xcodeproj`** in Xcode, choose the **SwiftUI Web Image Picker** scheme, and run on your Mac or a simulator.
+3. **Visual regression (macOS)** — the package includes a small [swift-snapshot-testing](https://github.com/pointfreeco/swift-snapshot-testing) check for the URL-entry screen. Baselines live under `Packages/WebImagePicker/Tests/WebImagePickerTests/__Snapshots__/`. CI runs these on `macos-latest` together with the rest of `swift test`.
+
+   When you intentionally change that UI, refresh the reference image from macOS:
+
+   ```bash
+   cd Packages/WebImagePicker
+   SNAPSHOT_TESTING_RECORD=all swift test --filter WebImagePickerSnapshotTests
+   ```
+
+   The first run will fail with a message that recording finished; run the same command again without `SNAPSHOT_TESTING_RECORD` (or with `SNAPSHOT_TESTING_RECORD=never`) to confirm the new PNG matches. Commit the updated file under `__Snapshots__/`.
+
+   On iOS, tvOS, or visionOS destinations, snapshot tests are skipped (`XCTSkip`) because baselines are macOS PNGs.
+
+4. **Demo app** — open **`SwiftUI Web Image Picker.xcodeproj`** in Xcode, choose the **SwiftUI Web Image Picker** scheme, and run on your Mac or a simulator.
 
 ### Code signing (demo target)
 

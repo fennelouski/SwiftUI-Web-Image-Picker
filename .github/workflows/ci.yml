@@ -9,7 +9,8 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  swift-package:
+    name: SwiftPM (build + unit + macOS snapshots)
     runs-on: macos-latest
     defaults:
       run:
