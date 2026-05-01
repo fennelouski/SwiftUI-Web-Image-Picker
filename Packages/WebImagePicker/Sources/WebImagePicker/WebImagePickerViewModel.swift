@@ -27,6 +27,9 @@ final class WebImagePickerViewModel {
     var aggregationNotice: String?
     var isConfirming: Bool = false
 
+    /// Recognized in-image text per ``DiscoveredImage/sourceURL`` when ``WebImagePickerConfiguration/isImageTextSearchEnabled`` is `true`. Filled asynchronously after load.
+    internal private(set) var imageRecognizedTextByURL: [URL: String] = [:]
+
     enum Phase: Equatable {
         case urlEntry
         case loadingPage
@@ -35,6 +38,7 @@ final class WebImagePickerViewModel {
 
     let configuration: WebImagePickerConfiguration
     private let extractor: any PageImageExtractor
+    private var imageTextSearchTask: Task<Void, Never>?
 
     init(configuration: WebImagePickerConfiguration) {
         self.configuration = configuration
@@ -57,10 +61,12 @@ final class WebImagePickerViewModel {
 
     /// Images shown in the grid after applying ``imageMetadataSearchQuery``.
     var discoveredForDisplay: [DiscoveredImage] {
-        DiscoveredImageMetadataSearch.filteredDiscoveries(
+        let ocr = configuration.isImageTextSearchEnabled ? imageRecognizedTextByURL : nil
+        return DiscoveredImageMetadataSearch.filteredDiscoveries(
             discovered,
             rawQuery: imageMetadataSearchQuery,
-            configuration: configuration
+            configuration: configuration,
+            recognizedTextByURL: ocr
         )
     }
 
@@ -111,6 +117,7 @@ final class WebImagePickerViewModel {
         imageMetadataSearchQuery = ""
         selectedURLs = []
         phase = .browsing
+        scheduleImageTextSearchIfNeeded()
         if !merge.failedPageURLs.isEmpty {
             let format = String(
                 localized: String.LocalizationValue("webimage.partialPageFailuresFormat"),
@@ -212,12 +219,35 @@ final class WebImagePickerViewModel {
     }
 
     func beginChangingURL() {
+        cancelImageTextSearchTask()
+        imageRecognizedTextByURL = [:]
         phase = .urlEntry
         discovered = []
         imageMetadataSearchQuery = ""
         selectedURLs = []
         errorMessage = nil
         aggregationNotice = nil
+    }
+
+    private func cancelImageTextSearchTask() {
+        imageTextSearchTask?.cancel()
+        imageTextSearchTask = nil
+    }
+
+    private func scheduleImageTextSearchIfNeeded() {
+        cancelImageTextSearchTask()
+        imageRecognizedTextByURL = [:]
+        guard configuration.isImageTextSearchEnabled else { return }
+        let limit = configuration.maximumImageTextSearchImages
+        guard limit > 0 else { return }
+        let urls = Array(discovered.prefix(limit).map(\.sourceURL))
+        let cfg = configuration
+        imageTextSearchTask = Task { @MainActor [weak self] in
+            guard let self else { return }
+            let index = await DiscoveredImageTextRecognition.buildIndex(urls: urls, configuration: cfg)
+            guard !Task.isCancelled else { return }
+            self.imageRecognizedTextByURL = index
+        }
     }
 
     static func userMessage(for error: Error) -> String {

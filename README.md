@@ -134,6 +134,8 @@ var config = WebImagePickerConfiguration(
 
 For example, **`selectionLimit: 10`** allows up to ten images before the user taps Done.
 
+**In-image text search (Vision OCR)** — Off by default. Set **`isImageTextSearchEnabled`** to `true` to run **`VNRecognizeTextRequest`** on the first **`maximumImageTextSearchImages`** discovered URLs (ranged GET + thumbnail decode, similar to face-count analysis). Recognized text is cached per URL for the browsing session and participates in the same search field as alt text, `title`, and the image address. Use **`imageTextRecognitionLanguages`** (BCP‑47 tags, e.g. `"en-US"`) when you want explicit languages; **`maximumConcurrentImageTextRecognition`** bounds parallel probes (default `2`). This sends additional image-byte requests and performs on-device OCR — review privacy labels and performance for your app.
+
 **`maximumDiscoveredImagesPerPage`** — Optional cap on how many image candidates are kept from **each** loaded page after discovery (default `nil` = unlimited). Truncation keeps the first N URLs in extractor order. For **`.staticHTML`**, that order is: `<img>` / `srcset` and `<picture>` sources in DOM order, then Open Graph and Twitter image tags, then `url(...)` values from inline `style` attributes and `<style>` blocks. In **multi-URL** mode (primary field + `additionalPageURLs` + extra rows), the limit applies **per page** before results are merged and de-duplicated across pages.
 
 ### Localization
@@ -183,7 +185,9 @@ swift build
 swift test
 ```
 
-Unit tests cover HTML parsing and URL resolution using bundled fixtures (no network in CI by default).
+Unit tests cover HTML parsing and URL resolution using bundled fixtures (no network in CI by default). OCR is covered with a **synthetic PNG** and Vision; if a future OS/SDK change makes recognition flaky, re-run locally or adjust the fixture.
+
+**Manual QA (in-image search):** Enable **`isImageTextSearchEnabled`** in a debug build, load a page with images that contain obvious text, wait for thumbnails, type a substring that appears only inside the bitmap (not in the URL/alt), and confirm the grid filters as expected. Change URL to confirm the OCR task cancels and the index clears.
 
 ## License
 

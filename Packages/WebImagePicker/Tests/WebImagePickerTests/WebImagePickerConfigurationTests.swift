@@ -155,6 +155,31 @@ final class WebImagePickerConfigurationTests: XCTestCase {
         XCTAssertNotEqual(a, b)
     }
 
+    func testDefaultImageTextSearchDisabled() {
+        XCTAssertFalse(WebImagePickerConfiguration.default.isImageTextSearchEnabled)
+        XCTAssertEqual(WebImagePickerConfiguration.default.maximumImageTextSearchImages, 32)
+        XCTAssertNil(WebImagePickerConfiguration.default.imageTextRecognitionLanguages)
+        XCTAssertEqual(WebImagePickerConfiguration.default.maximumConcurrentImageTextRecognition, 2)
+    }
+
+    func testMaximumImageTextSearchImagesClampedNonNegative() {
+        XCTAssertEqual(WebImagePickerConfiguration(maximumImageTextSearchImages: -3).maximumImageTextSearchImages, 0)
+    }
+
+    func testMaximumConcurrentImageTextRecognitionClampedToAtLeastOne() {
+        XCTAssertEqual(WebImagePickerConfiguration(maximumConcurrentImageTextRecognition: 0).maximumConcurrentImageTextRecognition, 1)
+    }
+
+    func testEmptyImageTextRecognitionLanguagesNormalizedToNil() {
+        XCTAssertNil(WebImagePickerConfiguration(imageTextRecognitionLanguages: []).imageTextRecognitionLanguages)
+    }
+
+    func testImageTextSearchFlagsAffectEquality() {
+        let a = WebImagePickerConfiguration(isImageTextSearchEnabled: true)
+        let b = WebImagePickerConfiguration(isImageTextSearchEnabled: false)
+        XCTAssertNotEqual(a, b)
+    }
+
     func testSimilarImageDeduplicationAffectsEquality() {
         let a = WebImagePickerConfiguration(similarImageDeduplication: .disabled)
         let b = WebImagePickerConfiguration(similarImageDeduplication: .normalizedResourceURL)
