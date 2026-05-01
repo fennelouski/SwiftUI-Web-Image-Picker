@@ -83,4 +83,58 @@ final class AggregatedPageImageDiscoveryTests: XCTestCase {
         XCTAssertEqual(Set(merge.failedPageURLs), Set([u1, u2]))
         XCTAssertTrue(merge.images.isEmpty)
     }
+
+    func testPerPageCapKeepsFirstImagesInDiscoveryOrder() async throws {
+        let page = URL(string: "https://one.example/")!
+        let u1 = URL(string: "https://cdn.example/1.png")!
+        let u2 = URL(string: "https://cdn.example/2.png")!
+        let u3 = URL(string: "https://cdn.example/3.png")!
+
+        let extractor = MockPageImageExtractor(pageResults: [
+            page: .success([
+                DiscoveredImage(sourceURL: u1, accessibilityLabel: "a"),
+                DiscoveredImage(sourceURL: u2, accessibilityLabel: "b"),
+                DiscoveredImage(sourceURL: u3, accessibilityLabel: "c"),
+            ]),
+        ])
+
+        var config = WebImagePickerConfiguration.default
+        config.maximumDiscoveredImagesPerPage = 2
+
+        let merge = await AggregatedPageImageDiscovery.discoverImages(
+            pageURLs: [page],
+            configuration: config,
+            extractor: extractor
+        )
+
+        XCTAssertTrue(merge.failedPageURLs.isEmpty)
+        XCTAssertEqual(merge.images.map(\.sourceURL), [u1, u2])
+        XCTAssertEqual(merge.images.map(\.accessibilityLabel), ["a", "b"])
+    }
+
+    func testPerPageCapAppliesIndependentlyForEachPage() async throws {
+        let a = URL(string: "https://a.example/")!
+        let b = URL(string: "https://b.example/")!
+        let imgsA = (1 ... 4).map { URL(string: "https://cdn.example/a\($0).png")! }
+        let imgsB = (1 ... 3).map { URL(string: "https://cdn.example/b\($0).png")! }
+
+        let extractor = MockPageImageExtractor(pageResults: [
+            a: .success(imgsA.map { DiscoveredImage(sourceURL: $0, accessibilityLabel: nil) }),
+            b: .success(imgsB.map { DiscoveredImage(sourceURL: $0, accessibilityLabel: nil) }),
+        ])
+
+        var config = WebImagePickerConfiguration.default
+        config.maximumDiscoveredImagesPerPage = 2
+
+        let merge = await AggregatedPageImageDiscovery.discoverImages(
+            pageURLs: [a, b],
+            configuration: config,
+            extractor: extractor
+        )
+
+        XCTAssertEqual(
+            merge.images.map(\.sourceURL),
+            [imgsA[0], imgsA[1], imgsB[0], imgsB[1]]
+        )
+    }
 }
