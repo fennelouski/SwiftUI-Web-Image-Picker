@@ -227,7 +227,7 @@
 /* Begin XCLocalSwiftPackageReference section */
 		9F2A8B101FA4A0FE009E986C /* XCLocalSwiftPackageReference */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = Packages/WebImagePicker;
+			relativePath = .;
 		};
 /* End XCLocalSwiftPackageReference section */
 
