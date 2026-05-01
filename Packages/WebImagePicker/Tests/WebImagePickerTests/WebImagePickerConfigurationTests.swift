@@ -135,6 +135,26 @@ final class WebImagePickerConfigurationTests: XCTestCase {
         XCTAssertNotEqual(a, b)
     }
 
+    func testFaceCountSortModesAffectEquality() {
+        let a = WebImagePickerConfiguration(discoveredImageSort: .faceCountDescending)
+        let b = WebImagePickerConfiguration(discoveredImageSort: .faceCountAscending)
+        XCTAssertNotEqual(a, b)
+    }
+
+    func testDefaultMaximumFaceCountAnalysisImages() {
+        XCTAssertEqual(WebImagePickerConfiguration.default.maximumFaceCountAnalysisImages, 40)
+    }
+
+    func testMaximumFaceCountAnalysisImagesClampedNonNegative() {
+        XCTAssertEqual(WebImagePickerConfiguration(maximumFaceCountAnalysisImages: -5).maximumFaceCountAnalysisImages, 0)
+    }
+
+    func testMaximumFaceCountAnalysisImagesAffectsEquality() {
+        let a = WebImagePickerConfiguration(maximumFaceCountAnalysisImages: 10)
+        let b = WebImagePickerConfiguration(maximumFaceCountAnalysisImages: 20)
+        XCTAssertNotEqual(a, b)
+    }
+
     func testSimilarImageDeduplicationAffectsEquality() {
         let a = WebImagePickerConfiguration(similarImageDeduplication: .disabled)
         let b = WebImagePickerConfiguration(similarImageDeduplication: .normalizedResourceURL)

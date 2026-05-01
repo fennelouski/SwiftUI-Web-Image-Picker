@@ -221,6 +221,34 @@ final class AggregatedPageImageDiscoveryTests: XCTestCase {
         XCTAssertEqual(merge.images.map(\.sourceURL), [portrait, square])
     }
 
+    func testFaceCountSortSkippedWhenAnalysisBudgetZero() async throws {
+        let page = URL(string: "https://one.example/")!
+        let u1 = URL(string: "https://cdn.example/1.jpg")!
+        let u2 = URL(string: "https://cdn.example/2.jpg")!
+        let u3 = URL(string: "https://cdn.example/3.jpg")!
+
+        let extractor = MockPageImageExtractor(pageResults: [
+            page: .success([
+                DiscoveredImage(sourceURL: u1, accessibilityLabel: nil),
+                DiscoveredImage(sourceURL: u2, accessibilityLabel: nil),
+                DiscoveredImage(sourceURL: u3, accessibilityLabel: nil),
+            ]),
+        ])
+
+        var config = WebImagePickerConfiguration.default
+        config.discoveredImageSort = .faceCountDescending
+        config.maximumFaceCountAnalysisImages = 0
+
+        let merge = await AggregatedPageImageDiscovery.discoverImages(
+            pageURLs: [page],
+            configuration: config,
+            extractor: extractor
+        )
+
+        XCTAssertTrue(merge.failedPageURLs.isEmpty)
+        XCTAssertEqual(merge.images.map(\.sourceURL), [u1, u2, u3])
+    }
+
     func testAllowlistedImageTypesFilterDiscoveredURLs() async throws {
         let page = URL(string: "https://one.example/")!
         let jpg = URL(string: "https://cdn.example/a.jpg")!

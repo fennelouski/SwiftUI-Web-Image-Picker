@@ -74,6 +74,9 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     /// How completed downloads are exposed in ``WebImageSelection`` (default ``WebImageSelectionOutputMode/dataOnly``).
     public var selectionOutputMode: WebImageSelectionOutputMode
 
+    /// When using ``DiscoveredImageSort/faceCountDescending`` or ``faceCountAscending``, the maximum number of images **per page** (in discovery order) to probe and analyze with on-device Vision. Additional images keep discovery order after the sorted prefix. Use `0` to skip analysis (no face-based reordering). Default `40`.
+    public var maximumFaceCountAnalysisImages: Int
+
     /// Session used for HTML fetches and image downloads. Defaults to `URLSession.shared`.
     public var urlSession: URLSession
 
@@ -97,6 +100,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     ///   - allowedImageTypeIdentifiers: Optional `UTType` identifier allowlist; `nil` or empty disables type filtering.
     ///   - unknownImageTypePolicy: Behavior for unknown types when an allowlist is active.
     ///   - selectionOutputMode: How ``WebImageSelection`` values are filled after download.
+    ///   - maximumFaceCountAnalysisImages: Vision face-sort budget per page; `0` disables analysis.
     ///   - urlSession: Session used for fetches; defaults to `URLSession.shared`.
     public init(
         selectionLimit: Int = 1,
@@ -117,6 +121,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         allowedImageTypeIdentifiers: Set<String>? = nil,
         unknownImageTypePolicy: WebImageUnknownTypePolicy = .allow,
         selectionOutputMode: WebImageSelectionOutputMode = .dataOnly,
+        maximumFaceCountAnalysisImages: Int = 40,
         urlSession: URLSession = .shared
     ) {
         self.selectionLimit = max(1, selectionLimit)
@@ -137,6 +142,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         self.allowedImageTypeIdentifiers = allowedImageTypeIdentifiers.flatMap { $0.isEmpty ? nil : $0 }
         self.unknownImageTypePolicy = unknownImageTypePolicy
         self.selectionOutputMode = selectionOutputMode
+        self.maximumFaceCountAnalysisImages = max(0, maximumFaceCountAnalysisImages)
         self.urlSession = urlSession
     }
 
@@ -161,6 +167,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
             && lhs.allowedImageTypeIdentifiers == rhs.allowedImageTypeIdentifiers
             && lhs.unknownImageTypePolicy == rhs.unknownImageTypePolicy
             && lhs.selectionOutputMode == rhs.selectionOutputMode
+            && lhs.maximumFaceCountAnalysisImages == rhs.maximumFaceCountAnalysisImages
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -182,6 +189,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         hasher.combine(allowedImageTypeIdentifiers)
         hasher.combine(unknownImageTypePolicy)
         hasher.combine(selectionOutputMode)
+        hasher.combine(maximumFaceCountAnalysisImages)
     }
 
     private static func hashCGSizeOptional(_ size: CGSize?, into hasher: inout Hasher) {
