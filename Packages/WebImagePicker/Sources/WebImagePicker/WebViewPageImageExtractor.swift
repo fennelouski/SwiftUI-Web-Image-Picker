@@ -64,7 +64,10 @@ public struct WebViewPageImageExtractor: PageImageExtractor {
 
         for candidate in rawCandidates {
             guard let url = normalizedURL(from: candidate.value, kind: candidate.kind) else { continue }
-            let key = url.absoluteString
+            let key = DiscoveredImageDeduplicationKey.string(
+                for: url,
+                strategy: configuration.similarImageDeduplication
+            )
             guard !seen.contains(key) else { continue }
             seen.insert(key)
 

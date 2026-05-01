@@ -137,4 +137,30 @@ final class AggregatedPageImageDiscoveryTests: XCTestCase {
             [imgsA[0], imgsA[1], imgsB[0], imgsB[1]]
         )
     }
+
+    func testSimilarityDedupMergesQueryVariantsAcrossPages() async throws {
+        let a = URL(string: "https://one.example/")!
+        let b = URL(string: "https://two.example/")!
+        let wide = URL(string: "https://cdn.example.com/photo.jpg?w=800")!
+        let narrow = URL(string: "https://cdn.example.com/photo.jpg?w=400")!
+
+        let extractor = MockPageImageExtractor(pageResults: [
+            a: .success([DiscoveredImage(sourceURL: wide, accessibilityLabel: "a")]),
+            b: .success([DiscoveredImage(sourceURL: narrow, accessibilityLabel: "b")]),
+        ])
+
+        var config = WebImagePickerConfiguration.default
+        config.similarImageDeduplication = .normalizedResourceURL
+
+        let merge = await AggregatedPageImageDiscovery.discoverImages(
+            pageURLs: [a, b],
+            configuration: config,
+            extractor: extractor
+        )
+
+        XCTAssertTrue(merge.failedPageURLs.isEmpty)
+        XCTAssertEqual(merge.images.count, 1)
+        XCTAssertEqual(merge.images[0].sourceURL, wide)
+        XCTAssertEqual(merge.images[0].accessibilityLabel, "a")
+    }
 }

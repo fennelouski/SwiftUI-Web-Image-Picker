@@ -59,4 +59,24 @@ final class WebViewPageImageExtractorTests: XCTestCase {
         XCTAssertEqual(results.count, 1)
         XCTAssertEqual(results[0].sourceURL.absoluteString, "https://example.com/a.png")
     }
+
+    func testNormalizeCollapsesQueryVariantsWhenSimilarityDedupEnabled() {
+        var cfg = WebImagePickerConfiguration(allowedURLSchemes: ["https", "http"])
+        cfg.similarImageDeduplication = .normalizedResourceURL
+        let pageURL = URL(string: "https://example.com/")!
+        let candidates: [WebViewRawCandidate] = [
+            .init(value: "https://cdn.example.com/z.png?a=1", altText: "one", kind: .url),
+            .init(value: "https://cdn.example.com/z.png?b=2", altText: "two", kind: .url),
+        ]
+
+        let results = WebViewPageImageExtractor.normalize(
+            rawCandidates: candidates,
+            pageURL: pageURL,
+            configuration: cfg
+        )
+
+        XCTAssertEqual(results.count, 1)
+        XCTAssertEqual(results[0].sourceURL.absoluteString, "https://cdn.example.com/z.png?a=1")
+        XCTAssertEqual(results[0].accessibilityLabel, "one")
+    }
 }

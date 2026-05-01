@@ -53,7 +53,10 @@ public struct StaticHTMLExtractor: PageImageExtractor {
         func append(raw: String?, alt: String?) {
             guard let raw else { return }
             guard let url = normalizedURL(from: raw) else { return }
-            let key = url.absoluteString
+            let key = DiscoveredImageDeduplicationKey.string(
+                for: url,
+                strategy: configuration.similarImageDeduplication
+            )
             guard !seen.contains(key) else { return }
             seen.insert(key)
             let label = alt.flatMap { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.flatMap { $0.isEmpty ? nil : $0 }
