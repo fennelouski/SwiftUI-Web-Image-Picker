@@ -16,9 +16,17 @@ public enum DiscoveredImageSort: Sendable, Hashable {
     /// Portrait-like URLs first, then unknown or square, then landscape, using `w`/`width` and `h`/`height` query integers when both exist. URLs missing either dimension go in the middle bucket (same as square).
     case aspectRatioBucketPortraitFirst
 
+    /// More faces first (on-device Vision). See ``WebImagePickerConfiguration/maximumFaceCountAnalysisImages``. **Privacy:** analysis runs locally; uses network and CPU/battery proportional to how many images are analyzed.
+    case faceCountDescending
+
+    /// Fewer faces first (on-device Vision). Same performance and privacy notes as ``faceCountDescending``.
+    case faceCountAscending
+
     func orderedImages(_ images: [DiscoveredImage]) -> [DiscoveredImage] {
         switch self {
         case .discoveryOrder:
+            return images
+        case .faceCountDescending, .faceCountAscending:
             return images
         case .sourceURLAscending:
             return images.enumerated().sorted { lhs, rhs in
