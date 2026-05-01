@@ -16,6 +16,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.7.0"),
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.17.0"),
     ],
     targets: [
         .target(
@@ -25,8 +26,12 @@ let package = Package(
         ),
         .testTarget(
             name: "WebImagePickerTests",
-            dependencies: ["WebImagePicker"],
+            dependencies: [
+                "WebImagePicker",
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+            ],
             path: "Tests/WebImagePickerTests",
+            exclude: ["__Snapshots__"],
             resources: [.copy("Fixtures")]
         ),
     ]
