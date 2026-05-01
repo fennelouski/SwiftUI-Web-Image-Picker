@@ -62,8 +62,13 @@ final class WebImagePickerViewModel {
     /// Images shown in the grid after applying ``imageMetadataSearchQuery``.
     var discoveredForDisplay: [DiscoveredImage] {
         let ocr = configuration.isImageTextSearchEnabled ? imageRecognizedTextByURL : nil
-        return DiscoveredImageMetadataSearch.filteredDiscoveries(
+        let eligible = DiscoveredImageMetadataExclusion.filter(
             discovered,
+            configuration: configuration,
+            recognizedTextByURL: ocr
+        )
+        return DiscoveredImageMetadataSearch.filteredDiscoveries(
+            eligible,
             rawQuery: imageMetadataSearchQuery,
             configuration: configuration,
             recognizedTextByURL: ocr
