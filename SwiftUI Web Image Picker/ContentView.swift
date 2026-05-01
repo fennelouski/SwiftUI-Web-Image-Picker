@@ -2,7 +2,9 @@
 //  ContentView.swift
 //  SwiftUI Web Image Picker
 //
-//  Created by Nathan Fennel on 5/1/26.
+//  Demo integration: present `WebImagePicker` with `.webImagePicker(isPresented:configuration:onPick:)`.
+//  Each presentation uses a fresh `WebImagePickerConfiguration` so `initialURLString` can pre-fill
+//  the URL field when launching from a sample page.
 //
 
 import SwiftUI
@@ -11,14 +13,38 @@ import WebImagePicker
 struct ContentView: View {
     @State private var showPicker = false
     @State private var selections: [WebImageSelection] = []
+    @State private var pickerConfiguration = WebImagePickerConfiguration(selectionLimit: 5)
+
+    /// Static HTML–heavy pages that work well with default `.staticHTML` extraction.
+    private enum SamplePage: String, CaseIterable {
+        case wikipediaCat = "https://en.wikipedia.org/wiki/Cat"
+        case apple = "https://www.apple.com/"
+        case mozilla = "https://www.mozilla.org/"
+
+        var menuTitle: String {
+            switch self {
+            case .wikipediaCat: "Wikipedia — Cat"
+            case .apple: "Apple.com"
+            case .mozilla: "Mozilla.org"
+            }
+        }
+    }
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
                 Button("Pick from web") {
-                    showPicker = true
+                    presentPicker(initialURL: nil)
                 }
                 .buttonStyle(.borderedProminent)
+
+                Menu("Try a sample page") {
+                    ForEach(SamplePage.allCases, id: \.self) { page in
+                        Button(page.menuTitle) {
+                            presentPicker(initialURL: page.rawValue)
+                        }
+                    }
+                }
 
                 if selections.isEmpty {
                     Text("No images selected yet.")
@@ -40,9 +66,17 @@ struct ContentView: View {
             .padding()
             .navigationTitle("Web Image Picker")
         }
-        .webImagePicker(isPresented: $showPicker, configuration: .init(selectionLimit: 5)) { newSelections in
+        .webImagePicker(isPresented: $showPicker, configuration: pickerConfiguration) { newSelections in
             selections = newSelections
         }
+    }
+
+    private func presentPicker(initialURL: String?) {
+        pickerConfiguration = WebImagePickerConfiguration(
+            selectionLimit: 5,
+            initialURLString: initialURL
+        )
+        showPicker = true
     }
 
     @ViewBuilder
