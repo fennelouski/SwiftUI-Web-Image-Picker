@@ -172,8 +172,28 @@ public struct WebImagePicker: View {
     }
 
     private var browsingView: some View {
-        ScrollView {
+        @Bindable var model = model
+        return ScrollView {
             VStack(alignment: .leading, spacing: 8) {
+                TextField(
+                    String(localized: String.LocalizationValue("webimage.searchPlaceholder"), bundle: WebImagePickerBundle.module),
+                    text: $model.imageMetadataSearchQuery
+                )
+#if os(iOS) || os(tvOS) || os(visionOS)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+#endif
+#if os(macOS)
+                .textFieldStyle(.roundedBorder)
+#endif
+                .accessibilityLabel(
+                    String(localized: String.LocalizationValue("webimage.a11y.imageSearchField"), bundle: WebImagePickerBundle.module)
+                )
+                .accessibilityHint(
+                    String(localized: String.LocalizationValue("webimage.a11y.imageSearchFieldHint"), bundle: WebImagePickerBundle.module)
+                )
+                .accessibilityIdentifier("webimage.imageMetadataSearch")
+
                 if let notice = model.aggregationNotice {
                     Text(notice)
                         .font(.subheadline)
@@ -193,7 +213,7 @@ public struct WebImagePicker: View {
                         .accessibilityIdentifier("webimage.browsingDownloadError")
                 }
                 MasonryLayout(columns: masonryColumnCount, spacing: 8) {
-                    ForEach(model.discovered) { item in
+                    ForEach(model.discoveredForDisplay) { item in
                         DiscoveredImageTile(
                             item: item,
                             selected: model.selectedURLs.contains(item.sourceURL),

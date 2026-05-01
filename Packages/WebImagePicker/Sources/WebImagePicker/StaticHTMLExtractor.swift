@@ -50,7 +50,7 @@ public struct StaticHTMLExtractor: PageImageExtractor {
             return resolved
         }
 
-        func append(raw: String?, alt: String?) {
+        func append(raw: String?, alt: String?, title: String?) {
             guard let raw else { return }
             guard let url = normalizedURL(from: raw) else { return }
             let key = DiscoveredImageDeduplicationKey.string(
@@ -60,18 +60,20 @@ public struct StaticHTMLExtractor: PageImageExtractor {
             guard !seen.contains(key) else { return }
             seen.insert(key)
             let label = alt.flatMap { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.flatMap { $0.isEmpty ? nil : $0 }
-            images.append(DiscoveredImage(sourceURL: url, accessibilityLabel: label))
+            let titleLabel = title.flatMap { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.flatMap { $0.isEmpty ? nil : $0 }
+            images.append(DiscoveredImage(sourceURL: url, accessibilityLabel: label, title: titleLabel))
         }
 
         let imgs = try doc.select("img[src], img[srcset]")
         for element in imgs.array() {
             let alt = try? element.attr("alt")
+            let imgTitle = try? element.attr("title")
             if let srcset = try? element.attr("srcset"), !srcset.isEmpty,
                let picked = SrcSetParser.bestURL(from: srcset, baseURL: pageURL)
             {
-                append(raw: picked.absoluteString, alt: alt)
+                append(raw: picked.absoluteString, alt: alt, title: imgTitle)
             } else if let src = try? element.attr("src") {
-                append(raw: src, alt: alt)
+                append(raw: src, alt: alt, title: imgTitle)
             }
         }
 
@@ -80,21 +82,21 @@ public struct StaticHTMLExtractor: PageImageExtractor {
             if let srcset = try? element.attr("srcset"), !srcset.isEmpty,
                let picked = SrcSetParser.bestURL(from: srcset, baseURL: pageURL)
             {
-                append(raw: picked.absoluteString, alt: nil)
+                append(raw: picked.absoluteString, alt: nil, title: nil)
             }
         }
 
         let ogImages = try doc.select("meta[property=og:image]")
         for element in ogImages.array() {
             if let content = try? element.attr("content") {
-                append(raw: content, alt: nil)
+                append(raw: content, alt: nil, title: nil)
             }
         }
 
         let twitterImages = try doc.select("meta[name=twitter:image], meta[name=twitter:image:src]")
         for element in twitterImages.array() {
             if let content = try? element.attr("content") {
-                append(raw: content, alt: nil)
+                append(raw: content, alt: nil, title: nil)
             }
         }
 
@@ -102,7 +104,7 @@ public struct StaticHTMLExtractor: PageImageExtractor {
         for element in inlineStyled.array() {
             if let style = try? element.attr("style"), !style.isEmpty {
                 for raw in CSSImageURLExtractor.urlArguments(from: style) {
-                    append(raw: raw, alt: nil)
+                    append(raw: raw, alt: nil, title: nil)
                 }
             }
         }
@@ -112,7 +114,7 @@ public struct StaticHTMLExtractor: PageImageExtractor {
             let css = (try? element.html()) ?? ""
             if css.isEmpty { continue }
             for raw in CSSImageURLExtractor.urlArgumentsFromBackgroundDeclarations(in: css) {
-                append(raw: raw, alt: nil)
+                append(raw: raw, alt: nil, title: nil)
             }
         }
 

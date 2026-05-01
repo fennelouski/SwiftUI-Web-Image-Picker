@@ -13,6 +13,14 @@ final class StaticHTMLExtractorTests: XCTestCase {
         XCTAssertEqual(items[0].accessibilityLabel, "Logo")
     }
 
+    func testImgTitleAttributeIsCaptured() throws {
+        let html = #"<html><body><img src="/b.png" alt="A" title="Full title"></body></html>"#
+        let page = URL(string: "https://example.com/")!
+        let items = try StaticHTMLExtractor.discover(from: html, pageURL: page, configuration: defaultConfig)
+        XCTAssertEqual(items.count, 1)
+        XCTAssertEqual(items[0].title, "Full title")
+    }
+
     func testSrcsetPicksLargestWidth() throws {
         let html = #"""
         <img src="/tiny.png" srcset="https://cdn.example.com/small.png 480w, https://cdn.example.com/big.png 800w" alt="">
