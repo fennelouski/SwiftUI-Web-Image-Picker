@@ -1,0 +1,55 @@
+# Publishes macOS SwiftPM snapshot PNGs for each PR (artifacts + sticky comment).
+# Not a merge gate — required checks stay on CI (swift-package). See docs/pr-visual-changelog.md.
+name: PR visual changelog
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  publish-snapshots:
+    name: Snapshot PNGs (macOS SwiftPM)
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: Packages/WebImagePicker
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Test package (includes macOS snapshot tests)
+        run: swift test
+
+      - name: Bundle PNGs for artifact
+        working-directory: ${{ github.workspace }}
+        run: |
+          mkdir -p visual-changelog
+          find Packages/WebImagePicker/Tests/WebImagePickerTests/__Snapshots__ -name '*.png' -print -exec cp {} visual-changelog/ \;
+
+      - name: Upload screenshot artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-screenshots
+          path: visual-changelog/*.png
+          if-no-files-found: warn
+
+      - name: Post sticky PR comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        continue-on-error: true
+        with:
+          header: pr-visual-changelog
+          recreate: true
+          message: |
+            ## Visual changelog (automated)
+
+            **macOS** SwiftPM snapshot PNGs from `WebImagePickerSnapshotTests` for commit `${{ github.event.pull_request.head.sha }}` are in workflow artifacts (same images CI uses for layout regression).
+
+            **Download:** [this workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) → **Artifacts** → `pr-screenshots`.
+
+            The full **SwiftUI Web Image Picker** demo app is Xcode-only (signing); see [docs/pr-visual-changelog.md](https://github.com/${{ github.repository }}/blob/main/docs/pr-visual-changelog.md).

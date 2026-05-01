@@ -51,6 +51,7 @@ This project is under the [Mozilla Public License 2.0](LICENSE).
 
 ## Pull requests
 
+- **Visual changelog** — opening a PR against `main` runs [PR visual changelog](.github/workflows/pr-visual-changelog.yml), which uploads macOS snapshot PNGs and links them in a sticky comment. See **[docs/pr-visual-changelog.md](docs/pr-visual-changelog.md)** for scope (SwiftPM vs. Xcode demo) and how this differs from required CI checks.
 - Keep changes **focused** on one concern when possible.
 - Run **`swift test`** (root or `Packages/WebImagePicker`) before opening a PR and note any platform-only checks you could not run.
 - Describe **what** changed and **why** in the PR body.
