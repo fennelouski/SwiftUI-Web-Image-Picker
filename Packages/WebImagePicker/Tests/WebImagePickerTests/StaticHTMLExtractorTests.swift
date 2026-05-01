@@ -57,4 +57,49 @@ final class StaticHTMLExtractorTests: XCTestCase {
         let picked = SrcSetParser.bestURL(from: srcset, baseURL: base)
         XCTAssertEqual(picked?.absoluteString, "https://example.com/b.png")
     }
+
+    func testInlineStyleBackgroundImageURL() throws {
+        let html = #"""
+        <div style="background-image: url('/root.png'), url(tile.png); color: red"></div>
+        """#
+        let page = URL(string: "https://example.com/dir/page")!
+        let items = try StaticHTMLExtractor.discover(from: html, pageURL: page, configuration: defaultConfig)
+        XCTAssertEqual(items.count, 2)
+        let urls = Set(items.map(\.sourceURL.absoluteString))
+        XCTAssertEqual(urls, ["https://example.com/root.png", "https://example.com/dir/tile.png"])
+        XCTAssertTrue(items.allSatisfy { $0.accessibilityLabel == nil })
+    }
+
+    func testStyleTagBackgroundDeclarations() throws {
+        let html = #"""
+        <style>
+          .hero { background-image: url("https://cdn.example.com/hero.webp"); }
+          .banner { background: no-repeat center url(/tile.png); }
+        </style>
+        """#
+        let page = URL(string: "https://example.com/")!
+        let items = try StaticHTMLExtractor.discover(from: html, pageURL: page, configuration: defaultConfig)
+        XCTAssertEqual(items.count, 2)
+        let urls = Set(items.map(\.sourceURL.absoluteString))
+        XCTAssertEqual(urls, [
+            "https://cdn.example.com/hero.webp",
+            "https://example.com/tile.png",
+        ])
+    }
+
+    func testDataAndFragmentURLsInCSSAreIgnored() throws {
+        let html = #"""
+        <div style="background-image: url(data:image/png;base64,AAAA), url(#sprite), url('https://example.com/ok.png')"></div>
+        """#
+        let page = URL(string: "https://example.com/")!
+        let items = try StaticHTMLExtractor.discover(from: html, pageURL: page, configuration: defaultConfig)
+        XCTAssertEqual(items.count, 1)
+        XCTAssertEqual(items[0].sourceURL.absoluteString, "https://example.com/ok.png")
+    }
+
+    func testCSSURLExtractorUnit() {
+        let css = #"url( /a.png ), URL("https://x.test/b.png")"#
+        let args = CSSImageURLExtractor.urlArguments(from: css)
+        XCTAssertEqual(args, ["/a.png", "https://x.test/b.png"])
+    }
 }

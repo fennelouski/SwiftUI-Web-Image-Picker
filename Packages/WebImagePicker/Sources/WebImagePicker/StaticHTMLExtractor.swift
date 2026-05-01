@@ -37,6 +37,7 @@ public struct StaticHTMLExtractor: PageImageExtractor {
         func normalizedURL(from raw: String) -> URL? {
             let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmed.isEmpty else { return nil }
+            if trimmed.hasPrefix("#") { return nil }
             if trimmed.lowercased().hasPrefix("data:") { return nil }
             guard var resolved = URL(string: trimmed, relativeTo: pageURL)?.absoluteURL else { return nil }
             guard let sch = resolved.scheme?.lowercased(), configuration.allowedURLSchemes.contains(sch) else { return nil }
@@ -91,6 +92,24 @@ public struct StaticHTMLExtractor: PageImageExtractor {
         for element in twitterImages.array() {
             if let content = try? element.attr("content") {
                 append(raw: content, alt: nil)
+            }
+        }
+
+        let inlineStyled = try doc.select("[style]")
+        for element in inlineStyled.array() {
+            if let style = try? element.attr("style"), !style.isEmpty {
+                for raw in CSSImageURLExtractor.urlArguments(from: style) {
+                    append(raw: raw, alt: nil)
+                }
+            }
+        }
+
+        let styleBlocks = try doc.select("style")
+        for element in styleBlocks.array() {
+            let css = (try? element.html()) ?? ""
+            if css.isEmpty { continue }
+            for raw in CSSImageURLExtractor.urlArgumentsFromBackgroundDeclarations(in: css) {
+                append(raw: raw, alt: nil)
             }
         }
 
