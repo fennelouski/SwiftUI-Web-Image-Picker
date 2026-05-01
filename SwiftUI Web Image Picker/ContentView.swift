@@ -4,7 +4,7 @@
 //
 //  Demo integration: present `WebImagePicker` with `.webImagePicker(isPresented:configuration:onPick:)`.
 //  Each presentation uses a fresh `WebImagePickerConfiguration` so `initialURLString` can pre-fill
-//  the URL field when launching from a sample page.
+//  the URL field when launching from a sample page (see `DemoSampleCatalog`).
 //
 
 import SwiftUI
@@ -15,36 +15,19 @@ struct ContentView: View {
     @State private var selections: [WebImageSelection] = []
     @State private var pickerConfiguration = WebImagePickerConfiguration()
 
-    /// Static HTML–heavy pages that work well with default `.staticHTML` extraction.
-    private enum SamplePage: String, CaseIterable {
-        case wikipediaCat = "https://en.wikipedia.org/wiki/Cat"
-        case apple = "https://www.apple.com/"
-        case mozilla = "https://www.mozilla.org/"
-
-        var menuTitle: String {
-            switch self {
-            case .wikipediaCat: "Wikipedia — Cat"
-            case .apple: "Apple.com"
-            case .mozilla: "Mozilla.org"
-            }
-        }
-    }
-
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
                 Button("Pick from web") {
-                    presentPicker(initialURL: nil)
+                    presentPickerBlank()
                 }
                 .buttonStyle(.borderedProminent)
 
-                Menu("Try a sample page") {
-                    ForEach(SamplePage.allCases, id: \.self) { page in
-                        Button(page.menuTitle) {
-                            presentPicker(initialURL: page.rawValue)
-                        }
-                    }
-                }
+#if os(macOS)
+                samplePagesMenuMacOS
+#else
+                samplePagesListNonMac
+#endif
 
                 if selections.isEmpty {
                     Text("No images selected yet.")
@@ -71,8 +54,67 @@ struct ContentView: View {
         }
     }
 
-    private func presentPicker(initialURL: String?) {
-        pickerConfiguration = WebImagePickerConfiguration(initialURLString: initialURL)
+#if os(macOS)
+    private var samplePagesMenuMacOS: some View {
+        Menu("Try a sample page") {
+            ForEach(DemoSampleCategory.allCases) { category in
+                Menu(category.rawValue) {
+                    ForEach(DemoSampleCatalog.samples(in: category)) { sample in
+                        Button(sample.title) {
+                            presentPicker(sample: sample)
+                        }
+                        .help(sample.detail)
+                    }
+                }
+            }
+        }
+    }
+#else
+    private var samplePagesListNonMac: some View {
+        List {
+            ForEach(DemoSampleCategory.allCases) { category in
+                Section(category.rawValue) {
+                    ForEach(DemoSampleCatalog.samples(in: category)) { sample in
+                        Button {
+                            presentPicker(sample: sample)
+                        } label: {
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack {
+                                    Text(sample.title)
+                                    if sample.extractionMode == .webView {
+                                        Text("WebView")
+                                            .font(.caption2)
+                                            .padding(.horizontal, 6)
+                                            .padding(.vertical, 2)
+                                            .background(.secondary.opacity(0.2))
+                                            .clipShape(Capsule())
+                                    }
+                                }
+                                Text(sample.detail)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                    .multilineTextAlignment(.leading)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                    }
+                }
+            }
+        }
+        .listStyle(.insetGrouped)
+        .frame(minHeight: 220, maxHeight: 360)
+    }
+#endif
+
+    private func presentPickerBlank() {
+        pickerConfiguration = WebImagePickerConfiguration()
+        showPicker = true
+    }
+
+    private func presentPicker(sample: DemoSample) {
+        var config = WebImagePickerConfiguration(initialURLString: sample.urlString)
+        config.extractionMode = sample.extractionMode
+        pickerConfiguration = config
         showPicker = true
     }
 

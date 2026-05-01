@@ -15,6 +15,10 @@ Use it when you want users to pull images from the web without leaving your app 
 5. **Signing** — if Xcode complains, select the app target → **Signing & Capabilities** → enable **Automatically manage signing** and pick a **Team** (Personal Team is fine for local runs). See **[CONTRIBUTING.md](CONTRIBUTING.md#code-signing-demo-target)**—do not commit team IDs.
 6. **Run** — **Product → Run** (⌘R). Tap **Pick from web** and type a URL, or open **Try a sample page** for a pre-filled HTTPS URL, then **Load page**, select thumbnails, and **Done**.
 
+### Demo sample pages
+
+Curated URLs and scenario notes are defined in **[`SwiftUI Web Image Picker/DemoSampleCatalog.swift`](SwiftUI%20Web%20Image%20Picker/DemoSampleCatalog.swift)** (hardcoded list only; no network fetch to build the menu). On **macOS**, **Try a sample page** is a **nested menu** by category; on **iPhone / iPad / visionOS**, the same entries appear in a **grouped list** with short descriptions. Categories include encyclopedia-style articles, retail and news homepages, a thumbnail-heavy gallery page, **SVG-heavy** documentation, and **Unsplash** with **`.webView`** extraction for a JavaScript-rendered gallery.
+
 When you are ready to integrate, follow **[Installation](#installation)** and **[Quick start](#quick-start)** below.
 
 ## Features
