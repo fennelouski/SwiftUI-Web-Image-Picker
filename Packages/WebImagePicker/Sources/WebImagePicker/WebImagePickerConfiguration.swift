@@ -15,7 +15,7 @@ public enum WebImageExtractionMode: Sendable, Hashable {
 
 /// Tunable behavior for ``WebImagePicker`` and ``View/webImagePicker(isPresented:configuration:onPick:)``.
 ///
-/// Use ``default`` for HTTPS-only pages, multi-select up to 10, static HTML extraction, and shared `URLSession`.
+/// Use ``default`` for HTTPS-only pages, single-tap selection (``selectionLimit`` `1`), static HTML extraction, and shared `URLSession`. Set a higher ``selectionLimit`` for multi-select.
 public struct WebImagePickerConfiguration: Sendable, Hashable {
     /// Maximum number of images the user may select. Use `1` for single selection.
     public var selectionLimit: Int
@@ -99,7 +99,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     ///   - selectionOutputMode: How ``WebImageSelection`` values are filled after download.
     ///   - urlSession: Session used for fetches; defaults to `URLSession.shared`.
     public init(
-        selectionLimit: Int = 10,
+        selectionLimit: Int = 1,
         maximumConcurrentImageLoads: Int = 4,
         requestTimeout: TimeInterval = 30,
         allowedURLSchemes: Set<String> = ["https"],

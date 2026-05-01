@@ -114,9 +114,10 @@ let nsImage = selection.makeNSImage()
 
 ### Configuration
 
+The default **`selectionLimit`** is **`1`**: one tap downloads and completes the pick (no separate Done step). Set **`selectionLimit`** to a value greater than `1` for multi-select with a Done button.
+
 ```swift
 var config = WebImagePickerConfiguration(
-    selectionLimit: 5,
     maximumConcurrentImageLoads: 4,
     requestTimeout: 30,
     allowedURLSchemes: ["https"],
@@ -131,7 +132,7 @@ var config = WebImagePickerConfiguration(
 }
 ```
 
-With **`selectionLimit == 1`**, tapping an image downloads it immediately and completes the pick (no separate Done step).
+For example, **`selectionLimit: 10`** allows up to ten images before the user taps Done.
 
 **`maximumDiscoveredImagesPerPage`** — Optional cap on how many image candidates are kept from **each** loaded page after discovery (default `nil` = unlimited). Truncation keeps the first N URLs in extractor order. For **`.staticHTML`**, that order is: `<img>` / `srcset` and `<picture>` sources in DOM order, then Open Graph and Twitter image tags, then `url(...)` values from inline `style` attributes and `<style>` blocks. In **multi-URL** mode (primary field + `additionalPageURLs` + extra rows), the limit applies **per page** before results are merged and de-duplicated across pages.
 

@@ -5,7 +5,7 @@ import XCTest
 
 final class WebImagePickerConfigurationTests: XCTestCase {
     func testDefaultSelectionLimit() {
-        XCTAssertEqual(WebImagePickerConfiguration.default.selectionLimit, 10)
+        XCTAssertEqual(WebImagePickerConfiguration.default.selectionLimit, 1)
     }
 
     func testDefaultAllowedSchemesHTTPSOnly() {
