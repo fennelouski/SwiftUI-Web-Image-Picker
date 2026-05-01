@@ -74,8 +74,11 @@ public struct WebViewPageImageExtractor: PageImageExtractor {
             let label = candidate.altText?
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             let cleanedLabel = label?.isEmpty == true ? nil : label
+            let titleRaw = candidate.title?
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            let cleanedTitle = titleRaw?.isEmpty == true ? nil : titleRaw
 
-            images.append(DiscoveredImage(sourceURL: url, accessibilityLabel: cleanedLabel))
+            images.append(DiscoveredImage(sourceURL: url, accessibilityLabel: cleanedLabel, title: cleanedTitle))
         }
 
         return images
@@ -91,6 +94,8 @@ internal struct WebViewRawCandidate: Equatable, Sendable {
     internal var value: String
     internal var altText: String?
     internal var kind: Kind
+    /// HTML `title` attribute when present (from `<img>` in the DOM collector).
+    internal var title: String?
 }
 
 #if canImport(WebKit)
@@ -145,25 +150,27 @@ private final class WebViewDOMLoader: NSObject {
         let script = #"""
         (() => {
           const out = [];
-          const push = (value, alt, kind) => {
+          const push = (value, alt, kind, title) => {
             if (typeof value !== 'string') return;
-            out.push({ value, altText: typeof alt === 'string' ? alt : null, kind });
+            const t = title != null && typeof title === 'string' ? title : null;
+            out.push({ value, altText: typeof alt === 'string' ? alt : null, kind, titleText: t });
           };
 
           document.querySelectorAll('img').forEach((img) => {
-            push(img.currentSrc || img.src || '', img.alt || null, 'url');
+            const titleAttr = img.getAttribute('title');
+            push(img.currentSrc || img.src || '', img.alt || null, 'url', titleAttr);
             const srcset = img.getAttribute('srcset');
-            if (srcset) push(srcset, img.alt || null, 'srcset');
+            if (srcset) push(srcset, img.alt || null, 'srcset', titleAttr);
           });
 
           document.querySelectorAll('picture source[srcset]').forEach((source) => {
             const srcset = source.getAttribute('srcset');
-            if (srcset) push(srcset, null, 'srcset');
+            if (srcset) push(srcset, null, 'srcset', null);
           });
 
           document.querySelectorAll('meta[property="og:image"],meta[name="twitter:image"],meta[name="twitter:image:src"]').forEach((meta) => {
             const content = meta.getAttribute('content');
-            if (content) push(content, null, 'url');
+            if (content) push(content, null, 'url', null);
           });
 
           return out;
@@ -189,7 +196,8 @@ private final class WebViewDOMLoader: NSObject {
             let kindString = item["kind"] as? String ?? WebViewRawCandidate.Kind.url.rawValue
             let kind = WebViewRawCandidate.Kind(rawValue: kindString) ?? .url
             let altText = item["altText"] as? String
-            return WebViewRawCandidate(value: value, altText: altText, kind: kind)
+            let titleText = item["titleText"] as? String
+            return WebViewRawCandidate(value: value, altText: altText, kind: kind, title: titleText)
         }
     }
 }

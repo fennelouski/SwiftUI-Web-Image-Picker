@@ -1,4 +1,6 @@
 "webimage.a11y.imageFromWeb" = "Imagen de la web";
+"webimage.a11y.imageSearchField" = "Buscar imágenes";
+"webimage.a11y.imageSearchFieldHint" = "Filtra la lista por texto alternativo, título o dirección de la imagen.";
 "webimage.cancel" = "Cancelar";
 "webimage.changeURL" = "Cambiar URL";
 "webimage.done" = "Listo";
@@ -27,3 +29,4 @@
 "webimage.extraPagePlaceholder" = "https://otro.ejemplo.com";
 "webimage.error.allPagesFailed" = "No se pudieron cargar imágenes de ninguna de las páginas.";
 "webimage.partialPageFailuresFormat" = "No se pudieron cargar %lld página(s). Se muestran imágenes de las demás.";
+"webimage.searchPlaceholder" = "Buscar por texto alt, título o URL";

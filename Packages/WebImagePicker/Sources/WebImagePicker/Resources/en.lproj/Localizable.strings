@@ -1,4 +1,6 @@
 "webimage.a11y.imageFromWeb" = "Image from web";
+"webimage.a11y.imageSearchField" = "Search images";
+"webimage.a11y.imageSearchFieldHint" = "Filters the list by alt text, title, or image address.";
 "webimage.cancel" = "Cancel";
 "webimage.changeURL" = "Change URL";
 "webimage.done" = "Done";
@@ -27,3 +29,4 @@
 "webimage.extraPagePlaceholder" = "https://another.example.com";
 "webimage.error.allPagesFailed" = "Could not load images from any of the pages.";
 "webimage.partialPageFailuresFormat" = "%lld page(s) could not be loaded. Images from the other pages are shown.";
+"webimage.searchPlaceholder" = "Search by alt, title, or URL";

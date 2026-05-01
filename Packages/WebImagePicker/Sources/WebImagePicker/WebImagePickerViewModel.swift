@@ -18,6 +18,8 @@ final class WebImagePickerViewModel {
     var urlString: String = ""
     var extraPageRows: [WebImagePickerExtraPageRow] = []
     var discovered: [DiscoveredImage] = []
+    /// Filters the browsing grid by alt text, optional `title`, and URL (case-insensitive substring).
+    var imageMetadataSearchQuery: String = ""
     var selectedURLs: Set<URL> = []
     var phase: Phase = .urlEntry
     var errorMessage: String?
@@ -51,6 +53,11 @@ final class WebImagePickerViewModel {
         if let raw = configuration.initialURLString?.trimmingCharacters(in: .whitespacesAndNewlines), !raw.isEmpty {
             urlString = raw
         }
+    }
+
+    /// Images shown in the grid after applying ``imageMetadataSearchQuery``.
+    var discoveredForDisplay: [DiscoveredImage] {
+        DiscoveredImageMetadataSearch.filteredDiscoveries(discovered, rawQuery: imageMetadataSearchQuery)
     }
 
     var canStartLoad: Bool {
@@ -97,6 +104,7 @@ final class WebImagePickerViewModel {
         }
 
         discovered = merge.images
+        imageMetadataSearchQuery = ""
         selectedURLs = []
         phase = .browsing
         if !merge.failedPageURLs.isEmpty {
@@ -202,6 +210,7 @@ final class WebImagePickerViewModel {
     func beginChangingURL() {
         phase = .urlEntry
         discovered = []
+        imageMetadataSearchQuery = ""
         selectedURLs = []
         errorMessage = nil
         aggregationNotice = nil

@@ -19,6 +19,39 @@ final class WebViewPageImageExtractorTests: XCTestCase {
         XCTAssertEqual(results.count, 1)
         XCTAssertEqual(results[0].sourceURL.absoluteString, "https://example.com/img/hero.png")
         XCTAssertEqual(results[0].accessibilityLabel, "Hero")
+        XCTAssertNil(results[0].title)
+    }
+
+    func testNormalizePreservesImgTitleAttribute() {
+        let pageURL = URL(string: "https://example.com/")!
+        let candidates: [WebViewRawCandidate] = [
+            .init(value: "/pic.png", altText: nil, kind: .url, title: "Tooltip copy"),
+        ]
+
+        let results = WebViewPageImageExtractor.normalize(
+            rawCandidates: candidates,
+            pageURL: pageURL,
+            configuration: config
+        )
+
+        XCTAssertEqual(results.count, 1)
+        XCTAssertEqual(results[0].title, "Tooltip copy")
+    }
+
+    func testNormalizeTrimsWhitespaceTitle() {
+        let pageURL = URL(string: "https://example.com/")!
+        let candidates: [WebViewRawCandidate] = [
+            .init(value: "/pic.png", altText: nil, kind: .url, title: "  \n"),
+        ]
+
+        let results = WebViewPageImageExtractor.normalize(
+            rawCandidates: candidates,
+            pageURL: pageURL,
+            configuration: config
+        )
+
+        XCTAssertEqual(results.count, 1)
+        XCTAssertNil(results[0].title)
     }
 
     func testNormalizePicksLargestSrcSetCandidate() {
