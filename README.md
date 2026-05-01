@@ -27,16 +27,15 @@ For **exact, step-by-step integration** (including SPM path rules, Xcode, entitl
 
 ### Swift Package Manager
 
-Add a dependency pointing at this repo and the package subpath, or open `Packages/WebImagePicker` as the package root if you vendor only the library.
+**Repository:** [github.com/fennelouski/SwiftUI-Web-Image-Picker](https://github.com/fennelouski/SwiftUI-Web-Image-Picker)
+
+The Swift manifest is under **`Packages/WebImagePicker/`**, not the git root, so **`package(url:)` does not work yet** for this layout. Use a **path** dependency (clone or submodule) or **Add Local…** in Xcode until a root `Package.swift` (and version tags) is published for URL-based SPM.
+
+Path dependency (adjust the path to where you cloned the repo):
 
 ```swift
 dependencies: [
-    // When Package.swift lives at the git repository root (or in a fork):
-    .package(
-        name: "WebImagePicker",
-        url: "https://github.com/<your-org>/SwiftUI-Web-Image-Picker.git",
-        from: "1.0.0"
-    ),
+    .package(name: "WebImagePicker", path: "./vendor/SwiftUI-Web-Image-Picker/Packages/WebImagePicker"),
 ]
 ```
 
@@ -49,7 +48,11 @@ dependencies: [
 ),
 ```
 
-**Monorepo:** In this repository the manifest is under `Packages/WebImagePicker/`, not the git root. Until you publish a root `Package.swift` or a dedicated package repo, depend with a **path** (below) or **Add Local…** in Xcode rather than a remote URL.
+**Future (URL-based):** After `Package.swift` exists at the repository root and you tag releases, you will be able to use:
+
+```swift
+.package(name: "WebImagePicker", url: "https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git", from: "1.0.0"),
+```
 
 If the package manifest is not at the repository root, use a **path** dependency in Xcode or in `Package.swift`:
 

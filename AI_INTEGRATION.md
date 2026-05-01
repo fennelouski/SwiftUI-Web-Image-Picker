@@ -80,12 +80,12 @@ then:
 
 SwiftPM **remote** `.package(url:)` expects a **`Package.swift` at the repository root** (or you must use a fork that does). **This repo, as laid out today, does not put `Package.swift` at the git root**, so **do not** point a remote URL at this repo unless the publisher adds a root manifest or you use a **path** / **local** dependency.
 
-If a root `Package.swift` exists in the future:
+If a root `Package.swift` exists in the future (this repo today: **https://github.com/fennelouski/SwiftUI-Web-Image-Picker**), remote consumption becomes:
 
 ```swift
 .package(
     name: "WebImagePicker",
-    url: "https://github.com/<org>/<repo>.git",
+    url: "https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git",
     from: "1.0.0"
 ),
 ```
