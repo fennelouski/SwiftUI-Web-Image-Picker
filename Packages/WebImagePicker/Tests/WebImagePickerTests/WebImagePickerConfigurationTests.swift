@@ -219,4 +219,31 @@ final class WebImagePickerConfigurationTests: XCTestCase {
         let without = WebImagePickerConfiguration(additionalPageURLs: [])
         XCTAssertNotEqual(withExtra, without)
     }
+
+    func testDefaultCachePolicyIsEphemeral() {
+        XCTAssertEqual(WebImagePickerConfiguration.default.cachePolicy, .ephemeral)
+    }
+
+    func testCachePolicyAffectsEquality() {
+        let noReload = WebImagePickerConfiguration()
+        var reload = WebImagePickerConfiguration()
+        reload.cachePolicy = WebImagePickerCachePolicy(requestCachePolicy: .reloadIgnoringLocalCacheData)
+        XCTAssertEqual(noReload, WebImagePickerConfiguration())
+        XCTAssertNotEqual(noReload, reload)
+    }
+
+    func testCachePolicyNormalizesNonPositiveDiscoveryTTL() {
+        let p = WebImagePickerCachePolicy(discoveryEntryTimeToLive: 0)
+        XCTAssertNil(p.discoveryEntryTimeToLive)
+    }
+
+    func testCachePolicyNormalizesNonPositivePerDomainCap() {
+        let p = WebImagePickerCachePolicy(maximumDiscoveryEntries: 2, perDomainMaximumEntries: -1)
+        XCTAssertNil(p.perDomainMaximumEntries)
+    }
+
+    func testCachePolicyClampsNegativeMaximumDiscoveryEntries() {
+        let p = WebImagePickerCachePolicy(maximumDiscoveryEntries: -5)
+        XCTAssertEqual(p.maximumDiscoveryEntries, 0)
+    }
 }

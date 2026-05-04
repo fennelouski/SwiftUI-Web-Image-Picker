@@ -95,6 +95,9 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     /// Regular-expression blocklist using ``NSRegularExpression`` syntax, matched case-insensitively against the same haystacks as ``excludedImageMetadataSubstrings``. Invalid patterns are ignored. Regex evaluation adds CPU cost proportional to the number of patterns and candidate strings—keep this list short.
     public var excludedImageMetadataRegularExpressionPatterns: [String]
 
+    /// Pluggable caching for `URLRequest`s and the per-page discovered-image-list memo. Default ``WebImagePickerCachePolicy/ephemeral`` preserves pre-policy behavior.
+    public var cachePolicy: WebImagePickerCachePolicy
+
     /// Session used for HTML fetches and image downloads. Defaults to `URLSession.shared`.
     public var urlSession: URLSession
 
@@ -125,6 +128,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     ///   - maximumConcurrentImageTextRecognition: Parallelism for OCR ranged GETs + Vision.
     ///   - excludedImageMetadataSubstrings: Substrings that hide matching images from the grid.
     ///   - excludedImageMetadataRegularExpressionPatterns: Regex patterns that hide matching images.
+    ///   - cachePolicy: ``URLRequest`` cache policy plus optional discovered-image-list memo (count, TTL, per-domain).
     ///   - urlSession: Session used for fetches; defaults to `URLSession.shared`.
     public init(
         selectionLimit: Int = 1,
@@ -152,6 +156,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         maximumConcurrentImageTextRecognition: Int = 2,
         excludedImageMetadataSubstrings: [String] = [],
         excludedImageMetadataRegularExpressionPatterns: [String] = [],
+        cachePolicy: WebImagePickerCachePolicy = .ephemeral,
         urlSession: URLSession = .shared
     ) {
         self.selectionLimit = max(1, selectionLimit)
@@ -183,6 +188,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         self.excludedImageMetadataRegularExpressionPatterns = excludedImageMetadataRegularExpressionPatterns
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty }
+        self.cachePolicy = cachePolicy
         self.urlSession = urlSession
     }
 
@@ -214,6 +220,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
             && lhs.maximumConcurrentImageTextRecognition == rhs.maximumConcurrentImageTextRecognition
             && lhs.excludedImageMetadataSubstrings == rhs.excludedImageMetadataSubstrings
             && lhs.excludedImageMetadataRegularExpressionPatterns == rhs.excludedImageMetadataRegularExpressionPatterns
+            && lhs.cachePolicy == rhs.cachePolicy
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -242,6 +249,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         hasher.combine(maximumConcurrentImageTextRecognition)
         hasher.combine(excludedImageMetadataSubstrings)
         hasher.combine(excludedImageMetadataRegularExpressionPatterns)
+        hasher.combine(cachePolicy)
     }
 
     private static func hashCGSizeOptional(_ size: CGSize?, into hasher: inout Hasher) {
