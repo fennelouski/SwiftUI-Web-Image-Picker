@@ -2,6 +2,16 @@ import UniformTypeIdentifiers
 import XCTest
 @testable import WebImagePicker
 
+private final class CountingPageExtractor: PageImageExtractor, @unchecked Sendable {
+    private(set) var discoverCalls = 0
+    func discoverImages(from pageURL: URL, configuration: WebImagePickerConfiguration) async throws -> [DiscoveredImage] {
+        discoverCalls += 1
+        return [
+            DiscoveredImage(sourceURL: URL(string: "https://cdn.example/from-extractor.png")!, accessibilityLabel: nil),
+        ]
+    }
+}
+
 private struct MockPageImageExtractor: PageImageExtractor {
     var pageResults: [URL: Result<[DiscoveredImage], Error>]
     private static let missing = NSError(domain: "test", code: 0)
@@ -298,5 +308,24 @@ final class AggregatedPageImageDiscoveryTests: XCTestCase {
         XCTAssertEqual(merge.images.count, 1)
         XCTAssertEqual(merge.images[0].sourceURL, wide)
         XCTAssertEqual(merge.images[0].accessibilityLabel, "a")
+    }
+
+    func testDiscoveryListCacheSkipsSecondExtractorPassForRepeatedPageURL() async throws {
+        let page = URL(string: "https://one.example/")!
+        let extractor = CountingPageExtractor()
+        var config = WebImagePickerConfiguration.default
+        config.cachePolicy = WebImagePickerCachePolicy(maximumDiscoveryEntries: 4)
+        let cache = try XCTUnwrap(DiscoveredImageListCache.makeIfEnabled(for: config.cachePolicy))
+
+        let merge = await AggregatedPageImageDiscovery.discoverImages(
+            pageURLs: [page, page],
+            configuration: config,
+            extractor: extractor,
+            discoveryListCache: cache
+        )
+
+        XCTAssertEqual(extractor.discoverCalls, 1)
+        XCTAssertEqual(merge.images.count, 1)
+        XCTAssertEqual(merge.images.first?.sourceURL.absoluteString, "https://cdn.example/from-extractor.png")
     }
 }

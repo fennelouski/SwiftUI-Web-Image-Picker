@@ -3,6 +3,7 @@ import Foundation
 enum ImageDownloadService {
     static func download(from url: URL, configuration: WebImagePickerConfiguration) async throws -> WebImageSelection {
         var request = URLRequest(url: url)
+        request.cachePolicy = configuration.cachePolicy.requestCachePolicy
         request.timeoutInterval = configuration.requestTimeout
         if let ua = configuration.userAgent {
             request.setValue(ua, forHTTPHeaderField: "User-Agent")

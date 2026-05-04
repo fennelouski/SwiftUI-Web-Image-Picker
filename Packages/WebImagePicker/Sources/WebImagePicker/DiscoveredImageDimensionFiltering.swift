@@ -79,6 +79,7 @@ enum DiscoveredImageDimensionFiltering {
 
     private static func fetchProbeData(for url: URL, configuration: WebImagePickerConfiguration) async -> Data? {
         var request = URLRequest(url: url)
+        request.cachePolicy = configuration.cachePolicy.requestCachePolicy
         request.timeoutInterval = configuration.requestTimeout
         if let ua = configuration.userAgent {
             request.setValue(ua, forHTTPHeaderField: "User-Agent")

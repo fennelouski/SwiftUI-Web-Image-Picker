@@ -9,10 +9,13 @@ enum AggregatedPageImageDiscovery {
     }
 
     /// Fetches pages **sequentially** so grid ordering stays stable (first page’s images first, then new images from later pages).
+    ///
+    /// When `discoveryListCache` is non-`nil`, raw extractor output per `pageURL` may be reused so HTML/network extraction runs once per cached URL; sorting, type filtering, dimension filtering, and caps always apply using the current ``WebImagePickerConfiguration``.
     static func discoverImages(
         pageURLs: [URL],
         configuration: WebImagePickerConfiguration,
-        extractor: any PageImageExtractor
+        extractor: any PageImageExtractor,
+        discoveryListCache: DiscoveredImageListCache? = nil
     ) async -> MergeResult {
         var merged: [DiscoveredImage] = []
         var seenImageKeys = Set<String>()
@@ -20,7 +23,13 @@ enum AggregatedPageImageDiscovery {
 
         for pageURL in pageURLs {
             do {
-                var items = try await extractor.discoverImages(from: pageURL, configuration: configuration)
+                var items: [DiscoveredImage]
+                if let cache = discoveryListCache, let cached = cache.lookup(pageURL) {
+                    items = cached
+                } else {
+                    items = try await extractor.discoverImages(from: pageURL, configuration: configuration)
+                    discoveryListCache?.store(pageURL, images: items)
+                }
                 switch configuration.discoveredImageSort {
                 case .faceCountDescending:
                     items = await DiscoveredImageFaceCountSorting.orderedImages(

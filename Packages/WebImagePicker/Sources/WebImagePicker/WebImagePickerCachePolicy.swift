@@ -11,7 +11,7 @@ import Foundation
 ///
 /// ### Privacy
 ///
-/// This package's discovery-list cache lives only in process memory and is cleared when the picker is dismissed or the user changes URLs. Any **on-disk** caching of page bytes or images comes from the integrator's `URLSession`/`URLCache` choice — not from this policy. Sensitive URLs may still touch disk through the system `URLCache` if the supplied session is configured with a disk cache.
+/// This package's discovery-list cache lives only in process memory and is cleared when the user taps **Change URL** in the picker (the same point where other browsing session state resets). Any **on-disk** caching of page bytes or images comes from the integrator's `URLSession`/`URLCache` choice — not from this policy. Sensitive URLs may still touch disk through the system `URLCache` if the supplied session is configured with a disk cache.
 public struct WebImagePickerCachePolicy: Sendable, Hashable {
     /// Cache policy applied to all `URLRequest`s issued by the package (HTML fetch, image probe, image download).
     ///

@@ -38,11 +38,13 @@ final class WebImagePickerViewModel {
 
     let configuration: WebImagePickerConfiguration
     private let extractor: any PageImageExtractor
+    private let discoveryListCache: DiscoveredImageListCache?
     private var imageTextSearchTask: Task<Void, Never>?
 
     init(configuration: WebImagePickerConfiguration) {
         self.configuration = configuration
         extractor = configuration.extractionMode.makeExtractor()
+        discoveryListCache = DiscoveredImageListCache.makeIfEnabled(for: configuration.cachePolicy)
         applyInitialURLString(from: configuration)
     }
 
@@ -50,6 +52,7 @@ final class WebImagePickerViewModel {
     internal init(configuration: WebImagePickerConfiguration, extractorOverride: any PageImageExtractor) {
         self.configuration = configuration
         extractor = extractorOverride
+        discoveryListCache = DiscoveredImageListCache.makeIfEnabled(for: configuration.cachePolicy)
         applyInitialURLString(from: configuration)
     }
 
@@ -99,7 +102,8 @@ final class WebImagePickerViewModel {
         let merge = await AggregatedPageImageDiscovery.discoverImages(
             pageURLs: pageURLs,
             configuration: configuration,
-            extractor: extractor
+            extractor: extractor,
+            discoveryListCache: discoveryListCache
         )
 
         if merge.images.isEmpty {
@@ -225,6 +229,7 @@ final class WebImagePickerViewModel {
 
     func beginChangingURL() {
         cancelImageTextSearchTask()
+        discoveryListCache?.clear()
         imageRecognizedTextByURL = [:]
         phase = .urlEntry
         discovered = []
