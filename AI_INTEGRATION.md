@@ -39,13 +39,13 @@ If the consumer only vendors the library subtree, the path is whatever folder co
 
 **Repository:** **https://github.com/fennelouski/SwiftUI-Web-Image-Picker**
 
-Use a **version requirement** that matches a **tag** on the default branch (e.g. `from: "1.0.0"`).
+Use a **version requirement** that matches a **tag** on the default branch (e.g. `from: "1.1.0"`).
 
 ```swift
 .package(
     name: "WebImagePicker",
     url: "https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git",
-    from: "1.0.0"
+    from: "1.1.0"
 ),
 ```
 
@@ -99,7 +99,7 @@ Use when the host is an **`.xcodeproj`** / **`.xcworkspace`** app, not necessari
 
 1. Open the host project in Xcode.
 2. **File → Add Package Dependencies…**
-3. For a **remote** dependency: enter **https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git** and a **version rule** (e.g. **Up to Next Major** from **1.0.0**).
+3. For a **remote** dependency: enter **https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git** and a **version rule** (e.g. **Up to Next Major** from **1.1.0**, or **1.0.0** if you want any compatible **1.x**).
 4. For **Add Local…**: select the **repository root** (recommended; uses root `Package.swift`) or **`Packages/WebImagePicker`**.
 5. Add the product **`WebImagePicker`** to the **application** target (or the framework target that needs the UI).
 6. **macOS:** Enable **App Sandbox** → check **Outgoing Connections (Client)** (maps to `com.apple.security.network.client`).

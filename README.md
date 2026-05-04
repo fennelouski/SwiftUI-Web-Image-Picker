@@ -47,13 +47,21 @@ For **exact, step-by-step integration** (including SPM path rules, Xcode, entitl
 
 **Repository:** [github.com/fennelouski/SwiftUI-Web-Image-Picker](https://github.com/fennelouski/SwiftUI-Web-Image-Picker)
 
-**URL-based (recommended for most apps):** depend on the repo root and a [SemVer tag](https://github.com/fennelouski/SwiftUI-Web-Image-Picker/tags) (e.g. `1.0.0`):
+**URL-based (recommended for most apps):** depend on the repo root and a [SemVer tag](https://github.com/fennelouski/SwiftUI-Web-Image-Picker/tags) (e.g. `1.1.0`):
 
 ```swift
 dependencies: [
-    .package(name: "WebImagePicker", url: "https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git", from: "1.0.0"),
+    .package(name: "WebImagePicker", url: "https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git", from: "1.1.0"),
 ]
 ```
+
+A rule such as `from: "1.0.0"` still resolves any compatible **1.x** release (including `1.1.0`). After a new tag is published:
+
+- **Xcode** — **File → Packages → Update to Latest Package Versions**, or right-click the package in the Project Navigator → **Update Package**.
+- **SwiftPM CLI** — run **`swift package update`** from the directory that contains `Package.swift`.
+- **Pinned revision / exact version** — bump your rule (for example to `from: "1.1.0"`) and resolve again.
+
+If you use a **local path** dependency (clone next to your app), **`git pull`** inside `SwiftUI-Web-Image-Picker` updates sources; match [releases](https://github.com/fennelouski/SwiftUI-Web-Image-Picker/releases) or tags when you care about a specific version.
 
 ```swift
 .target(
