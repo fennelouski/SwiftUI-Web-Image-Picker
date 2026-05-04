@@ -25,6 +25,8 @@ final class WebImagePickerViewModel {
     var errorMessage: String?
     /// Shown in the browsing grid when at least one page failed but others yielded images.
     var aggregationNotice: String?
+    /// Shown when discovery skipped HTTP image URLs because `http` is not in ``WebImagePickerConfiguration/allowedURLSchemes``.
+    var httpSkippedImagesNotice: String?
     var isConfirming: Bool = false
 
     /// Recognized in-image text per ``DiscoveredImage/sourceURL`` when ``WebImagePickerConfiguration/isImageTextSearchEnabled`` is `true`. Filled asynchronously after load.
@@ -96,6 +98,7 @@ final class WebImagePickerViewModel {
 
     func loadPage() async {
         aggregationNotice = nil
+        httpSkippedImagesNotice = nil
         guard let pageURLs = resolveOrderedPageURLsOrSetError() else { return }
 
         phase = .loadingPage
@@ -134,6 +137,24 @@ final class WebImagePickerViewModel {
             )
             aggregationNotice = String.localizedStringWithFormat(format, merge.failedPageURLs.count)
         }
+        if merge.skippedHTTPImageURLsDueToAllowedSchemes > 0 {
+            let format = String(
+                localized: String.LocalizationValue("webimage.skippedHTTPImagesNoticeFormat"),
+                bundle: WebImagePickerBundle.module
+            )
+            httpSkippedImagesNotice = String.localizedStringWithFormat(
+                format,
+                merge.skippedHTTPImageURLsDueToAllowedSchemes
+            )
+        }
+    }
+
+    private enum ResolveFailureRank: Int, Comparable {
+        case invalid = 1
+        case disallowedNonHTTP = 2
+        case disallowedHTTP = 3
+
+        static func < (lhs: Self, rhs: Self) -> Bool { lhs.rawValue < rhs.rawValue }
     }
 
     /// Builds the ordered, de-duplicated list of page URLs, or sets ``errorMessage`` and returns `nil`.
@@ -143,6 +164,29 @@ final class WebImagePickerViewModel {
 
         var urls: [URL] = []
         var seenPages = Set<String>()
+        var worstFailure: (rank: ResolveFailureRank, sampleInput: String)?
+
+        func recordFailure(trimmedInput: String, result: PageURLNormalization.ResolveResult) {
+            let trimmed = trimmedInput.trimmingCharacters(in: .whitespacesAndNewlines)
+            let rank: ResolveFailureRank
+            switch result {
+            case .success: return
+            case .invalid:
+                rank = .invalid
+            case .disallowedScheme:
+                if PageURLNormalization.isHTTPExplicitlyDisallowed(
+                    trimmedInput: trimmed,
+                    allowedURLSchemes: configuration.allowedURLSchemes
+                ) {
+                    rank = .disallowedHTTP
+                } else {
+                    rank = .disallowedNonHTTP
+                }
+            }
+            if worstFailure == nil || rank > worstFailure!.rank {
+                worstFailure = (rank, trimmed)
+            }
+        }
 
         func appendPage(_ url: URL) {
             guard let scheme = url.scheme?.lowercased(), allowed.contains(scheme) else { return }
@@ -153,18 +197,16 @@ final class WebImagePickerViewModel {
         }
 
         let trimmedPrimary = urlString.trimmingCharacters(in: .whitespacesAndNewlines)
-        var primaryResolution: PageURLNormalization.ResolveResult?
         if !trimmedPrimary.isEmpty {
             let resolved = PageURLNormalization.resolve(
                 trimmedInput: trimmedPrimary,
                 allowedURLSchemes: configuration.allowedURLSchemes
             )
-            primaryResolution = resolved
             switch resolved {
             case .success(let u):
                 appendPage(u)
-            case .disallowedScheme, .invalid:
-                break
+            case .invalid, .disallowedScheme:
+                recordFailure(trimmedInput: trimmedPrimary, result: resolved)
             }
         }
 
@@ -175,11 +217,12 @@ final class WebImagePickerViewModel {
         for row in extraPageRows {
             let t = row.text.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !t.isEmpty else { continue }
-            switch PageURLNormalization.resolve(trimmedInput: t, allowedURLSchemes: configuration.allowedURLSchemes) {
+            let resolved = PageURLNormalization.resolve(trimmedInput: t, allowedURLSchemes: configuration.allowedURLSchemes)
+            switch resolved {
             case .success(let u):
                 appendPage(u)
-            default:
-                break
+            case .invalid, .disallowedScheme:
+                recordFailure(trimmedInput: t, result: resolved)
             }
         }
 
@@ -187,23 +230,25 @@ final class WebImagePickerViewModel {
             return urls
         }
 
-        if let r = primaryResolution {
-            switch r {
-            case .disallowedScheme:
-                errorMessage = String(
-                    localized: String.LocalizationValue("webimage.error.schemeNotAllowed"),
-                    bundle: WebImagePickerBundle.module
-                )
-                return nil
+        if let failure = worstFailure {
+            switch failure.rank {
             case .invalid:
                 errorMessage = String(
                     localized: String.LocalizationValue("webimage.error.enterValidURL"),
                     bundle: WebImagePickerBundle.module
                 )
-                return nil
-            case .success:
-                break
+            case .disallowedNonHTTP:
+                errorMessage = String(
+                    localized: String.LocalizationValue("webimage.error.schemeNotAllowed"),
+                    bundle: WebImagePickerBundle.module
+                )
+            case .disallowedHTTP:
+                errorMessage = String(
+                    localized: String.LocalizationValue("webimage.error.httpNotAllowed"),
+                    bundle: WebImagePickerBundle.module
+                )
             }
+            return nil
         }
 
         errorMessage = String(
@@ -237,6 +282,7 @@ final class WebImagePickerViewModel {
         selectedURLs = []
         errorMessage = nil
         aggregationNotice = nil
+        httpSkippedImagesNotice = nil
     }
 
     private func cancelImageTextSearchTask() {

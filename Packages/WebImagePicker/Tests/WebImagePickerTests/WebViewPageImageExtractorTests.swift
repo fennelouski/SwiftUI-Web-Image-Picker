@@ -93,6 +93,23 @@ final class WebViewPageImageExtractorTests: XCTestCase {
         XCTAssertEqual(results[0].sourceURL.absoluteString, "https://example.com/a.png")
     }
 
+    func testNormalizeWithOutcomeCountsSkippedHTTPWhenHTTPSOnly() {
+        let pageURL = URL(string: "https://example.com/page")!
+        let restrictedConfig = WebImagePickerConfiguration(allowedURLSchemes: ["https"])
+        let candidates: [WebViewRawCandidate] = [
+            .init(value: "http://insecure.example/a.png", altText: nil, kind: .url),
+            .init(value: "http://insecure.example/a.png", altText: nil, kind: .url),
+            .init(value: "https://example.com/b.png", altText: nil, kind: .url),
+        ]
+        let outcome = WebViewPageImageExtractor.normalizeWithOutcome(
+            rawCandidates: candidates,
+            pageURL: pageURL,
+            configuration: restrictedConfig
+        )
+        XCTAssertEqual(outcome.images.count, 1)
+        XCTAssertEqual(outcome.skippedHTTPImageURLsDueToAllowedSchemes, 1)
+    }
+
     func testNormalizeCollapsesQueryVariantsWhenSimilarityDedupEnabled() {
         var cfg = WebImagePickerConfiguration(allowedURLSchemes: ["https", "http"])
         cfg.similarImageDeduplication = .normalizedResourceURL

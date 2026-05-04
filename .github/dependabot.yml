@@ -1,0 +1,22 @@
+# Dependabot version updates for SwiftPM (see https://docs.github.com/en/code-security/dependabot)
+version: 2
+updates:
+  # Git-based Swift packages only; private Swift registries are not supported by Dependabot.
+  - package-ecosystem: "swift"
+    # Root: canonical Package.swift for URL-based / root SPM (SwiftSoup, swift-snapshot-testing, etc.).
+    # Packages/WebImagePicker: same Git deps, standalone package layout; not generated—kept in sync
+    # with the root manifest by policy (see comment at top of root Package.swift).
+    # We do not add a third entry for SwiftUI Web Image Picker.xcodeproj/.../Package.resolved:
+    # that file is Xcode’s workspace resolution, not a second manifest; after merging bumps here,
+    # align it in Xcode or with your usual workflow if it drifts from root.
+    directories:
+      - "/"
+      - "/Packages/WebImagePicker"
+    schedule:
+      interval: "weekly"
+    # One PR per dependency across both Package.swift + adjacent Package.resolved when version
+    # requirements match; if they diverge, Dependabot may open separate PRs (per GitHub docs).
+    # group-by applies to version updates; security updates may still be opened separately.
+    groups:
+      spm-monorepo:
+        group-by: dependency-name

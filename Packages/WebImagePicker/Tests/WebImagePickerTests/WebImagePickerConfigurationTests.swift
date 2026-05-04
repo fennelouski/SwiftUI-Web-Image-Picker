@@ -12,6 +12,18 @@ final class WebImagePickerConfigurationTests: XCTestCase {
         XCTAssertEqual(WebImagePickerConfiguration.default.allowedURLSchemes, ["https"])
     }
 
+    func testHTTPSOnlyPresetMatchesDefault() {
+        XCTAssertEqual(WebImagePickerConfiguration.httpsOnly, WebImagePickerConfiguration.default)
+    }
+
+    func testAllowingHTTPAndHTTPSAddsHTTPScheme() {
+        let custom = WebImagePickerConfiguration(selectionLimit: 3, extractionMode: .webView)
+        let both = WebImagePickerConfiguration.allowingHTTPAndHTTPS(basedOn: custom)
+        XCTAssertEqual(Set(both.allowedURLSchemes), Set(["http", "https"]))
+        XCTAssertEqual(both.selectionLimit, 3)
+        XCTAssertEqual(both.extractionMode, .webView)
+    }
+
     func testDefaultExtractionModeIsStaticHTML() {
         XCTAssertEqual(WebImagePickerConfiguration.default.extractionMode, .staticHTML)
     }
@@ -245,5 +257,32 @@ final class WebImagePickerConfigurationTests: XCTestCase {
     func testCachePolicyClampsNegativeMaximumDiscoveryEntries() {
         let p = WebImagePickerCachePolicy(maximumDiscoveryEntries: -5)
         XCTAssertEqual(p.maximumDiscoveryEntries, 0)
+    }
+
+    func testDefaultAutomaticallyLoadOnAppearIsFalse() {
+        XCTAssertFalse(WebImagePickerConfiguration.default.automaticallyLoadOnAppear)
+    }
+
+    func testAutomaticallyLoadOnAppearInitializer() {
+        let on = WebImagePickerConfiguration(automaticallyLoadOnAppear: true)
+        XCTAssertTrue(on.automaticallyLoadOnAppear)
+        let off = WebImagePickerConfiguration(automaticallyLoadOnAppear: false)
+        XCTAssertFalse(off.automaticallyLoadOnAppear)
+    }
+
+    func testAutomaticallyLoadOnAppearAffectsEquality() {
+        let a = WebImagePickerConfiguration(automaticallyLoadOnAppear: false)
+        let b = WebImagePickerConfiguration(automaticallyLoadOnAppear: true)
+        XCTAssertNotEqual(a, b)
+    }
+
+    func testAutomaticallyLoadOnAppearAffectsHash() {
+        let a = WebImagePickerConfiguration(automaticallyLoadOnAppear: false)
+        let b = WebImagePickerConfiguration(automaticallyLoadOnAppear: true)
+        var hasherA = Hasher()
+        var hasherB = Hasher()
+        a.hash(into: &hasherA)
+        b.hash(into: &hasherB)
+        XCTAssertNotEqual(hasherA.finalize(), hasherB.finalize())
     }
 }

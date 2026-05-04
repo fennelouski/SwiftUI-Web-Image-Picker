@@ -6,6 +6,8 @@ enum AggregatedPageImageDiscovery {
         let images: [DiscoveredImage]
         /// Page URLs whose extraction threw; empty when every page completed without throwing.
         let failedPageURLs: [URL]
+        /// Sum of distinct HTTP image URLs skipped per page because `http` was not in ``WebImagePickerConfiguration/allowedURLSchemes``.
+        let skippedHTTPImageURLsDueToAllowedSchemes: Int
     }
 
     /// Fetches pages **sequentially** so grid ordering stays stable (first page’s images first, then new images from later pages).
@@ -20,15 +22,24 @@ enum AggregatedPageImageDiscovery {
         var merged: [DiscoveredImage] = []
         var seenImageKeys = Set<String>()
         var failed: [URL] = []
+        var skippedHTTPTotal = 0
+        var httpSkipCountedForPage = Set<URL>()
 
         for pageURL in pageURLs {
             do {
                 var items: [DiscoveredImage]
                 if let cache = discoveryListCache, let cached = cache.lookup(pageURL) {
-                    items = cached
+                    items = cached.images
+                    if httpSkipCountedForPage.insert(pageURL).inserted {
+                        skippedHTTPTotal += cached.skippedHTTPImageURLsDueToAllowedSchemes
+                    }
                 } else {
-                    items = try await extractor.discoverImages(from: pageURL, configuration: configuration)
-                    discoveryListCache?.store(pageURL, images: items)
+                    let outcome = try await extractor.discoverImagesWithOutcome(from: pageURL, configuration: configuration)
+                    discoveryListCache?.store(pageURL, outcome: outcome)
+                    items = outcome.images
+                    if httpSkipCountedForPage.insert(pageURL).inserted {
+                        skippedHTTPTotal += outcome.skippedHTTPImageURLsDueToAllowedSchemes
+                    }
                 }
                 switch configuration.discoveredImageSort {
                 case .faceCountDescending:
@@ -65,6 +76,10 @@ enum AggregatedPageImageDiscovery {
             }
         }
 
-        return MergeResult(images: merged, failedPageURLs: failed)
+        return MergeResult(
+            images: merged,
+            failedPageURLs: failed,
+            skippedHTTPImageURLsDueToAllowedSchemes: skippedHTTPTotal
+        )
     }
 }

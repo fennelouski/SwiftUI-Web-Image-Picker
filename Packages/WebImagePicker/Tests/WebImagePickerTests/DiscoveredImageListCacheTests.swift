@@ -23,9 +23,9 @@ final class DiscoveredImageListCacheTests: XCTestCase {
         let u1 = URL(string: "https://a.example/p1")!
         let u2 = URL(string: "https://b.example/p2")!
         let u3 = URL(string: "https://c.example/p3")!
-        cache.store(u1, images: [sampleImage])
-        cache.store(u2, images: [sampleImage])
-        cache.store(u3, images: [sampleImage])
+        cache.store(u1, outcome: PageImageDiscoveryOutcome(images: [sampleImage]))
+        cache.store(u2, outcome: PageImageDiscoveryOutcome(images: [sampleImage]))
+        cache.store(u3, outcome: PageImageDiscoveryOutcome(images: [sampleImage]))
         XCTAssertNil(cache.lookup(u1))
         XCTAssertNotNil(cache.lookup(u2))
         XCTAssertNotNil(cache.lookup(u3))
@@ -36,10 +36,10 @@ final class DiscoveredImageListCacheTests: XCTestCase {
         let u1 = URL(string: "https://a.example/p1")!
         let u2 = URL(string: "https://b.example/p2")!
         let u3 = URL(string: "https://c.example/p3")!
-        cache.store(u1, images: [sampleImage])
-        cache.store(u2, images: [sampleImage])
+        cache.store(u1, outcome: PageImageDiscoveryOutcome(images: [sampleImage]))
+        cache.store(u2, outcome: PageImageDiscoveryOutcome(images: [sampleImage]))
         _ = cache.lookup(u1)
-        cache.store(u3, images: [sampleImage])
+        cache.store(u3, outcome: PageImageDiscoveryOutcome(images: [sampleImage]))
         XCTAssertNil(cache.lookup(u2))
         XCTAssertNotNil(cache.lookup(u1))
         XCTAssertNotNil(cache.lookup(u3))
@@ -54,7 +54,7 @@ final class DiscoveredImageListCacheTests: XCTestCase {
             clock: { clock.date() }
         )
         let page = URL(string: "https://a.example/")!
-        cache.store(page, images: [sampleImage])
+        cache.store(page, outcome: PageImageDiscoveryOutcome(images: [sampleImage]))
         XCTAssertNotNil(cache.lookup(page))
         clock.timeIntervalSince1970 += 61
         XCTAssertNil(cache.lookup(page))
@@ -69,9 +69,9 @@ final class DiscoveredImageListCacheTests: XCTestCase {
         let p1 = URL(string: "https://same.example/path1")!
         let p2 = URL(string: "https://same.example/path2")!
         let other = URL(string: "https://other.example/")!
-        cache.store(p1, images: [sampleImage])
-        cache.store(other, images: [sampleImage])
-        cache.store(p2, images: [sampleImage])
+        cache.store(p1, outcome: PageImageDiscoveryOutcome(images: [sampleImage]))
+        cache.store(other, outcome: PageImageDiscoveryOutcome(images: [sampleImage]))
+        cache.store(p2, outcome: PageImageDiscoveryOutcome(images: [sampleImage]))
         XCTAssertNil(cache.lookup(p1))
         XCTAssertNotNil(cache.lookup(p2))
         XCTAssertNotNil(cache.lookup(other))
@@ -87,8 +87,20 @@ final class DiscoveredImageListCacheTests: XCTestCase {
     func testClearRemovesAllEntries() {
         let cache = DiscoveredImageListCache(maximumEntries: 3, timeToLive: nil, perDomainMaximumEntries: nil)
         let u = URL(string: "https://a.example/")!
-        cache.store(u, images: [sampleImage])
+        cache.store(u, outcome: PageImageDiscoveryOutcome(images: [sampleImage]))
         cache.clear()
         XCTAssertNil(cache.lookup(u))
+    }
+
+    func testLookupReturnsSkippedHTTPCountFromStoredOutcome() throws {
+        let cache = DiscoveredImageListCache(maximumEntries: 3, timeToLive: nil, perDomainMaximumEntries: nil)
+        let u = URL(string: "https://a.example/")!
+        cache.store(
+            u,
+            outcome: PageImageDiscoveryOutcome(images: [sampleImage], skippedHTTPImageURLsDueToAllowedSchemes: 4)
+        )
+        let got = try XCTUnwrap(cache.lookup(u))
+        XCTAssertEqual(got.images.count, 1)
+        XCTAssertEqual(got.skippedHTTPImageURLsDueToAllowedSchemes, 4)
     }
 }

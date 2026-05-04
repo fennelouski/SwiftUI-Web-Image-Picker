@@ -12,6 +12,7 @@ public struct WebImagePicker: View {
     private let onPick: ([WebImageSelection]) -> Void
 
     @State private var model: WebImagePickerViewModel
+    @State private var didAttemptAutoLoad = false
 
 #if os(iOS) || os(tvOS) || os(visionOS)
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -37,6 +38,8 @@ public struct WebImagePicker: View {
         NavigationStack {
             Group {
                 switch model.phase {
+                case .loadingPage where configuration.automaticallyLoadOnAppear && didAttemptAutoLoad:
+                    autoLoadInProgressView
                 case .urlEntry, .loadingPage:
                     urlEntryView
                 case .browsing:
@@ -84,7 +87,26 @@ public struct WebImagePicker: View {
                     }
                 }
             }
+            .task {
+                guard configuration.automaticallyLoadOnAppear else { return }
+                guard !didAttemptAutoLoad else { return }
+                guard model.phase == .urlEntry else { return }
+                guard model.canStartLoad else { return }
+                didAttemptAutoLoad = true
+                await model.loadPage()
+            }
         }
+    }
+
+    private var autoLoadInProgressView: some View {
+        VStack(spacing: 16) {
+            ProgressView()
+            Text(
+                String(localized: String.LocalizationValue("webimage.loading"), bundle: WebImagePickerBundle.module)
+            )
+            .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private var urlEntryView: some View {
@@ -202,6 +224,15 @@ public struct WebImagePicker: View {
                         .padding(12)
                         .background(Color.secondary.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                         .accessibilityIdentifier("webimage.aggregationNotice")
+                }
+                if let httpSkip = model.httpSkippedImagesNotice {
+                    Text(httpSkip)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(12)
+                        .background(Color.secondary.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        .accessibilityIdentifier("webimage.httpSkippedImagesNotice")
                 }
                 if let message = model.errorMessage {
                     Text(message)

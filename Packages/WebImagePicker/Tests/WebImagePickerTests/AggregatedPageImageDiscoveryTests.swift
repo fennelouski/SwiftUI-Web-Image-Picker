@@ -12,6 +12,35 @@ private final class CountingPageExtractor: PageImageExtractor, @unchecked Sendab
     }
 }
 
+private struct VariableSkipExtractor: PageImageExtractor, Sendable {
+    func discoverImages(from pageURL: URL, configuration: WebImagePickerConfiguration) async throws -> [DiscoveredImage] {
+        [
+            DiscoveredImage(
+                sourceURL: URL(string: "https://cdn.example/\(pageURL.host ?? "x").png")!,
+                accessibilityLabel: nil
+            ),
+        ]
+    }
+
+    func discoverImagesWithOutcome(from pageURL: URL, configuration: WebImagePickerConfiguration) async throws -> PageImageDiscoveryOutcome {
+        let skips: Int
+        switch pageURL.host {
+        case "one.example": skips = 2
+        case "two.example": skips = 5
+        default: skips = 0
+        }
+        return PageImageDiscoveryOutcome(
+            images: [
+                DiscoveredImage(
+                    sourceURL: URL(string: "https://cdn.example/\(pageURL.host ?? "x").png")!,
+                    accessibilityLabel: nil
+                ),
+            ],
+            skippedHTTPImageURLsDueToAllowedSchemes: skips
+        )
+    }
+}
+
 private struct MockPageImageExtractor: PageImageExtractor {
     var pageResults: [URL: Result<[DiscoveredImage], Error>]
     private static let missing = NSError(domain: "test", code: 0)
@@ -327,5 +356,30 @@ final class AggregatedPageImageDiscoveryTests: XCTestCase {
         XCTAssertEqual(extractor.discoverCalls, 1)
         XCTAssertEqual(merge.images.count, 1)
         XCTAssertEqual(merge.images.first?.sourceURL.absoluteString, "https://cdn.example/from-extractor.png")
+    }
+
+    func testSumsSkippedHTTPAcrossDistinctPages() async {
+        let a = URL(string: "https://one.example/")!
+        let b = URL(string: "https://two.example/")!
+        let merge = await AggregatedPageImageDiscovery.discoverImages(
+            pageURLs: [a, b],
+            configuration: .default,
+            extractor: VariableSkipExtractor()
+        )
+        XCTAssertEqual(merge.skippedHTTPImageURLsDueToAllowedSchemes, 7)
+    }
+
+    func testSkippedHTTPNotDoubleCountedWhenSamePageURLRepeatedWithCache() async throws {
+        let p = URL(string: "https://one.example/")!
+        var cfg = WebImagePickerConfiguration.default
+        cfg.cachePolicy = WebImagePickerCachePolicy(maximumDiscoveryEntries: 4)
+        let cache = try XCTUnwrap(DiscoveredImageListCache.makeIfEnabled(for: cfg.cachePolicy))
+        let merge = await AggregatedPageImageDiscovery.discoverImages(
+            pageURLs: [p, p],
+            configuration: cfg,
+            extractor: VariableSkipExtractor(),
+            discoveryListCache: cache
+        )
+        XCTAssertEqual(merge.skippedHTTPImageURLsDueToAllowedSchemes, 2)
     }
 }

@@ -89,6 +89,20 @@ final class StaticHTMLExtractorTests: XCTestCase {
         XCTAssertTrue(items.isEmpty)
     }
 
+    func testHTTPSOnlySkipsHTTPImagesWithDistinctSkipCount() throws {
+        let html = #"""
+        <img src="http://insecure.example/a.png" alt="">
+        <img src="http://insecure.example/a.png" alt="dup">
+        <img src="https://secure.example/b.png" alt="">
+        """#
+        let page = URL(string: "https://example.com/")!
+        let config = WebImagePickerConfiguration(allowedURLSchemes: ["https"])
+        let outcome = try StaticHTMLExtractor.discoverWithOutcome(from: html, pageURL: page, configuration: config)
+        XCTAssertEqual(outcome.images.count, 1)
+        XCTAssertEqual(outcome.images[0].sourceURL.absoluteString, "https://secure.example/b.png")
+        XCTAssertEqual(outcome.skippedHTTPImageURLsDueToAllowedSchemes, 1)
+    }
+
     func testFixtureSamplePage() throws {
         let url = try XCTUnwrap(Bundle.module.url(forResource: "sample", withExtension: "html", subdirectory: "Fixtures"))
         let html = try String(contentsOf: url)

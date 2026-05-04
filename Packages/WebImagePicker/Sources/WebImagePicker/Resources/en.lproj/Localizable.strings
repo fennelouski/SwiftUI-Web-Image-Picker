@@ -17,6 +17,8 @@
 "webimage.error.invalidURL" = "That URL is not allowed or invalid.";
 "webimage.error.noImagesFound" = "No images were found on this page.";
 "webimage.error.schemeNotAllowed" = "This URL scheme is not allowed.";
+"webimage.error.httpNotAllowed" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS or ask the app developer to allow HTTP in WebImagePicker configuration and App Transport Security.";
+"webimage.skippedHTTPImagesNoticeFormat" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs, or ask the app developer to allow HTTP in WebImagePicker configuration and App Transport Security.";
 "webimage.loadPage" = "Load page";
 "webimage.loading" = "Loading";
 "webimage.navTitle" = "Web images";

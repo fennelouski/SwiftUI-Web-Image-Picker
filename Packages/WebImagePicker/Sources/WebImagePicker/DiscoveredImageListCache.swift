@@ -12,6 +12,7 @@ final class DiscoveredImageListCache: @unchecked Sendable {
 
     private struct Entry {
         let images: [DiscoveredImage]
+        let skippedHTTPImageURLsDueToAllowedSchemes: Int
         let insertedAt: Date
         let hostKey: String
     }
@@ -37,8 +38,8 @@ final class DiscoveredImageListCache: @unchecked Sendable {
         self.clock = clock
     }
 
-    /// Returns the cached raw discovery list for `pageURL`, or `nil` on miss / expiry. Updates recency on hit.
-    func lookup(_ pageURL: URL) -> [DiscoveredImage]? {
+    /// Returns the cached raw discovery outcome for `pageURL`, or `nil` on miss / expiry. Updates recency on hit.
+    func lookup(_ pageURL: URL) -> PageImageDiscoveryOutcome? {
         lock.lock()
         defer { lock.unlock() }
         guard let entry = storage[pageURL] else { return nil }
@@ -47,16 +48,24 @@ final class DiscoveredImageListCache: @unchecked Sendable {
             return nil
         }
         touchLocked(pageURL)
-        return entry.images
+        return PageImageDiscoveryOutcome(
+            images: entry.images,
+            skippedHTTPImageURLsDueToAllowedSchemes: entry.skippedHTTPImageURLsDueToAllowedSchemes
+        )
     }
 
-    /// Inserts or replaces the raw list for `pageURL`. Evicts by per-domain and global LRU when over capacity.
-    func store(_ pageURL: URL, images: [DiscoveredImage]) {
+    /// Inserts or replaces the raw discovery outcome for `pageURL`. Evicts by per-domain and global LRU when over capacity.
+    func store(_ pageURL: URL, outcome: PageImageDiscoveryOutcome) {
         lock.lock()
         defer { lock.unlock() }
         let host = Self.hostKey(for: pageURL)
         if let existing = storage[pageURL] {
-            storage[pageURL] = Entry(images: images, insertedAt: existing.insertedAt, hostKey: existing.hostKey)
+            storage[pageURL] = Entry(
+                images: outcome.images,
+                skippedHTTPImageURLsDueToAllowedSchemes: outcome.skippedHTTPImageURLsDueToAllowedSchemes,
+                insertedAt: existing.insertedAt,
+                hostKey: existing.hostKey
+            )
             touchLocked(pageURL)
             return
         }
@@ -69,7 +78,12 @@ final class DiscoveredImageListCache: @unchecked Sendable {
             removeLocked(victim)
         }
         let now = clock()
-        storage[pageURL] = Entry(images: images, insertedAt: now, hostKey: host)
+        storage[pageURL] = Entry(
+            images: outcome.images,
+            skippedHTTPImageURLsDueToAllowedSchemes: outcome.skippedHTTPImageURLsDueToAllowedSchemes,
+            insertedAt: now,
+            hostKey: host
+        )
         globalOrder.append(pageURL)
         domainOrder[host, default: []].append(pageURL)
     }

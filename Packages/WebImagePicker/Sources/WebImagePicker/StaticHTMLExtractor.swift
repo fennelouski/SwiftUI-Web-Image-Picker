@@ -6,7 +6,13 @@ public struct StaticHTMLExtractor: PageImageExtractor {
     public init() {}
 
     public func discoverImages(from pageURL: URL, configuration: WebImagePickerConfiguration) async throws -> [DiscoveredImage] {
-        guard let scheme = pageURL.scheme?.lowercased(), configuration.allowedURLSchemes.contains(scheme) else {
+        try await discoverImagesWithOutcome(from: pageURL, configuration: configuration).images
+    }
+
+    public func discoverImagesWithOutcome(from pageURL: URL, configuration: WebImagePickerConfiguration) async throws -> PageImageDiscoveryOutcome {
+        guard let scheme = pageURL.scheme?.lowercased(),
+              DiscoveredImageURLSchemePolicy.allowedSchemesLowercased(configuration).contains(scheme)
+        else {
             throw WebImagePickerError.invalidURL
         }
 
@@ -18,7 +24,7 @@ public struct StaticHTMLExtractor: PageImageExtractor {
         }
 
         do {
-            return try Self.discover(from: html, pageURL: pageURL, configuration: configuration)
+            return try Self.discoverWithOutcome(from: html, pageURL: pageURL, configuration: configuration)
         } catch {
             throw WebImagePickerError.extractionFailed
         }
@@ -30,9 +36,19 @@ public struct StaticHTMLExtractor: PageImageExtractor {
         pageURL: URL,
         configuration: WebImagePickerConfiguration
     ) throws -> [DiscoveredImage] {
+        try discoverWithOutcome(from: html, pageURL: pageURL, configuration: configuration).images
+    }
+
+    internal static func discoverWithOutcome(
+        from html: String,
+        pageURL: URL,
+        configuration: WebImagePickerConfiguration
+    ) throws -> PageImageDiscoveryOutcome {
         let doc = try SwiftSoup.parse(html, pageURL.absoluteString)
         var seen = Set<String>()
+        var skippedHTTPAbsolute = Set<String>()
         var images: [DiscoveredImage] = []
+        let allowedLower = DiscoveredImageURLSchemePolicy.allowedSchemesLowercased(configuration)
 
         func normalizedURL(from raw: String) -> URL? {
             let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -40,7 +56,18 @@ public struct StaticHTMLExtractor: PageImageExtractor {
             if trimmed.hasPrefix("#") { return nil }
             if trimmed.lowercased().hasPrefix("data:") { return nil }
             guard var resolved = URL(string: trimmed, relativeTo: pageURL)?.absoluteURL else { return nil }
-            guard let sch = resolved.scheme?.lowercased(), configuration.allowedURLSchemes.contains(sch) else { return nil }
+            guard let sch = resolved.scheme?.lowercased(), allowedLower.contains(sch) else {
+                if DiscoveredImageURLSchemePolicy.shouldCountSkippedHTTPImage(resolvedURL: resolved, allowedLowercased: allowedLower) {
+                    if var components = URLComponents(url: resolved, resolvingAgainstBaseURL: false) {
+                        components.fragment = nil
+                        if let stripped = components.url {
+                            resolved = stripped
+                        }
+                    }
+                    skippedHTTPAbsolute.insert(resolved.absoluteString)
+                }
+                return nil
+            }
             if var components = URLComponents(url: resolved, resolvingAgainstBaseURL: false) {
                 components.fragment = nil
                 if let withoutFragment = components.url {
@@ -118,6 +145,9 @@ public struct StaticHTMLExtractor: PageImageExtractor {
             }
         }
 
-        return images
+        return PageImageDiscoveryOutcome(
+            images: images,
+            skippedHTTPImageURLsDueToAllowedSchemes: skippedHTTPAbsolute.count
+        )
     }
 }

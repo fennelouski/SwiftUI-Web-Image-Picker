@@ -9,7 +9,13 @@ public struct WebViewPageImageExtractor: PageImageExtractor {
     public init() {}
 
     public func discoverImages(from pageURL: URL, configuration: WebImagePickerConfiguration) async throws -> [DiscoveredImage] {
-        guard let scheme = pageURL.scheme?.lowercased(), configuration.allowedURLSchemes.contains(scheme) else {
+        try await discoverImagesWithOutcome(from: pageURL, configuration: configuration).images
+    }
+
+    public func discoverImagesWithOutcome(from pageURL: URL, configuration: WebImagePickerConfiguration) async throws -> PageImageDiscoveryOutcome {
+        guard let scheme = pageURL.scheme?.lowercased(),
+              DiscoveredImageURLSchemePolicy.allowedSchemesLowercased(configuration).contains(scheme)
+        else {
             throw WebImagePickerError.invalidURL
         }
 
@@ -20,7 +26,7 @@ public struct WebViewPageImageExtractor: PageImageExtractor {
             userAgent: configuration.userAgent
         )
 
-        return Self.normalize(rawCandidates: rawCandidates, pageURL: pageURL, configuration: configuration)
+        return Self.normalizeWithOutcome(rawCandidates: rawCandidates, pageURL: pageURL, configuration: configuration)
         #else
         throw WebImagePickerError.extractionFailed
         #endif
@@ -31,8 +37,18 @@ public struct WebViewPageImageExtractor: PageImageExtractor {
         pageURL: URL,
         configuration: WebImagePickerConfiguration
     ) -> [DiscoveredImage] {
+        normalizeWithOutcome(rawCandidates: rawCandidates, pageURL: pageURL, configuration: configuration).images
+    }
+
+    internal static func normalizeWithOutcome(
+        rawCandidates: [WebViewRawCandidate],
+        pageURL: URL,
+        configuration: WebImagePickerConfiguration
+    ) -> PageImageDiscoveryOutcome {
         var seen = Set<String>()
+        var skippedHTTPAbsolute = Set<String>()
         var images: [DiscoveredImage] = []
+        let allowedLower = DiscoveredImageURLSchemePolicy.allowedSchemesLowercased(configuration)
 
         func normalizedURL(from raw: String, kind: WebViewRawCandidate.Kind) -> URL? {
             let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -48,7 +64,16 @@ public struct WebViewPageImageExtractor: PageImageExtractor {
             }
 
             guard var resolved = resolvedURL else { return nil }
-            guard let scheme = resolved.scheme?.lowercased(), configuration.allowedURLSchemes.contains(scheme) else {
+            guard let scheme = resolved.scheme?.lowercased(), allowedLower.contains(scheme) else {
+                if DiscoveredImageURLSchemePolicy.shouldCountSkippedHTTPImage(resolvedURL: resolved, allowedLowercased: allowedLower) {
+                    if var components = URLComponents(url: resolved, resolvingAgainstBaseURL: false) {
+                        components.fragment = nil
+                        if let fragmentStripped = components.url {
+                            resolved = fragmentStripped
+                        }
+                    }
+                    skippedHTTPAbsolute.insert(resolved.absoluteString)
+                }
                 return nil
             }
 
@@ -81,7 +106,10 @@ public struct WebViewPageImageExtractor: PageImageExtractor {
             images.append(DiscoveredImage(sourceURL: url, accessibilityLabel: cleanedLabel, title: cleanedTitle))
         }
 
-        return images
+        return PageImageDiscoveryOutcome(
+            images: images,
+            skippedHTTPImageURLsDueToAllowedSchemes: skippedHTTPAbsolute.count
+        )
     }
 }
 

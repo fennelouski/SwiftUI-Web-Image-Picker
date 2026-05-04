@@ -57,6 +57,27 @@ final class PageURLNormalizationTests: XCTestCase {
         XCTAssertEqual(result, .disallowedScheme)
     }
 
+    func testIsHTTPExplicitlyDisallowedWhenHTTPSOnly() {
+        XCTAssertTrue(
+            PageURLNormalization.isHTTPExplicitlyDisallowed(
+                trimmedInput: "http://example.com/",
+                allowedURLSchemes: httpsOnly
+            )
+        )
+        XCTAssertFalse(
+            PageURLNormalization.isHTTPExplicitlyDisallowed(
+                trimmedInput: "https://example.com/",
+                allowedURLSchemes: httpsOnly
+            )
+        )
+        XCTAssertFalse(
+            PageURLNormalization.isHTTPExplicitlyDisallowed(
+                trimmedInput: "http://example.com/",
+                allowedURLSchemes: httpAndHttps
+            )
+        )
+    }
+
     func testMalformedWithSchemeFragmentDoesNotPrefix() {
         let result = PageURLNormalization.resolve(
             trimmedInput: "https://not a host",

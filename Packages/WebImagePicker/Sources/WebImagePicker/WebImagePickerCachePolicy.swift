@@ -5,7 +5,7 @@ import Foundation
 /// The policy controls two distinct layers:
 ///
 /// 1. ``requestCachePolicy`` is applied to every `URLRequest` the package issues — HTML page fetches, image-dimension probes, and final image downloads. It sits on top of whatever `URLCache` the integrator's ``WebImagePickerConfiguration/urlSession`` uses, so the disk-cache footprint depends on that session's `URLSessionConfiguration.urlCache`.
-/// 2. The remaining knobs configure an in-memory, per-session **discovered image list** cache. Each entry stores the raw output of ``PageImageExtractor/discoverImages(from:configuration:)`` for one page URL so a re-load (or revisit during multi-URL aggregation) skips HTML fetch + parse work. Sort, dimension filtering, and per-page caps still re-run on every load, so changing those configuration knobs reflects without invalidating the cache.
+/// 2. The remaining knobs configure an in-memory, per-session **discovered image list** cache. Each entry stores the raw outcome of ``PageImageExtractor/discoverImagesWithOutcome(from:configuration:)`` (images plus HTTP skip counts) for one page URL so a re-load (or revisit during multi-URL aggregation) skips HTML fetch + parse work. Sort, dimension filtering, and per-page caps still re-run on every load, so changing those configuration knobs reflects without invalidating the cache.
 ///
 /// Defaults match the behavior of versions before this policy existed: `URLRequest`s use ``URLRequest/CachePolicy/useProtocolCachePolicy`` and the discovery-list cache is **disabled** (``maximumDiscoveryEntries`` `0`). Use ``ephemeral`` to be explicit about that, or ``sessionBounded`` for a sane bounded-cache preset.
 ///
