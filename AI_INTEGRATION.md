@@ -162,16 +162,67 @@ The modifier calls `onPick` then sets `isPresented` to `false`.
 
 Use **`WebImagePickerConfiguration`** when calling `.webImagePicker(..., configuration:onPick:)` or `WebImagePicker(configuration:onCancel:onPick:)`.
 
+### `WebImageExtractionMode`
+
+Public enum (defined next to **`WebImagePickerConfiguration`** in `WebImagePickerConfiguration.swift`). Additional cases may be added without breaking the public API.
+
+- **`.staticHTML`** — Parse the raw HTML response; **no JavaScript execution**. Best default for server-rendered pages; uses SwiftSoup-based discovery.
+- **`.webView`** — Load the page in **`WKWebView`** and collect image URLs from the live DOM **after** scripts run. Use for client-rendered pages where images are injected at runtime. Higher memory/runtime cost than `.staticHTML`; WebKit work runs on the main actor and is subject to sandbox/network policy, CSP, and cross-origin or iframe limits.
+
+Default is **`.staticHTML`**. On your configuration, **`configuration.extractionMode.makeExtractor()`** returns the active **`PageImageExtractor`**: **`StaticHTMLExtractor`** or **`WebViewPageImageExtractor`**.
+
+### `WebImagePickerConfiguration` properties
+
+#### Network, limits, and extraction
+
 | Property | Role |
 |----------|------|
-| `selectionLimit` | Max images; **`1`** = single-select (tap downloads and completes immediately). |
-| `maximumConcurrentImageLoads` | Parallel downloads when confirming multi-select. |
-| `requestTimeout` | Per-request timeout (HTML + images). |
-| `allowedURLSchemes` | Default **`["https"]`**; page and image URLs must match. |
-| `userAgent` | Optional HTTP User-Agent. |
-| `maximumHTMLDownloadBytes` | Cap for HTML download. |
-| `maximumImageDownloadBytes` | Cap per image. |
-| `extractionMode` | Currently **`.staticHTML`** only; selects extractor via `makeExtractor()`. |
+| `selectionLimit` | Max images the user may select; **`1`** = single-select (tap downloads and completes immediately). |
+| `maximumConcurrentImageLoads` | Parallel image downloads when confirming a multi-select (minimum `1` after init clamping). |
+| `requestTimeout` | Per-request timeout for HTML and image fetches. |
+| `allowedURLSchemes` | Schemes allowed for **both** page URLs and discovered image URLs; default **`["https"]`**. |
+| `userAgent` | Optional `User-Agent` for HTML and image requests. |
+| `maximumHTMLDownloadBytes` | Upper bound on HTML response size. |
+| `maximumImageDownloadBytes` | Upper bound on each image response. |
+| `extractionMode` | **`WebImageExtractionMode`**; see above. |
+| `urlSession` | **`URLSession`** for HTML fetches and image downloads; default **`URLSession.shared`**. Intentionally excluded from `Equatable` / `Hashable` on the configuration struct. |
+
+#### Multi-page and discovery
+
+| Property | Role |
+|----------|------|
+| `initialURLString` | Optional text pre-filled in the URL field when the picker appears (whitespace trimmed); `nil` or empty = blank field. |
+| `additionalPageURLs` | Extra page URLs to load in order and merge into one grid (with deduplication); host can pre-seed several pages. |
+| `maximumDiscoveredImagesPerPage` | Optional cap on candidates **per page** after deduplication and **`discoveredImageSort`**; `nil` = unlimited. Applies per page in multi-URL mode before cross-page merge. |
+| `discoveredImageSort` | Order applied per page before the per-page cap (default preserves extractor order). |
+| `similarImageDeduplication` | How aggressively to collapse URLs that may name the same asset (e.g. cache-busting query pairs). |
+
+#### Dimensions, types, and selection output
+
+| Property | Role |
+|----------|------|
+| `minimumImageDimensions` | Optional minimum pixel width/height; `<= 0` on an axis means no minimum there. Uses ranged GET probes; applied after sort and before **`maximumDiscoveredImagesPerPage`**. |
+| `maximumImageDimensions` | Optional maximum pixel width/height; same axis rule as minimum. |
+| `allowedImageTypeIdentifiers` | Optional `UTType` identifier allowlist (e.g. JPEG id); `nil` or empty disables type filtering at discovery/download. |
+| `unknownImageTypePolicy` | When the allowlist is active, how to treat types that cannot be inferred from URL or `Content-Type`. |
+| `selectionOutputMode` | Whether **`WebImageSelection`** is filled with **`data`** only (default), or a **`temporaryFileURL`** with typically empty **`data`**. |
+
+#### Vision (faces, in-image text)
+
+| Property | Role |
+|----------|------|
+| `maximumFaceCountAnalysisImages` | When using face-count sort orders, max images **per page** (in discovery order) to analyze with on-device Vision; `0` skips face-based reordering. |
+| `isImageTextSearchEnabled` | When `true`, runs **`VNRecognizeTextRequest`** on up to **`maximumImageTextSearchImages`** discovered URLs so the browsing search can match text inside rasters. Off by default (privacy/performance). |
+| `maximumImageTextSearchImages` | Cap on OCR’d images when **`isImageTextSearchEnabled`** is `true`; `0` skips OCR. |
+| `imageTextRecognitionLanguages` | Optional BCP-47 tags for Vision (e.g. `"en-US"`); `nil`/empty uses Vision defaults. |
+| `maximumConcurrentImageTextRecognition` | Parallelism for ranged GET + Vision while building the in-image text index (minimum `1` after init clamping). |
+
+#### Metadata blocklist
+
+| Property | Role |
+|----------|------|
+| `excludedImageMetadataSubstrings` | Case-insensitive substrings; images matching **any** entry on URL, path, alt, `title`, or OCR text (when indexed) are hidden before the user’s search filter. |
+| `excludedImageMetadataRegularExpressionPatterns` | **`NSRegularExpression`** patterns (case-insensitive) against the same haystacks; invalid patterns ignored—keep the list short for CPU cost. |
 
 Defaults: see `WebImagePickerConfiguration.init` in `Packages/WebImagePicker/Sources/WebImagePicker/WebImagePickerConfiguration.swift`.
 
@@ -179,9 +230,10 @@ Defaults: see `WebImagePickerConfiguration.init` in `Packages/WebImagePicker/Sou
 
 Each selection includes:
 
-- `data: Data` — raw bytes  
+- `data: Data` — raw bytes (often empty when **`selectionOutputMode`** is **`.temporaryFileURL`**)  
 - `contentType: String?` — MIME type when available  
-- `sourceURL: URL` — image URL that was fetched  
+- `sourceURL: URL` — absolute URL of the downloaded image  
+- `temporaryFileURL: URL?` — when **`selectionOutputMode`** is **`.temporaryFileURL`**, path in the temp directory; platform image helpers read from the file. Copy or move soon; the file may be removed by the system.
 
 Platform helpers (import still `WebImagePicker`):
 
@@ -196,7 +248,7 @@ Platform helpers (import still `WebImagePicker`):
 
 ## Behavioral constraints (tell the user / product owner)
 
-1. **Static HTML only** in v1: images that appear only after JavaScript runs may be **missing**. This is expected for many SPAs.
+1. **Extraction mode:** With default **`.staticHTML`**, images that exist only after JavaScript runs may be **missing** (common on SPAs). Set **`extractionMode`** to **`.webView`** to discover from the rendered DOM via **`WKWebView`**. Expect higher resource use than static parsing; your app may need accurate App Store privacy disclosures and manifest consideration when enabling WebKit-backed flows (see README “Privacy and `PrivacyInfo.xcprivacy`”).
 2. **HTTPS-only by default:** `http` pages/images are rejected unless `allowedURLSchemes` includes `"http"`.
 3. **Bare domains in the URL field:** If the user omits a scheme (e.g. `example.com/article`), the picker **prepends a scheme** when possible: **`https://`** first if allowed, then **`http://`**, then other entries in `allowedURLSchemes`. This is **best-effort** (invalid hosts still fail); users should use an explicit `http://` or `https://` when they need a specific scheme.
 4. **Errors** surface as user-visible strings in the picker UI; thrown errors use **`WebImagePickerError`** for programmatic handling in your own wrappers.
@@ -208,7 +260,7 @@ Platform helpers (import still `WebImagePicker`):
 - [ ] Deployment targets ≥ package minimums.
 - [ ] macOS sandbox **Outgoing Connections** enabled if sandboxed.
 - [ ] Path dependency points at the directory whose **`Package.swift`** you intend to use (**repository root** or **`Packages/WebImagePicker`**); remote URL dependencies use the root manifest automatically.
-- [ ] Run app: open picker, enter a known-good **HTTPS** page with `<img>` tags, confirm grid and selection callback.
+- [ ] Run app: open picker, load a known-good **HTTPS** page and confirm grid and selection callback (for example a page with `<img>` tags using default **`.staticHTML`**, or a JavaScript-rendered gallery with **`extractionMode: .webView`**).
 
 ## Reference implementation in this repo
 
