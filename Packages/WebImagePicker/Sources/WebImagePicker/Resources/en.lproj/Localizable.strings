@@ -1,4 +1,5 @@
 "webimage.a11y.imageFromWeb" = "Image from web";
+"webimage.a11y.selectionSummaryFormat" = "%lld of %lld selected";
 "webimage.a11y.imageSearchField" = "Search images";
 "webimage.a11y.imageSearchFieldHint" = "Filters the list by alt text, title, or image address. Add format:png or format:webp to narrow by file type.";
 "webimage.cancel" = "Cancel";

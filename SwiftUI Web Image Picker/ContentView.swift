@@ -10,6 +10,15 @@
 import SwiftUI
 import WebImagePicker
 
+private enum DemoSymbols {
+    static let pickFromWeb = "Pick from web"
+    static let noSelection = "No images selected yet."
+    static let selectionCountFormat = "%lld image(s) selected"
+    static let navTitle = "Web Image Picker"
+    static let trySamplePage = "Try a sample page"
+    static let webView = "WebView"
+}
+
 struct ContentView: View {
     @State private var showPicker = false
     @State private var selections: [WebImageSelection] = []
@@ -18,10 +27,13 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
-                Button("Pick from web") {
+                Button {
                     presentPickerBlank()
+                } label: {
+                    Image(systemName: "globe")
                 }
                 .buttonStyle(.borderedProminent)
+                .accessibilityLabel(DemoSymbols.pickFromWeb)
 
 #if os(macOS)
                 samplePagesMenuMacOS
@@ -30,11 +42,21 @@ struct ContentView: View {
 #endif
 
                 if selections.isEmpty {
-                    Text("No images selected yet.")
+                    Image(systemName: "photo.on.rectangle")
+                        .font(.system(size: 48))
                         .foregroundStyle(.secondary)
+                        .accessibilityLabel(DemoSymbols.noSelection)
                 } else {
-                    Text("\(selections.count) image(s) selected")
-                        .font(.headline)
+                    HStack(spacing: 6) {
+                        Image(systemName: "checkmark.circle")
+                            .accessibilityHidden(true)
+                        Text("\(selections.count)")
+                            .font(.headline)
+                    }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(
+                        String.localizedStringWithFormat(DemoSymbols.selectionCountFormat, selections.count)
+                    )
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 12) {
                             // `WebImagePicker` completes with at most one row per `sourceURL` (selection is URL-deduped). If that ever changes, use an `Identifiable` wrapper with stable UUIDs instead of `id: \.sourceURL`.
@@ -47,7 +69,14 @@ struct ContentView: View {
                 Spacer(minLength: 0)
             }
             .padding()
-            .navigationTitle("Web Image Picker")
+            .navigationTitle("")
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Image(systemName: "photo.on.rectangle.angled")
+                        .font(.headline)
+                        .accessibilityLabel(DemoSymbols.navTitle)
+                }
+            }
         }
         .webImagePicker(isPresented: $showPicker, configuration: pickerConfiguration) { newSelections in
             selections = newSelections
@@ -56,7 +85,7 @@ struct ContentView: View {
 
 #if os(macOS)
     private var samplePagesMenuMacOS: some View {
-        Menu("Try a sample page") {
+        Menu {
             ForEach(DemoSampleCategory.allCases) { category in
                 Menu(category.rawValue) {
                     ForEach(DemoSampleCatalog.samples(in: category)) { sample in
@@ -67,7 +96,11 @@ struct ContentView: View {
                     }
                 }
             }
+        } label: {
+            Label(DemoSymbols.trySamplePage, systemImage: "book.pages")
         }
+        .labelStyle(.iconOnly)
+        .accessibilityLabel(DemoSymbols.trySamplePage)
     }
 #else
     private var samplePagesListNonMac: some View {
@@ -82,12 +115,13 @@ struct ContentView: View {
                                 HStack {
                                     Text(sample.title)
                                     if sample.extractionMode == .webView {
-                                        Text("WebView")
+                                        Image(systemName: "safari")
                                             .font(.caption2)
                                             .padding(.horizontal, 6)
                                             .padding(.vertical, 2)
                                             .background(.secondary.opacity(0.2))
                                             .clipShape(Capsule())
+                                            .accessibilityLabel(DemoSymbols.webView)
                                     }
                                 }
                                 Text(sample.detail)

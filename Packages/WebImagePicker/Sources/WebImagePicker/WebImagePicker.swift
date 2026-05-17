@@ -1,6 +1,31 @@
 import Foundation
 import SwiftUI
 
+// MARK: - Symbol chrome
+
+private enum WebImagePickerSymbols {
+    static func localized(_ key: String) -> String {
+        String(localized: String.LocalizationValue(key), bundle: WebImagePickerBundle.module)
+    }
+
+    static func symbolButton(
+        systemName: String,
+        accessibilityKey: String,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            Image(systemName: systemName)
+        }
+        .accessibilityLabel(localized(accessibilityKey))
+    }
+
+    static var navigationTitle: some View {
+        Image(systemName: "photo.on.rectangle.angled")
+            .font(.headline)
+            .accessibilityLabel(localized("webimage.navTitle"))
+    }
+}
+
 /// A Photos-style flow for picking images discovered on a web page.
 ///
 /// The picker loads a URL you provide, discovers image candidates (see ``WebImagePickerConfiguration/extractionMode``),
@@ -46,31 +71,35 @@ public struct WebImagePicker: View {
                     browsingView
                 }
             }
-            .navigationTitle(
-                String(localized: String.LocalizationValue("webimage.navTitle"), bundle: WebImagePickerBundle.module)
-            )
+            .navigationTitle("")
 #if os(iOS) || os(visionOS)
             .navigationBarTitleDisplayMode(.inline)
 #endif
             .toolbar {
+                ToolbarItem(placement: .principal) {
+                    WebImagePickerSymbols.navigationTitle
+                }
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(
-                        String(localized: String.LocalizationValue("webimage.cancel"), bundle: WebImagePickerBundle.module),
+                    WebImagePickerSymbols.symbolButton(
+                        systemName: "xmark",
+                        accessibilityKey: "webimage.cancel",
                         action: onCancel
                     )
                 }
                 if model.phase == .browsing {
                     ToolbarItem(placement: .confirmationAction) {
-                        Button(
-                            String(localized: String.LocalizationValue("webimage.done"), bundle: WebImagePickerBundle.module)
+                        WebImagePickerSymbols.symbolButton(
+                            systemName: "checkmark",
+                            accessibilityKey: "webimage.done"
                         ) {
                             Task { await confirmMultiSelection() }
                         }
                         .disabled(model.selectedURLs.isEmpty || model.isConfirming)
                     }
                     ToolbarItem(placement: .primaryAction) {
-                        Button(
-                            String(localized: String.LocalizationValue("webimage.changeURL"), bundle: WebImagePickerBundle.module),
+                        WebImagePickerSymbols.symbolButton(
+                            systemName: "arrow.uturn.backward",
+                            accessibilityKey: "webimage.changeURL",
                             action: model.beginChangingURL
                         )
                     }
@@ -99,14 +128,9 @@ public struct WebImagePicker: View {
     }
 
     private var autoLoadInProgressView: some View {
-        VStack(spacing: 16) {
-            ProgressView()
-            Text(
-                String(localized: String.LocalizationValue("webimage.loading"), bundle: WebImagePickerBundle.module)
-            )
-            .foregroundStyle(.secondary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        ProgressView()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .accessibilityLabel(WebImagePickerSymbols.localized("webimage.loading"))
     }
 
     private var urlEntryView: some View {
@@ -130,18 +154,16 @@ public struct WebImagePicker: View {
                     Task { await model.loadPage() }
                 } label: {
                     if model.phase == .loadingPage {
-                        HStack {
-                            ProgressView()
-                            Text(
-                                String(localized: String.LocalizationValue("webimage.loading"), bundle: WebImagePickerBundle.module)
-                            )
-                        }
+                        ProgressView()
                     } else {
-                        Text(
-                            String(localized: String.LocalizationValue("webimage.loadPage"), bundle: WebImagePickerBundle.module)
-                        )
+                        Image(systemName: "arrow.down.circle")
                     }
                 }
+                .accessibilityLabel(
+                    WebImagePickerSymbols.localized(
+                        model.phase == .loadingPage ? "webimage.loading" : "webimage.loadPage"
+                    )
+                )
                 .disabled(!model.canStartLoad)
             } footer: {
                 if let message = model.errorMessage {
@@ -175,14 +197,17 @@ public struct WebImagePicker: View {
                 Button {
                     model.addExtraPageRow()
                 } label: {
-                    Text(
-                        String(localized: String.LocalizationValue("webimage.addPage"), bundle: WebImagePickerBundle.module)
-                    )
+                    Image(systemName: "plus.circle")
                 }
+                .accessibilityLabel(WebImagePickerSymbols.localized("webimage.addPage"))
             } header: {
-                Text(
-                    String(localized: String.LocalizationValue("webimage.additionalPagesSection"), bundle: WebImagePickerBundle.module)
-                )
+                Label {
+                    EmptyView()
+                } icon: {
+                    Image(systemName: "doc.on.doc")
+                }
+                .labelStyle(.iconOnly)
+                .accessibilityLabel(WebImagePickerSymbols.localized("webimage.additionalPagesSection"))
             } footer: {
                 Text(
                     String(localized: String.LocalizationValue("webimage.additionalPagesFooter"), bundle: WebImagePickerBundle.module)
@@ -197,14 +222,22 @@ public struct WebImagePicker: View {
         @Bindable var model = model
         return ScrollView {
             VStack(alignment: .leading, spacing: 8) {
-                TextField(
-                    String(localized: String.LocalizationValue("webimage.searchPlaceholder"), bundle: WebImagePickerBundle.module),
-                    text: $model.imageMetadataSearchQuery
-                )
+                HStack(spacing: 8) {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundStyle(.secondary)
+                        .accessibilityHidden(true)
+                    TextField(
+                        String(localized: String.LocalizationValue("webimage.searchPlaceholder"), bundle: WebImagePickerBundle.module),
+                        text: $model.imageMetadataSearchQuery
+                    )
 #if os(iOS) || os(tvOS) || os(visionOS)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
 #endif
+#if os(macOS)
+                    .textFieldStyle(.plain)
+#endif
+                }
 #if os(macOS)
                 .textFieldStyle(.roundedBorder)
 #endif
@@ -265,24 +298,27 @@ public struct WebImagePicker: View {
         }
         .safeAreaInset(edge: .bottom) {
             if configuration.selectionLimit > 1 {
-                Text(selectionSummary)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 8)
-                    .background(.bar)
+                selectionSummaryView
             }
         }
     }
 
-    private var selectionSummary: String {
+    private var selectionSummaryView: some View {
         let n = model.selectedURLs.count
         let limit = configuration.selectionLimit
-        let format = String(
-            localized: String.LocalizationValue("webimage.selectionSummaryFormat"),
-            bundle: WebImagePickerBundle.module
-        )
-        return String.localizedStringWithFormat(format, n, limit)
+        let accessibilityFormat = WebImagePickerSymbols.localized("webimage.a11y.selectionSummaryFormat")
+        return HStack(spacing: 6) {
+            Image(systemName: "checkmark.circle")
+                .accessibilityHidden(true)
+            Text("\(n)/\(limit)")
+        }
+        .font(.footnote)
+        .foregroundStyle(.secondary)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 8)
+        .background(.bar)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(String.localizedStringWithFormat(accessibilityFormat, n, limit))
     }
 
     private var masonryColumnCount: Int {
