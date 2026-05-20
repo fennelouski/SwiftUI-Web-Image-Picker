@@ -45,11 +45,14 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
 
     /// Extra page URLs to load after the primary field (and any user-added rows), in order. Images are merged into one grid with duplicates removed.
     ///
-    /// Host apps can pre-seed several pages; invalid schemes are skipped. Discovery runs sequentially to keep ordering predictable.
+    /// Host apps can pre-seed several pages; invalid schemes are skipped. Discovery runs sequentially to keep ordering predictable. Used only when ``isMultiplePageEntryEnabled`` is `true`.
     public var additionalPageURLs: [URL]
 
+    /// When `true`, the picker shows extra page URL fields and aggregates ``additionalPageURLs`` with the primary URL in one load. When `false` (the default), only the primary URL field is used.
+    public var isMultiplePageEntryEnabled: Bool
+
     /// When `true`, the picker calls ``WebImagePickerViewModel/loadPage()`` automatically the first time it appears if
-    /// ``initialURLString`` (or ``additionalPageURLs``) provides a usable URL. Default `false`.
+    /// ``initialURLString`` (or, when ``isMultiplePageEntryEnabled`` is `true`, ``additionalPageURLs``) provides a usable URL. Default `false`.
     public var automaticallyLoadOnAppear: Bool
 
     /// Upper bound on how many images to keep from each page after discovery, before they are merged into the grid.
@@ -116,7 +119,8 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     ///   - maximumImageDownloadBytes: Upper bound on each image response.
     ///   - extractionMode: ``WebImageExtractionMode/staticHTML`` or ``WebImageExtractionMode/webView``.
     ///   - initialURLString: Optional URL string shown in the entry field when the picker first appears.
-    ///   - additionalPageURLs: Ordered extra pages to aggregate with the primary URL and any user-added URLs.
+    ///   - additionalPageURLs: Ordered extra pages to aggregate with the primary URL and any user-added URLs (requires ``isMultiplePageEntryEnabled``).
+    ///   - isMultiplePageEntryEnabled: When `true`, enables extra page URL rows and multi-page aggregation.
     ///   - automaticallyLoadOnAppear: Begin discovery automatically on first appearance when URLs are available.
     ///   - maximumDiscoveredImagesPerPage: Optional maximum images retained per page after discovery; `nil` means unlimited.
     ///   - discoveredImageSort: Order applied per page after deduplication and before the per-page cap.
@@ -146,6 +150,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         extractionMode: WebImageExtractionMode = .staticHTML,
         initialURLString: String? = nil,
         additionalPageURLs: [URL] = [],
+        isMultiplePageEntryEnabled: Bool = false,
         automaticallyLoadOnAppear: Bool = false,
         maximumDiscoveredImagesPerPage: Int? = nil,
         discoveredImageSort: DiscoveredImageSort = .discoveryOrder,
@@ -175,6 +180,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         self.extractionMode = extractionMode
         self.initialURLString = initialURLString
         self.additionalPageURLs = additionalPageURLs
+        self.isMultiplePageEntryEnabled = isMultiplePageEntryEnabled
         self.automaticallyLoadOnAppear = automaticallyLoadOnAppear
         self.maximumDiscoveredImagesPerPage = maximumDiscoveredImagesPerPage.flatMap { $0 > 0 ? $0 : nil }
         self.discoveredImageSort = discoveredImageSort
@@ -224,6 +230,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
             && lhs.extractionMode == rhs.extractionMode
             && lhs.initialURLString == rhs.initialURLString
             && lhs.additionalPageURLs == rhs.additionalPageURLs
+            && lhs.isMultiplePageEntryEnabled == rhs.isMultiplePageEntryEnabled
             && lhs.automaticallyLoadOnAppear == rhs.automaticallyLoadOnAppear
             && lhs.maximumDiscoveredImagesPerPage == rhs.maximumDiscoveredImagesPerPage
             && lhs.discoveredImageSort == rhs.discoveredImageSort
@@ -254,6 +261,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         hasher.combine(extractionMode)
         hasher.combine(initialURLString)
         hasher.combine(additionalPageURLs)
+        hasher.combine(isMultiplePageEntryEnabled)
         hasher.combine(automaticallyLoadOnAppear)
         hasher.combine(maximumDiscoveredImagesPerPage)
         hasher.combine(discoveredImageSort)

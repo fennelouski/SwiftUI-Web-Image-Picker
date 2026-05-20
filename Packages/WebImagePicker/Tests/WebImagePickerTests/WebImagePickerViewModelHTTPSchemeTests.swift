@@ -21,7 +21,10 @@ final class WebImagePickerViewModelHTTPSchemeTests: XCTestCase {
     }
 
     func testExtraRowOnlyHTTPShowsHTTPNotAllowed() async throws {
-        let config = WebImagePickerConfiguration(allowedURLSchemes: ["https"])
+        let config = WebImagePickerConfiguration(
+            allowedURLSchemes: ["https"],
+            isMultiplePageEntryEnabled: true
+        )
         let model = WebImagePickerViewModel(configuration: config, extractorOverride: EmptyExtractor())
         model.urlString = ""
         model.addExtraPageRow()

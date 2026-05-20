@@ -45,7 +45,10 @@ final class WebImagePickerViewModelMultiURLTests: XCTestCase {
             ]
         )
 
-        let config = WebImagePickerConfiguration(additionalPageURLs: [p1, p2])
+        let config = WebImagePickerConfiguration(
+            additionalPageURLs: [p1, p2],
+            isMultiplePageEntryEnabled: true
+        )
         let model = WebImagePickerViewModel(configuration: config, extractorOverride: extractor)
         XCTAssertTrue(model.urlString.isEmpty)
         XCTAssertTrue(model.canStartLoad)
@@ -55,6 +58,27 @@ final class WebImagePickerViewModelMultiURLTests: XCTestCase {
         XCTAssertEqual(model.phase, .browsing)
         XCTAssertEqual(model.discovered.map(\.sourceURL), [i1, i2])
         XCTAssertEqual(log.urls, [p1, p2])
+    }
+
+    func testAdditionalPageURLsIgnoredWhenMultiplePageEntryDisabled() async throws {
+        let p1 = URL(string: "https://one.example/")!
+        let i1 = URL(string: "https://cdn.example/a.png")!
+
+        let log = PageCallLog()
+        let extractor = OrderedMockExtractor(
+            log: log,
+            imagesByPage: [p1: [DiscoveredImage(sourceURL: i1, accessibilityLabel: nil)]]
+        )
+
+        let config = WebImagePickerConfiguration(additionalPageURLs: [p1])
+        let model = WebImagePickerViewModel(configuration: config, extractorOverride: extractor)
+        XCTAssertFalse(model.canStartLoad)
+
+        await model.loadPage()
+
+        XCTAssertEqual(model.phase, .urlEntry)
+        XCTAssertTrue(model.discovered.isEmpty)
+        XCTAssertTrue(log.urls.isEmpty)
     }
 
     func testPartialFailureStillBrowsesWithNotice() async throws {
@@ -67,7 +91,10 @@ final class WebImagePickerViewModelMultiURLTests: XCTestCase {
             images: [DiscoveredImage(sourceURL: i1, accessibilityLabel: nil)]
         )
 
-        let config = WebImagePickerConfiguration(additionalPageURLs: [p1, p2])
+        let config = WebImagePickerConfiguration(
+            additionalPageURLs: [p1, p2],
+            isMultiplePageEntryEnabled: true
+        )
         let model = WebImagePickerViewModel(configuration: config, extractorOverride: extractor)
         await model.loadPage()
 

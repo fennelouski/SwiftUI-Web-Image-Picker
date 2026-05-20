@@ -84,11 +84,13 @@ final class WebImagePickerViewModel {
         if phase == .loadingPage { return false }
         let primary = urlString.trimmingCharacters(in: .whitespacesAndNewlines)
         if !primary.isEmpty { return true }
+        guard configuration.isMultiplePageEntryEnabled else { return false }
         if !configuration.additionalPageURLs.isEmpty { return true }
         return extraPageRows.contains { !$0.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
     }
 
     func addExtraPageRow() {
+        guard configuration.isMultiplePageEntryEnabled else { return }
         extraPageRows.append(WebImagePickerExtraPageRow())
     }
 
@@ -210,19 +212,21 @@ final class WebImagePickerViewModel {
             }
         }
 
-        for u in configuration.additionalPageURLs {
-            appendPage(u)
-        }
-
-        for row in extraPageRows {
-            let t = row.text.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !t.isEmpty else { continue }
-            let resolved = PageURLNormalization.resolve(trimmedInput: t, allowedURLSchemes: configuration.allowedURLSchemes)
-            switch resolved {
-            case .success(let u):
+        if configuration.isMultiplePageEntryEnabled {
+            for u in configuration.additionalPageURLs {
                 appendPage(u)
-            case .invalid, .disallowedScheme:
-                recordFailure(trimmedInput: t, result: resolved)
+            }
+
+            for row in extraPageRows {
+                let t = row.text.trimmingCharacters(in: .whitespacesAndNewlines)
+                guard !t.isEmpty else { continue }
+                let resolved = PageURLNormalization.resolve(trimmedInput: t, allowedURLSchemes: configuration.allowedURLSchemes)
+                switch resolved {
+                case .success(let u):
+                    appendPage(u)
+                case .invalid, .disallowedScheme:
+                    recordFailure(trimmedInput: t, result: resolved)
+                }
             }
         }
 

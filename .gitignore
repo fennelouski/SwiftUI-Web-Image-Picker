@@ -3,3 +3,4 @@
 Packages/WebImagePicker/.build/
 *.xcodeproj/xcuserdata/
 *.xcworkspace/xcuserdata/
+**/.swiftpm/xcode/xcuserdata/

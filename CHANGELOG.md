@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- **`WebImagePickerConfiguration.isMultiplePageEntryEnabled`** — opt-in multi-page URL entry (extra rows in the picker UI and aggregation of `additionalPageURLs` with the primary URL). Default **`false`**.
+
 ## [1.1.0] — 2026-05-04
 
 First release after [1.0.0](https://github.com/fennelouski/SwiftUI-Web-Image-Picker/releases/tag/1.0.0) with the current package feature set. Full commit range: [`1.0.0...1.1.0`](https://github.com/fennelouski/SwiftUI-Web-Image-Picker/compare/1.0.0...1.1.0).

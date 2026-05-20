@@ -192,7 +192,8 @@ Default is **`.staticHTML`**. On your configuration, **`configuration.extraction
 | Property | Role |
 |----------|------|
 | `initialURLString` | Optional text pre-filled in the URL field when the picker appears (whitespace trimmed); `nil` or empty = blank field. |
-| `additionalPageURLs` | Extra page URLs to load in order and merge into one grid (with deduplication); host can pre-seed several pages. |
+| `isMultiplePageEntryEnabled` | When `true`, shows extra page URL rows and aggregates `additionalPageURLs` with the primary URL. Default **`false`** (single URL field only). |
+| `additionalPageURLs` | Extra page URLs to load in order and merge into one grid (with deduplication); host can pre-seed several pages. Used only when **`isMultiplePageEntryEnabled`** is `true`. |
 | `maximumDiscoveredImagesPerPage` | Optional cap on candidates **per page** after deduplication and **`discoveredImageSort`**; `nil` = unlimited. Applies per page in multi-URL mode before cross-page merge. |
 | `discoveredImageSort` | Order applied per page before the per-page cap (default preserves extractor order). |
 | `similarImageDeduplication` | How aggressively to collapse URLs that may name the same asset (e.g. cache-busting query pairs). |

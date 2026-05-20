@@ -84,6 +84,16 @@ final class WebImagePickerConfigurationTests: XCTestCase {
         XCTAssertTrue(WebImagePickerConfiguration.default.additionalPageURLs.isEmpty)
     }
 
+    func testDefaultIsMultiplePageEntryEnabledIsFalse() {
+        XCTAssertFalse(WebImagePickerConfiguration.default.isMultiplePageEntryEnabled)
+    }
+
+    func testIsMultiplePageEntryEnabledAffectsEquality() {
+        let off = WebImagePickerConfiguration(isMultiplePageEntryEnabled: false)
+        let on = WebImagePickerConfiguration(isMultiplePageEntryEnabled: true)
+        XCTAssertNotEqual(off, on)
+    }
+
     func testDefaultMaximumDiscoveredImagesPerPageIsNil() {
         XCTAssertNil(WebImagePickerConfiguration.default.maximumDiscoveredImagesPerPage)
     }

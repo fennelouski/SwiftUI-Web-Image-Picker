@@ -176,44 +176,46 @@ public struct WebImagePicker: View {
                 }
             }
 
-            Section {
-                ForEach($model.extraPageRows) { $row in
-                    TextField(
-                        String(localized: String.LocalizationValue("webimage.extraPagePlaceholder"), bundle: WebImagePickerBundle.module),
-                        text: $row.text
-                    )
-                    .textContentType(.URL)
+            if model.configuration.isMultiplePageEntryEnabled {
+                Section {
+                    ForEach($model.extraPageRows) { $row in
+                        TextField(
+                            String(localized: String.LocalizationValue("webimage.extraPagePlaceholder"), bundle: WebImagePickerBundle.module),
+                            text: $row.text
+                        )
+                        .textContentType(.URL)
 #if os(iOS) || os(tvOS) || os(visionOS)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
-                    .keyboardType(.URL)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .keyboardType(.URL)
 #endif
 #if os(macOS)
-                    .textFieldStyle(.roundedBorder)
+                        .textFieldStyle(.roundedBorder)
 #endif
-                }
-                .onDelete(perform: model.removeExtraPageRows)
+                    }
+                    .onDelete(perform: model.removeExtraPageRows)
 
-                Button {
-                    model.addExtraPageRow()
-                } label: {
-                    Image(systemName: "plus.circle")
+                    Button {
+                        model.addExtraPageRow()
+                    } label: {
+                        Image(systemName: "plus.circle")
+                    }
+                    .accessibilityLabel(WebImagePickerSymbols.localized("webimage.addPage"))
+                } header: {
+                    Label {
+                        EmptyView()
+                    } icon: {
+                        Image(systemName: "doc.on.doc")
+                    }
+                    .labelStyle(.iconOnly)
+                    .accessibilityLabel(WebImagePickerSymbols.localized("webimage.additionalPagesSection"))
+                } footer: {
+                    Text(
+                        String(localized: String.LocalizationValue("webimage.additionalPagesFooter"), bundle: WebImagePickerBundle.module)
+                    )
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
                 }
-                .accessibilityLabel(WebImagePickerSymbols.localized("webimage.addPage"))
-            } header: {
-                Label {
-                    EmptyView()
-                } icon: {
-                    Image(systemName: "doc.on.doc")
-                }
-                .labelStyle(.iconOnly)
-                .accessibilityLabel(WebImagePickerSymbols.localized("webimage.additionalPagesSection"))
-            } footer: {
-                Text(
-                    String(localized: String.LocalizationValue("webimage.additionalPagesFooter"), bundle: WebImagePickerBundle.module)
-                )
-                .font(.footnote)
-                .foregroundStyle(.secondary)
             }
         }
     }
