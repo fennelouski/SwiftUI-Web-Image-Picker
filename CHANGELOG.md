@@ -6,9 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.2.0] — 2026-05-20
+
 ### Added
 
 - **`WebImagePickerConfiguration.isMultiplePageEntryEnabled`** — opt-in multi-page URL entry (extra rows in the picker UI and aggregation of `additionalPageURLs` with the primary URL). Default **`false`**.
+- **Expanded picker localizations** — additional `Localizable.strings` bundles for many languages and regional variants (beyond the original `en` / `es` pair).
+
+### Changed
+
+- **Picker chrome** — toolbar, navigation title, form actions, and selection summary use **SF Symbols** with localized accessibility labels instead of localized visible chrome text.
 
 ## [1.1.0] — 2026-05-04
 
