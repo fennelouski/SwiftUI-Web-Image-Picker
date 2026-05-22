@@ -278,22 +278,40 @@ public struct WebImagePicker: View {
                         .background(Color.red.opacity(0.1), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                         .accessibilityIdentifier("webimage.browsingDownloadError")
                 }
-                MasonryLayout(columns: masonryColumnCount, spacing: 8) {
-                    ForEach(model.discoveredForDisplay) { item in
-                        DiscoveredImageTile(
-                            item: item,
-                            selected: model.selectedURLs.contains(item.sourceURL),
-                            onTap: {
-                                if configuration.selectionLimit == 1 {
-                                    Task { await pickSingle(item) }
-                                } else {
-                                    model.toggleSelection(item)
+                GeometryReader { geometry in
+                    let imageCount = model.discoveredForDisplay.count
+                    let baseColumns = platformBaseColumnCount
+                    let columns = MasonryThumbnailScale.effectiveColumnCount(
+                        baseColumns: baseColumns,
+                        imageCount: imageCount
+                    )
+                    let minHeights = MasonryThumbnailScale.tileMinHeightsVsToday(imageCount: imageCount)
+                    let maxTileWidth = MasonryThumbnailScale.maxTileWidth(
+                        containerWidth: geometry.size.width,
+                        baseColumns: baseColumns,
+                        imageCount: imageCount
+                    )
+                    MasonryLayout(columns: columns, spacing: 8) {
+                        ForEach(model.discoveredForDisplay) { item in
+                            DiscoveredImageTile(
+                                item: item,
+                                selected: model.selectedURLs.contains(item.sourceURL),
+                                maxTileWidth: maxTileWidth,
+                                loadingMinHeight: minHeights.loading,
+                                failureMinHeight: minHeights.failure,
+                                onTap: {
+                                    if configuration.selectionLimit == 1 {
+                                        Task { await pickSingle(item) }
+                                    } else {
+                                        model.toggleSelection(item)
+                                    }
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
+                    .frame(width: geometry.size.width)
                 }
-                .frame(maxWidth: .infinity)
+                .frame(minHeight: masonryGridMinHeight(imageCount: model.discoveredForDisplay.count))
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
@@ -323,7 +341,7 @@ public struct WebImagePicker: View {
         .accessibilityLabel(String.localizedStringWithFormat(accessibilityFormat, n, limit))
     }
 
-    private var masonryColumnCount: Int {
+    private var platformBaseColumnCount: Int {
 #if os(iOS) || os(tvOS) || os(visionOS)
         horizontalSizeClass == .regular ? 4 : 2
 #elseif os(macOS)
@@ -331,6 +349,12 @@ public struct WebImagePicker: View {
 #else
         2
 #endif
+    }
+
+    private func masonryGridMinHeight(imageCount: Int) -> CGFloat {
+        guard imageCount > 0 else { return 0 }
+        let scale = MasonryThumbnailScale.linearScaleVsToday(imageCount: imageCount)
+        return MasonryThumbnailScale.todayLoadingMinHeight * scale
     }
 
     private func pickSingle(_ item: DiscoveredImage) async {
@@ -365,6 +389,9 @@ public struct WebImagePicker: View {
 private struct DiscoveredImageTile: View {
     let item: DiscoveredImage
     let selected: Bool
+    var maxTileWidth: CGFloat?
+    var loadingMinHeight: CGFloat = MasonryThumbnailScale.todayLoadingMinHeight
+    var failureMinHeight: CGFloat = MasonryThumbnailScale.todayFailureMinHeight
     let onTap: () -> Void
 
     var body: some View {
@@ -373,18 +400,21 @@ private struct DiscoveredImageTile: View {
                 switch phase {
                 case .empty:
                     ProgressView()
+                        .frame(maxWidth: tileContentMaxWidth, alignment: .center)
+                        .frame(minHeight: loadingMinHeight)
                         .frame(maxWidth: .infinity)
-                        .frame(minHeight: 120)
                         .background(Color.secondary.opacity(0.12))
                 case .success(let image):
                     image
                         .resizable()
                         .scaledToFit()
+                        .frame(maxWidth: tileContentMaxWidth)
                         .frame(maxWidth: .infinity)
                 case .failure:
                     Color.secondary.opacity(0.12)
+                        .frame(maxWidth: tileContentMaxWidth)
+                        .frame(minHeight: failureMinHeight)
                         .frame(maxWidth: .infinity)
-                        .frame(minHeight: 100)
                         .overlay {
                             Image(systemName: "photo")
                                 .foregroundStyle(.secondary)
@@ -411,6 +441,11 @@ private struct DiscoveredImageTile: View {
                 ?? String(localized: String.LocalizationValue("webimage.a11y.imageFromWeb"), bundle: WebImagePickerBundle.module)
         )
         .accessibilityAddTraits(selected ? .isSelected : [])
+    }
+
+    private var tileContentMaxWidth: CGFloat? {
+        guard let maxTileWidth, maxTileWidth.isFinite, maxTileWidth > 0 else { return nil }
+        return maxTileWidth
     }
 }
 

@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.2.2] — 2026-05-22
+
+### Changed
+
+- **Browsing grid thumbnails** — masonry column count and tile dimensions now scale with the number of displayed images: raised baseline at 40+ images (never smaller than the previous layout), up to 3× today’s size when only a few images are shown.
+
 ## [1.2.1] — 2026-05-20
 
 ### Changed

@@ -27,7 +27,7 @@ When you are ready to integrate, follow **[Installation](#installation)** and **
 - **URL entry first** — Text field with URL-friendly keyboard options where supported; loads the page on demand. Bare hosts (e.g. `example.com/path`) are **best-effort normalized** by prepending an allowed scheme (`https` preferred, then `http`, then other schemes in `allowedURLSchemes`). Users can still type an explicit `http://` URL when `http` is allowed.
 - **Static HTML extraction** — Collects `<img>`, `srcset`, `<picture>` sources, Open Graph, Twitter card images, and **`url(...)` targets** from inline `style` attributes plus `<style>` blocks for `background-image` / `background` declarations; resolves relative URLs and deduplicates.
 - **WebView extraction mode** — Optional `WKWebView`-based discovery for JavaScript-rendered pages.
-- **Masonry layout** — Custom SwiftUI `Layout` with staggered columns (column count adapts by platform / size class).
+- **Masonry layout** — Custom SwiftUI `Layout` with staggered columns (column count adapts by platform, size class, and image count — sparse pages show larger thumbnails, up to 3× the legacy size).
 - **Configurable** — Selection limit, timeouts, size caps, allowed URL schemes, user agent, and extraction mode (extensible for future strategies).
 - **Cross-platform** — iOS, macOS, visionOS, and tvOS (see [Requirements](#requirements)).
 
@@ -47,19 +47,19 @@ For **exact, step-by-step integration** (including SPM path rules, Xcode, entitl
 
 **Repository:** [github.com/fennelouski/SwiftUI-Web-Image-Picker](https://github.com/fennelouski/SwiftUI-Web-Image-Picker)
 
-**URL-based (recommended for most apps):** depend on the repo root and a [SemVer tag](https://github.com/fennelouski/SwiftUI-Web-Image-Picker/tags) (e.g. `1.2.1`):
+**URL-based (recommended for most apps):** depend on the repo root and a [SemVer tag](https://github.com/fennelouski/SwiftUI-Web-Image-Picker/tags) (e.g. `1.2.2`):
 
 ```swift
 dependencies: [
-    .package(name: "WebImagePicker", url: "https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git", from: "1.2.1"),
+    .package(name: "WebImagePicker", url: "https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git", from: "1.2.2"),
 ]
 ```
 
-A rule such as `from: "1.0.0"` still resolves any compatible **1.x** release (including `1.2.1`). After a new tag is published:
+A rule such as `from: "1.0.0"` still resolves any compatible **1.x** release (including `1.2.2`). After a new tag is published:
 
 - **Xcode** — **File → Packages → Update to Latest Package Versions**, or right-click the package in the Project Navigator → **Update Package**.
 - **SwiftPM CLI** — run **`swift package update`** from the directory that contains `Package.swift`.
-- **Pinned revision / exact version** — bump your rule (for example to `from: "1.2.1"`) and resolve again.
+- **Pinned revision / exact version** — bump your rule (for example to `from: "1.2.2"`) and resolve again.
 
 If you use a **local path** dependency (clone next to your app), **`git pull`** inside `SwiftUI-Web-Image-Picker` updates sources; match [releases](https://github.com/fennelouski/SwiftUI-Web-Image-Picker/releases) or tags when you care about a specific version.
 
