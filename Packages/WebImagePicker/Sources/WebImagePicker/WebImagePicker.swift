@@ -38,6 +38,7 @@ public struct WebImagePicker: View {
 
     @State private var model: WebImagePickerViewModel
     @State private var didAttemptAutoLoad = false
+    @State private var masonryContentHeight: CGFloat = 0
 
 #if os(iOS) || os(tvOS) || os(visionOS)
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -310,8 +311,19 @@ public struct WebImagePicker: View {
                         }
                     }
                     .frame(width: geometry.size.width)
+                    .background {
+                        GeometryReader { contentGeometry in
+                            Color.clear.preference(
+                                key: MasonryHeightPreferenceKey.self,
+                                value: contentGeometry.size.height
+                            )
+                        }
+                    }
                 }
-                .frame(minHeight: masonryGridMinHeight(imageCount: model.discoveredForDisplay.count))
+                .onPreferenceChange(MasonryHeightPreferenceKey.self) { height in
+                    masonryContentHeight = height
+                }
+                .frame(height: max(masonryContentHeight, masonryFallbackMinHeight(imageCount: model.discoveredForDisplay.count)))
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
@@ -351,7 +363,7 @@ public struct WebImagePicker: View {
 #endif
     }
 
-    private func masonryGridMinHeight(imageCount: Int) -> CGFloat {
+    private func masonryFallbackMinHeight(imageCount: Int) -> CGFloat {
         guard imageCount > 0 else { return 0 }
         let scale = MasonryThumbnailScale.linearScaleVsToday(imageCount: imageCount)
         return MasonryThumbnailScale.todayLoadingMinHeight * scale
@@ -381,6 +393,15 @@ public struct WebImagePicker: View {
         } catch {
             model.errorMessage = WebImagePickerViewModel.userMessage(for: error)
         }
+    }
+}
+
+// MARK: - Preference Key
+
+private struct MasonryHeightPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
     }
 }
 
