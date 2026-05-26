@@ -47,7 +47,9 @@ final class StaticHTMLExtractorTests: XCTestCase {
         <img src="https://cdn.example.com/x.png?v=2" alt="second">
         """#
         let page = URL(string: "https://example.com/")!
-        let items = try StaticHTMLExtractor.discover(from: html, pageURL: page, configuration: defaultConfig)
+        var config = defaultConfig
+        config.similarImageDeduplication = .disabled
+        let items = try StaticHTMLExtractor.discover(from: html, pageURL: page, configuration: config)
         XCTAssertEqual(items.count, 2)
     }
 

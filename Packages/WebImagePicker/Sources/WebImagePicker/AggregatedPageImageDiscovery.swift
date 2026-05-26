@@ -76,8 +76,10 @@ enum AggregatedPageImageDiscovery {
             }
         }
 
+        let promoted = await LargestImagePromotion.promoted(images: merged, configuration: configuration)
+
         return MergeResult(
-            images: merged,
+            images: promoted,
             failedPageURLs: failed,
             skippedHTTPImageURLsDueToAllowedSchemes: skippedHTTPTotal
         )

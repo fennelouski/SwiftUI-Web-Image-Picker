@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "कोणत्याही पृष्ठावरून प्रतिमा लोड करता आल्या नाहीत.";
 "webimage.partialPageFailuresFormat" = "%lld पृष्ठ(े) लोड करता आली नाहीत. इतर पृष्ठांच्या प्रतिमा दाखवल्या जात आहेत.";
 "webimage.searchPlaceholder" = "alt, शीर्षक किंवा URL नुसार शोधा";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

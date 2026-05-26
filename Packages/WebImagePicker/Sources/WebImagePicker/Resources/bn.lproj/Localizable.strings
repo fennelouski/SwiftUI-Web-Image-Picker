@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "কোনো পেজ থেকেই ছবি লোড করা যায়নি।";
 "webimage.partialPageFailuresFormat" = "%lld টি পেজ লোড করা যায়নি। অন্য পেজের ছবি দেখানো হচ্ছে।";
 "webimage.searchPlaceholder" = "alt, শিরোনাম বা URL দিয়ে অনুসন্ধান";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

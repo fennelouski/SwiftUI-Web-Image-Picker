@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "မည်သည့်စာမျက်နှာမှမဆို ပုံများ ဖွင့်၍မရပါ။";
 "webimage.partialPageFailuresFormat" = "%lld စာမျက်နှာ ဖွင့်၍မရပါ။ အခြားစာမျက်နှာများမှ ပုံများ ပြသနေသည်။";
 "webimage.searchPlaceholder" = "alt၊ ခေါင်းစဉ် သို့မဟုတ် URL ဖြင့် ရှာဖွေရန်";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

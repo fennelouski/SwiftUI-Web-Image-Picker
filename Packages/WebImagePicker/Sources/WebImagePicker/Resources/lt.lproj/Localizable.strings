@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "Nepavyko įkelti vaizdų iš nė vieno puslapio.";
 "webimage.partialPageFailuresFormat" = "%lld puslapis(-iai) nepavyko įkelti. Rodomi vaizdai iš kitų puslapių.";
 "webimage.searchPlaceholder" = "Ieškoti pagal alt, pavadinimą arba URL";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

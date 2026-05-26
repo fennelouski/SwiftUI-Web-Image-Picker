@@ -39,6 +39,7 @@ public struct WebImagePicker: View {
     @State private var model: WebImagePickerViewModel
     @State private var didAttemptAutoLoad = false
     @State private var masonryContentHeight: CGFloat = 0
+    @State private var isHTTPWarningExpanded = true
 
 #if os(iOS) || os(tvOS) || os(visionOS)
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -78,7 +79,23 @@ public struct WebImagePicker: View {
 #endif
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    WebImagePickerSymbols.navigationTitle
+                    if model.phase == .browsing, let faviconURL = model.faviconURL {
+                        AsyncImage(url: faviconURL) { phase in
+                            switch phase {
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20, height: 20)
+                                    .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+                            default:
+                                WebImagePickerSymbols.navigationTitle
+                            }
+                        }
+                        .accessibilityLabel(WebImagePickerSymbols.localized("webimage.navTitle"))
+                    } else {
+                        WebImagePickerSymbols.navigationTitle
+                    }
                 }
                 ToolbarItem(placement: .cancellationAction) {
                     WebImagePickerSymbols.symbolButton(
@@ -151,6 +168,9 @@ public struct WebImagePicker: View {
 #if os(macOS)
                     .textFieldStyle(.roundedBorder)
 #endif
+                    .onChange(of: model.urlString) {
+                        model.schedulePrefetch()
+                    }
                 Button {
                     Task { await model.loadPage() }
                 } label: {
@@ -252,6 +272,20 @@ public struct WebImagePicker: View {
                 )
                 .accessibilityIdentifier("webimage.imageMetadataSearch")
 
+                if let sourceDisplay = model.sourceURLDisplayString {
+                    HStack(spacing: 4) {
+                        Image(systemName: "link")
+                            .font(.caption2)
+                        Text(sourceDisplay)
+                            .font(.caption)
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                    }
+                    .foregroundStyle(.tertiary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .accessibilityIdentifier("webimage.sourceURLDisplay")
+                }
+
                 if let notice = model.aggregationNotice {
                     Text(notice)
                         .font(.subheadline)
@@ -262,13 +296,37 @@ public struct WebImagePicker: View {
                         .accessibilityIdentifier("webimage.aggregationNotice")
                 }
                 if let httpSkip = model.httpSkippedImagesNotice {
-                    Text(httpSkip)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(12)
-                        .background(Color.secondary.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                        .accessibilityIdentifier("webimage.httpSkippedImagesNotice")
+                    VStack(alignment: .leading, spacing: 0) {
+                        Button {
+                            withAnimation(.easeInOut(duration: 0.25)) {
+                                isHTTPWarningExpanded.toggle()
+                            }
+                        } label: {
+                            HStack(spacing: 6) {
+                                Image(systemName: "exclamationmark.triangle")
+                                    .font(.subheadline)
+                                Text(
+                                    isHTTPWarningExpanded
+                                        ? httpSkip
+                                        : String(
+                                            localized: String.LocalizationValue("webimage.httpSkippedImagesCollapsed"),
+                                            bundle: WebImagePickerBundle.module
+                                          )
+                                )
+                                .font(.subheadline)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .lineLimit(isHTTPWarningExpanded ? nil : 1)
+                                Image(systemName: "chevron.down")
+                                    .font(.caption2.weight(.semibold))
+                                    .rotationEffect(.degrees(isHTTPWarningExpanded ? 0 : -90))
+                            }
+                            .foregroundStyle(.secondary)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    .padding(12)
+                    .background(Color.secondary.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .accessibilityIdentifier("webimage.httpSkippedImagesNotice")
                 }
                 if let message = model.errorMessage {
                     Text(message)
@@ -432,14 +490,8 @@ private struct DiscoveredImageTile: View {
                         .frame(maxWidth: tileContentMaxWidth)
                         .frame(maxWidth: .infinity)
                 case .failure:
-                    Color.secondary.opacity(0.12)
-                        .frame(maxWidth: tileContentMaxWidth)
-                        .frame(minHeight: failureMinHeight)
-                        .frame(maxWidth: .infinity)
-                        .overlay {
-                            Image(systemName: "photo")
-                                .foregroundStyle(.secondary)
-                        }
+                    EmptyView()
+                        .frame(width: 0, height: 0)
                 @unknown default:
                     EmptyView()
                 }

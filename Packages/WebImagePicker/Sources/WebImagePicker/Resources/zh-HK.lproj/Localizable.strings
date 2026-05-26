@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "無法從任何頁面載入圖片。";
 "webimage.partialPageFailuresFormat" = "%lld 個頁面無法載入。將顯示其他頁面的圖片。";
 "webimage.searchPlaceholder" = "依替代文字、標題或 URL 搜尋";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

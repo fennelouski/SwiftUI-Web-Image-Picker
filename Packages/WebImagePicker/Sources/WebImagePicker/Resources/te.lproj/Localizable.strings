@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "ఏ పేజీ నుండి చిత్రాలు లోడ్ చేయడం సాధ్యపడలేదు.";
 "webimage.partialPageFailuresFormat" = "%lld పేజీ(లు) లోడ్ చేయడం సాధ్యపడలేదు. ఇతర పేజీల నుండి చిత్రాలు చూపించబడుతున్నాయి.";
 "webimage.searchPlaceholder" = "alt, శీర్షిక లేదా URL ద్వారా వెతకండి";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

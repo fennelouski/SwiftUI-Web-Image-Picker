@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "Hindi ma-load ang mga larawan mula sa alinman sa mga pahina.";
 "webimage.partialPageFailuresFormat" = "Hindi ma-load ang %lld pahina. Ipinapakita ang mga larawan mula sa iba pang mga pahina.";
 "webimage.searchPlaceholder" = "Maghanap ayon sa alt, pamagat, o URL";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

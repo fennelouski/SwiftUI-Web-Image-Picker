@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.3.0] — 2026-05-26
+
+### Added
+
+- **Largest-image promotion** — probes image headers (ranged GET) and promotes the top 10% by pixel area to the front of the browsing grid (`LargestImagePromotion`).
+- **WiFi prefetch** — when on a non-expensive network, the picker speculatively fetches image discovery results 1 second after the URL field changes, so tapping "Load" is nearly instant on WiFi.
+- **Favicon in toolbar** — the browsing phase shows the page favicon as the navigation title image (falls back to the SF Symbol).
+- **Source URL display** — a subtle link caption below the search bar shows the loaded page host/path.
+- **Collapsible HTTP-skipped-images warning** — the notice can now be collapsed to a single line; separate release/debug wording hides developer-only advice from end-users.
+
+### Changed
+
+- **Default deduplication strategy** — `similarImageDeduplication` now defaults to `.normalizedResourceURL` instead of `.disabled`.
+- **Failed-image tiles** — tiles for images that fail to load are hidden (`EmptyView`) instead of showing a placeholder.
+
 ## [1.2.2] — 2026-05-22
 
 ### Changed

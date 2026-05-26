@@ -98,8 +98,8 @@ final class WebImagePickerConfigurationTests: XCTestCase {
         XCTAssertNil(WebImagePickerConfiguration.default.maximumDiscoveredImagesPerPage)
     }
 
-    func testDefaultSimilarImageDeduplicationIsDisabled() {
-        XCTAssertEqual(WebImagePickerConfiguration.default.similarImageDeduplication, .disabled)
+    func testDefaultSimilarImageDeduplicationIsNormalizedResourceURL() {
+        XCTAssertEqual(WebImagePickerConfiguration.default.similarImageDeduplication, .normalizedResourceURL)
     }
 
     func testDefaultImageDimensionBoundsAreNil() {

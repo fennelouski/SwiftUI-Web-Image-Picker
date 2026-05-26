@@ -19,7 +19,10 @@
 "webimage.error.noImagesFound" = "No images were found on this page.";
 "webimage.error.schemeNotAllowed" = "This URL scheme is not allowed.";
 "webimage.error.httpNotAllowed" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS or ask the app developer to allow HTTP in WebImagePicker configuration and App Transport Security.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.skippedHTTPImagesNoticeFormat" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs, or ask the app developer to allow HTTP in WebImagePicker configuration and App Transport Security.";
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";
 "webimage.loadPage" = "Load page";
 "webimage.loading" = "Loading";
 "webimage.navTitle" = "Web images";

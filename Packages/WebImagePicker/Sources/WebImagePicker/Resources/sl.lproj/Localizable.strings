@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "Slik ni bilo mogoče naložiti z nobene strani.";
 "webimage.partialPageFailuresFormat" = "%lld strani(e) ni bilo mogoče naložiti. Prikazane so slike z ostalih strani.";
 "webimage.searchPlaceholder" = "Išči po alt, naslovu ali URL-ju";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "ਕਿਸੇ ਵੀ ਪੰਨੇ ਤੋਂ ਚਿੱਤਰ ਲੋਡ ਨਹੀਂ ਹੋ ਸਕੇ।";
 "webimage.partialPageFailuresFormat" = "%lld ਪੰਨੇ ਲੋਡ ਨਹੀਂ ਹੋ ਸਕੇ। ਦੂਜੇ ਪੰਨਿਆਂ ਦੇ ਚਿੱਤਰ ਦਿਖਾਏ ਜਾ ਰਹੇ ਹਨ।";
 "webimage.searchPlaceholder" = "alt, ਸਿਰਲੇਖ ਜਾਂ URL ਨਾਲ ਖੋਜੋ";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

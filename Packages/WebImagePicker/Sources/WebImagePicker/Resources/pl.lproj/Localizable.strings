@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "Nie można załadować obrazów z żadnej ze stron.";
 "webimage.partialPageFailuresFormat" = "%lld strona/stron nie mogła zostać załadowana. Wyświetlane są obrazy z pozostałych stron.";
 "webimage.searchPlaceholder" = "Szukaj według alt, tytułu lub URL";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "எந்த பக்கத்திலிருந்தும் படங்களை ஏற்ற முடியவில்லை.";
 "webimage.partialPageFailuresFormat" = "%lld பக்கம்/பக்கங்கள் ஏற்ற முடியவில்லை. மற்ற பக்கங்களிலிருந்து படங்கள் காட்டப்படுகின்றன.";
 "webimage.searchPlaceholder" = "alt, தலைப்பு அல்லது URL மூலம் தேட";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

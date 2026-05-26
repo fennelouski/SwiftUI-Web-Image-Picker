@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "모든 페이지에서 이미지를 로드할 수 없습니다.";
 "webimage.partialPageFailuresFormat" = "%lld 페이지를 로드할 수 없습니다. 다른 페이지의 이미지가 표시됩니다.";
 "webimage.searchPlaceholder" = "alt, 제목 또는 URL로 검색";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

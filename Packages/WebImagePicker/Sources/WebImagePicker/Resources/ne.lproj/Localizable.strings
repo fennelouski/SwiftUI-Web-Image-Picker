@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "कुनै पनि पृष्ठबाट छविहरू लोड गर्न सकिएन।";
 "webimage.partialPageFailuresFormat" = "%lld पृष्ठ लोड गर्न सकिएन। अन्य पृष्ठहरूका छविहरू देखाइएका छन्।";
 "webimage.searchPlaceholder" = "alt, शीर्षक वा URL द्वारा खोज्नुहोस्";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

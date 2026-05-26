@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "Tókst ekki að hlaða myndir af neinni síðanna.";
 "webimage.partialPageFailuresFormat" = "%lld síður tókst ekki að hlaða inn. Myndir af hinum síðunum eru sýndar.";
 "webimage.searchPlaceholder" = "Leita eftir alt, titli eða URL";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

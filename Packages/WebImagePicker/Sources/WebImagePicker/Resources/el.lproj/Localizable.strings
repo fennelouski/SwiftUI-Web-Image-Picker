@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "Δεν ήταν δυνατή η φόρτωση εικόνων από καμία σελίδα.";
 "webimage.partialPageFailuresFormat" = "%lld σελίδα/ες δεν ήταν δυνατό να φορτωθεί/ούν. Εμφανίζονται εικόνες από τις άλλες σελίδες.";
 "webimage.searchPlaceholder" = "Αναζήτηση κατά alt, τίτλο ή URL";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

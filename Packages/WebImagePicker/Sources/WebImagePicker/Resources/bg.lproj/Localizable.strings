@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "Изображенията не можаха да бъдат заредени от нито една страница.";
 "webimage.partialPageFailuresFormat" = "%lld страница/и не можа/можаха да бъде/бъдат заредена/и. Изображенията от останалите страници се показват.";
 "webimage.searchPlaceholder" = "Търсене по alt, заглавие или URL";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

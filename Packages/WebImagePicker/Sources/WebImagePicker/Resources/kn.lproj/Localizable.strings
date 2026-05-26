@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "ಯಾವುದೇ ಪುಟದಿಂದ ಚಿತ್ರಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.";
 "webimage.partialPageFailuresFormat" = "%lld ಪುಟ(ಗಳು) ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಇತರ ಪುಟಗಳಿಂದ ಚಿತ್ರಗಳನ್ನು ತೋರಿಸಲಾಗಿದೆ.";
 "webimage.searchPlaceholder" = "alt, ಶೀರ್ಷಿಕೆ ಅಥವಾ URL ಮೂಲಕ ಹುಡುಕಿ";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

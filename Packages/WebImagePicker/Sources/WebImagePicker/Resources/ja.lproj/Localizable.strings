@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "いずれのページからも画像を読み込めませんでした。";
 "webimage.partialPageFailuresFormat" = "%lld ページを読み込めませんでした。他のページの画像が表示されています。";
 "webimage.searchPlaceholder" = "alt、タイトル、または URL で検索";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

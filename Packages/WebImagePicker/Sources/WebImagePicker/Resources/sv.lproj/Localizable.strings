@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "Det gick inte att läsa in bilder från någon av sidorna.";
 "webimage.partialPageFailuresFormat" = "%lld sida/sidor kunde inte läsas in. Bilder från de andra sidorna visas.";
 "webimage.searchPlaceholder" = "Sök efter alt, titel eller URL";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

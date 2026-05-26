@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "بارگذاری تصاویر از هیچ‌یک از صفحات ممکن نشد.";
 "webimage.partialPageFailuresFormat" = "%lld صفحه قابل بارگذاری نبود. تصاویر سایر صفحات نمایش داده می‌شوند.";
 "webimage.searchPlaceholder" = "جستجو بر اساس alt، عنوان یا آدرس";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

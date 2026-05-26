@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "Bilder konnten von keiner der Seiten geladen werden.";
 "webimage.partialPageFailuresFormat" = "%lld Seite(n) konnten nicht geladen werden. Bilder von den anderen Seiten werden angezeigt.";
 "webimage.searchPlaceholder" = "Nach Alt, Titel oder URL suchen";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

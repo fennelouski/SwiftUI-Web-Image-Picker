@@ -28,6 +28,8 @@ final class WebImagePickerViewModel {
     /// Shown when discovery skipped HTTP image URLs because `http` is not in ``WebImagePickerConfiguration/allowedURLSchemes``.
     var httpSkippedImagesNotice: String?
     var isConfirming: Bool = false
+    /// Page URLs that were successfully loaded in the most recent ``loadPage()`` call.
+    var loadedPageURLs: [URL] = []
 
     /// Recognized in-image text per ``DiscoveredImage/sourceURL`` when ``WebImagePickerConfiguration/isImageTextSearchEnabled`` is `true`. Filled asynchronously after load.
     internal private(set) var imageRecognizedTextByURL: [URL: String] = [:]
@@ -42,6 +44,14 @@ final class WebImagePickerViewModel {
     private let extractor: any PageImageExtractor
     private let discoveryListCache: DiscoveredImageListCache?
     private var imageTextSearchTask: Task<Void, Never>?
+
+    // MARK: - WiFi prefetch state
+
+    private let wifiMonitor = WiFiMonitor()
+    private var prefetchTask: Task<Void, Never>?
+    private var prefetchedResult: AggregatedPageImageDiscovery.MergeResult?
+    private var prefetchedPageURLs: [URL]?
+    private var lastPrefetchStartTime: Date?
 
     init(configuration: WebImagePickerConfiguration) {
         self.configuration = configuration
@@ -80,6 +90,31 @@ final class WebImagePickerViewModel {
         )
     }
 
+    /// The primary host used for favicon display.
+    var primaryHost: String? {
+        loadedPageURLs.first?.host
+    }
+
+    /// Favicon URL derived from the first loaded page.
+    var faviconURL: URL? {
+        guard let host = primaryHost else { return nil }
+        return URL(string: "https://\(host)/favicon.ico")
+    }
+
+    /// Display string for the source page URL(s) shown below the search bar.
+    var sourceURLDisplayString: String? {
+        guard !loadedPageURLs.isEmpty else { return nil }
+        if loadedPageURLs.count == 1, let url = loadedPageURLs.first {
+            var display = url.host ?? url.absoluteString
+            if let path = URLComponents(url: url, resolvingAgainstBaseURL: false)?.path,
+               path != "/", !path.isEmpty {
+                display += path
+            }
+            return display
+        }
+        return loadedPageURLs.compactMap(\.host).joined(separator: ", ")
+    }
+
     var canStartLoad: Bool {
         if phase == .loadingPage { return false }
         let primary = urlString.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -104,12 +139,20 @@ final class WebImagePickerViewModel {
         guard let pageURLs = resolveOrderedPageURLsOrSetError() else { return }
 
         phase = .loadingPage
-        let merge = await AggregatedPageImageDiscovery.discoverImages(
-            pageURLs: pageURLs,
-            configuration: configuration,
-            extractor: extractor,
-            discoveryListCache: discoveryListCache
-        )
+
+        let merge: AggregatedPageImageDiscovery.MergeResult
+        if let cached = prefetchedResult, prefetchedPageURLs == pageURLs {
+            merge = cached
+            cancelPrefetch()
+        } else {
+            cancelPrefetch()
+            merge = await AggregatedPageImageDiscovery.discoverImages(
+                pageURLs: pageURLs,
+                configuration: configuration,
+                extractor: extractor,
+                discoveryListCache: discoveryListCache
+            )
+        }
 
         if merge.images.isEmpty {
             if merge.failedPageURLs.count == pageURLs.count {
@@ -130,6 +173,8 @@ final class WebImagePickerViewModel {
         discovered = merge.images
         imageMetadataSearchQuery = ""
         selectedURLs = []
+        let failedSet = Set(merge.failedPageURLs)
+        loadedPageURLs = pageURLs.filter { !failedSet.contains($0) }
         phase = .browsing
         scheduleImageTextSearchIfNeeded()
         if !merge.failedPageURLs.isEmpty {
@@ -140,14 +185,31 @@ final class WebImagePickerViewModel {
             aggregationNotice = String.localizedStringWithFormat(format, merge.failedPageURLs.count)
         }
         if merge.skippedHTTPImageURLsDueToAllowedSchemes > 0 {
+            let formatKey: String
+#if DEBUG
+            formatKey = "webimage.skippedHTTPImagesNoticeFormat"
+#else
+            formatKey = "webimage.skippedHTTPImagesNoticeFormat.release"
+#endif
             let format = String(
-                localized: String.LocalizationValue("webimage.skippedHTTPImagesNoticeFormat"),
+                localized: String.LocalizationValue(formatKey),
                 bundle: WebImagePickerBundle.module
             )
             httpSkippedImagesNotice = String.localizedStringWithFormat(
                 format,
                 merge.skippedHTTPImageURLsDueToAllowedSchemes
             )
+#if DEBUG
+            let debugFormat = String(
+                localized: String.LocalizationValue("webimage.skippedHTTPImagesNoticeFormat"),
+                bundle: WebImagePickerBundle.module
+            )
+            let debugMessage = String.localizedStringWithFormat(
+                debugFormat,
+                merge.skippedHTTPImageURLsDueToAllowedSchemes
+            )
+            print("[WebImagePicker] \(debugMessage)")
+#endif
         }
     }
 
@@ -247,8 +309,19 @@ final class WebImagePickerViewModel {
                     bundle: WebImagePickerBundle.module
                 )
             case .disallowedHTTP:
+                let httpErrorKey: String
+#if DEBUG
+                httpErrorKey = "webimage.error.httpNotAllowed"
+                let debugMsg = String(
+                    localized: String.LocalizationValue(httpErrorKey),
+                    bundle: WebImagePickerBundle.module
+                )
+                print("[WebImagePicker] \(debugMsg)")
+#else
+                httpErrorKey = "webimage.error.httpNotAllowed.release"
+#endif
                 errorMessage = String(
-                    localized: String.LocalizationValue("webimage.error.httpNotAllowed"),
+                    localized: String.LocalizationValue(httpErrorKey),
                     bundle: WebImagePickerBundle.module
                 )
             }
@@ -260,6 +333,100 @@ final class WebImagePickerViewModel {
             bundle: WebImagePickerBundle.module
         )
         return nil
+    }
+
+    // MARK: - WiFi prefetch
+
+    /// Resolves page URLs using the same logic as ``resolveOrderedPageURLsOrSetError()``
+    /// but without mutating ``errorMessage``. Used by the prefetch path.
+    private func resolvePageURLsQuietly() -> [URL]? {
+        let allowed = Set(configuration.allowedURLSchemes.map { $0.lowercased() })
+        var urls: [URL] = []
+        var seenPages = Set<String>()
+
+        func appendPage(_ url: URL) {
+            guard let scheme = url.scheme?.lowercased(), allowed.contains(scheme) else { return }
+            let key = url.absoluteString
+            guard !seenPages.contains(key) else { return }
+            seenPages.insert(key)
+            urls.append(url)
+        }
+
+        let trimmedPrimary = urlString.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !trimmedPrimary.isEmpty {
+            if case .success(let u) = PageURLNormalization.resolve(
+                trimmedInput: trimmedPrimary,
+                allowedURLSchemes: configuration.allowedURLSchemes
+            ) {
+                appendPage(u)
+            }
+        }
+
+        if configuration.isMultiplePageEntryEnabled {
+            for u in configuration.additionalPageURLs {
+                appendPage(u)
+            }
+            for row in extraPageRows {
+                let t = row.text.trimmingCharacters(in: .whitespacesAndNewlines)
+                guard !t.isEmpty else { continue }
+                if case .success(let u) = PageURLNormalization.resolve(
+                    trimmedInput: t,
+                    allowedURLSchemes: configuration.allowedURLSchemes
+                ) {
+                    appendPage(u)
+                }
+            }
+        }
+
+        return urls.isEmpty ? nil : urls
+    }
+
+    func schedulePrefetch() {
+        prefetchTask?.cancel()
+        prefetchTask = nil
+
+        let monitor = wifiMonitor
+        let cfg = configuration
+        let ext = extractor
+        let cache = discoveryListCache
+
+        prefetchTask = Task { @MainActor [weak self] in
+            try? await Task.sleep(for: .seconds(1))
+            guard !Task.isCancelled, let self else { return }
+
+            guard let pageURLs = self.resolvePageURLsQuietly() else { return }
+            guard !Task.isCancelled else { return }
+
+            guard monitor.isOnWiFi else { return }
+
+            if let last = self.lastPrefetchStartTime {
+                let elapsed = Date().timeIntervalSince(last)
+                if elapsed < 1 {
+                    try? await Task.sleep(for: .seconds(1 - elapsed))
+                    guard !Task.isCancelled else { return }
+                }
+            }
+
+            self.lastPrefetchStartTime = Date()
+
+            let merge = await AggregatedPageImageDiscovery.discoverImages(
+                pageURLs: pageURLs,
+                configuration: cfg,
+                extractor: ext,
+                discoveryListCache: cache
+            )
+            guard !Task.isCancelled else { return }
+
+            self.prefetchedResult = merge
+            self.prefetchedPageURLs = pageURLs
+        }
+    }
+
+    private func cancelPrefetch() {
+        prefetchTask?.cancel()
+        prefetchTask = nil
+        prefetchedResult = nil
+        prefetchedPageURLs = nil
     }
 
     func toggleSelection(_ item: DiscoveredImage) {
@@ -277,6 +444,7 @@ final class WebImagePickerViewModel {
     }
 
     func beginChangingURL() {
+        cancelPrefetch()
         cancelImageTextSearchTask()
         discoveryListCache?.clear()
         imageRecognizedTextByURL = [:]
@@ -284,6 +452,7 @@ final class WebImagePickerViewModel {
         discovered = []
         imageMetadataSearchQuery = ""
         selectedURLs = []
+        loadedPageURLs = []
         errorMessage = nil
         aggregationNotice = nil
         httpSkippedImagesNotice = nil

@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "Beelde kon van geen van die bladsye gelaai word nie.";
 "webimage.partialPageFailuresFormat" = "%lld bladsy(e) kon nie gelaai word nie. Beelde van die ander bladsye word gewys.";
 "webimage.searchPlaceholder" = "Soek op alt, titel of URL";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

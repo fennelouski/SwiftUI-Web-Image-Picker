@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "Ezin izan da irudirik kargatu inongo orritatik.";
 "webimage.partialPageFailuresFormat" = "%lld orri ezin izan da/dira kargatu. Beste orrien irudiak erakusten dira.";
 "webimage.searchPlaceholder" = "Bilatu alt, titulu edo URL-aren arabera";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

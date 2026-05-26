@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "කිසිදු පිටුවෙන් රූප පූරණය කළ නොහැකි විය.";
 "webimage.partialPageFailuresFormat" = "පිටු %lld ක් පූරණය කළ නොහැකි විය. අනෙකුත් පිටු වලින් රූප පෙන්වේ.";
 "webimage.searchPlaceholder" = "alt, මාතෘකා හෝ URL මගින් සොයන්න";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "કોઈ પૃષ્ઠ પરથી છબીઓ લોડ કરી શકાઈ નહીં.";
 "webimage.partialPageFailuresFormat" = "%lld પૃષ્ઠ(ઓ) લોડ થઈ શક્યા નહીં. અન્ય પૃષ્ઠોની છબીઓ બતાવવામાં આવી છે.";
 "webimage.searchPlaceholder" = "alt, શીર્ષક અથવા URL દ્વારા શોધો";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

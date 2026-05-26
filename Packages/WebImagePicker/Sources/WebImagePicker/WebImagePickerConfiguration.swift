@@ -154,7 +154,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         automaticallyLoadOnAppear: Bool = false,
         maximumDiscoveredImagesPerPage: Int? = nil,
         discoveredImageSort: DiscoveredImageSort = .discoveryOrder,
-        similarImageDeduplication: SimilarImageDeduplicationStrategy = .disabled,
+        similarImageDeduplication: SimilarImageDeduplicationStrategy = .normalizedResourceURL,
         minimumImageDimensions: CGSize? = nil,
         maximumImageDimensions: CGSize? = nil,
         allowedImageTypeIdentifiers: Set<String>? = nil,

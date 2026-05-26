@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "Haiwezekani kupakia picha kutoka kurasa yoyote.";
 "webimage.partialPageFailuresFormat" = "Kurasa %lld hazikuweza kupakiwa. Picha kutoka kurasa nyingine zinaonyeshwa.";
 "webimage.searchPlaceholder" = "Tafuta kwa alt, kichwa, au URL";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

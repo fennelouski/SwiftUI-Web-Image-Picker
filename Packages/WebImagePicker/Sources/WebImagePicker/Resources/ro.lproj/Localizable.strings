@@ -33,3 +33,7 @@
 "webimage.error.allPagesFailed" = "Nu s-au putut încărca imagini de pe nicio pagină.";
 "webimage.partialPageFailuresFormat" = "%lld pagină(i) nu a/au putut fi încărcată(e). Imaginile de pe celelalte pagini sunt afișate.";
 "webimage.searchPlaceholder" = "Caută după alt, titlu sau URL";
+
+"webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
+"webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
+"webimage.httpSkippedImagesCollapsed" = "Some images were skipped";
