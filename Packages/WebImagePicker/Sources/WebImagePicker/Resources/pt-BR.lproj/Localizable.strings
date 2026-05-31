@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld página(s) não puderam ser carregadas. As imagens das outras páginas são exibidas.";
 "webimage.searchPlaceholder" = "Pesquisar por alt, título ou URL";
 
+"webimage.tile.copyImage" = "Copiar imagem";
+"webimage.tile.copyImageURL" = "Copiar URL da imagem";
+"webimage.tile.liftSubject" = "Recortar assunto";
+"webimage.tile.imageActions" = "Ações da imagem";
+"webimage.tile.preview" = "Visualizar";
+"webimage.tile.metadata" = "Informações da imagem";
+"webimage.tile.previewTitle" = "Visualizar";
+"webimage.tile.metadataTitle" = "Informações da imagem";
+"webimage.tile.done" = "Concluído";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Texto alternativo";
+"webimage.tile.metadata.title" = "Título";
+"webimage.tile.metadata.recognizedText" = "Texto reconhecido";
+"webimage.tile.metadata.contentType" = "Tipo de conteúdo";
+"webimage.tile.metadata.dimensions" = "Dimensões";
+"webimage.tile.metadata.loading" = "Carregando…";
+"webimage.tile.metadata.unknown" = "Desconhecido";
+"webimage.error.pasteboardCopyFailed" = "Não foi possível copiar para a área de transferência.";
+"webimage.error.subjectLiftFailed" = "Não foi possível recortar o assunto desta imagem.";
+"webimage.error.subjectLiftUnavailable" = "Recortar assunto não está disponível neste dispositivo.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

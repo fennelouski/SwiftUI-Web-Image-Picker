@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld หน้าไม่สามารถโหลดได้ แสดงรูปภาพจากหน้าอื่นๆ";
 "webimage.searchPlaceholder" = "ค้นหาตาม alt ชื่อเรื่อง หรือ URL";
 
+"webimage.tile.copyImage" = "คัดลอกรูปภาพ";
+"webimage.tile.copyImageURL" = "คัดลอก URL รูปภาพ";
+"webimage.tile.liftSubject" = "ตัดเรื่องออก";
+"webimage.tile.imageActions" = "การกระทำของรูปภาพ";
+"webimage.tile.preview" = "ดูตัวอย่าง";
+"webimage.tile.metadata" = "ข้อมูลรูปภาพ";
+"webimage.tile.previewTitle" = "ดูตัวอย่าง";
+"webimage.tile.metadataTitle" = "ข้อมูลรูปภาพ";
+"webimage.tile.done" = "เสร็จแล้ว";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "ข้อความแสดงแทน";
+"webimage.tile.metadata.title" = "ชื่อ";
+"webimage.tile.metadata.recognizedText" = "ข้อความที่ได้รับการยอมรับ";
+"webimage.tile.metadata.contentType" = "ประเภทเนื้อหา";
+"webimage.tile.metadata.dimensions" = "ขนาด";
+"webimage.tile.metadata.loading" = "กำลังโหลด...";
+"webimage.tile.metadata.unknown" = "ไม่ทราบ";
+"webimage.error.pasteboardCopyFailed" = "ไม่สามารถคัดลอกไปยังคลิปบอร์ดได้";
+"webimage.error.subjectLiftFailed" = "ไม่สามารถตัดวัตถุออกจากภาพนี้ได้";
+"webimage.error.subjectLiftUnavailable" = "หัวข้อที่ตัดออกไม่พร้อมใช้งานบนอุปกรณ์นี้";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

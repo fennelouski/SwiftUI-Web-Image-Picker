@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld бет жүктелмеді. Басқа беттердің кескіндері көрсетілуде.";
 "webimage.searchPlaceholder" = "Alt, тақырып немесе URL бойынша іздеу";
 
+"webimage.tile.copyImage" = "Кескінді көшіру";
+"webimage.tile.copyImageURL" = "Суреттің URL мекенжайын көшіру";
+"webimage.tile.liftSubject" = "Тақырыпты қиып алу";
+"webimage.tile.imageActions" = "Кескін әрекеттері";
+"webimage.tile.preview" = "Алдын ала қарау";
+"webimage.tile.metadata" = "Сурет туралы ақпарат";
+"webimage.tile.previewTitle" = "Алдын ала қарау";
+"webimage.tile.metadataTitle" = "Сурет туралы ақпарат";
+"webimage.tile.done" = "Дайын";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Балама мәтін";
+"webimage.tile.metadata.title" = "Тақырып";
+"webimage.tile.metadata.recognizedText" = "Танылған мәтін";
+"webimage.tile.metadata.contentType" = "Мазмұн түрі";
+"webimage.tile.metadata.dimensions" = "Өлшемдері";
+"webimage.tile.metadata.loading" = "Жүктелуде…";
+"webimage.tile.metadata.unknown" = "Белгісіз";
+"webimage.error.pasteboardCopyFailed" = "Буферге көшіру мүмкін болмады.";
+"webimage.error.subjectLiftFailed" = "Бұл суреттен тақырыпты кесіп алу мүмкін болмады.";
+"webimage.error.subjectLiftUnavailable" = "Қиып алынған нысан бұл құрылғыда қолжетімді емес.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

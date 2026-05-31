@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld σελίδα/ες δεν ήταν δυνατό να φορτωθεί/ούν. Εμφανίζονται εικόνες από τις άλλες σελίδες.";
 "webimage.searchPlaceholder" = "Αναζήτηση κατά alt, τίτλο ή URL";
 
+"webimage.tile.copyImage" = "Αντιγραφή εικόνας";
+"webimage.tile.copyImageURL" = "Αντιγραφή διεύθυνσης URL εικόνας";
+"webimage.tile.liftSubject" = "Αποκοπή θέματος";
+"webimage.tile.imageActions" = "Ενέργειες εικόνας";
+"webimage.tile.preview" = "Πρεμιέρα";
+"webimage.tile.metadata" = "Πληροφορίες εικόνας";
+"webimage.tile.previewTitle" = "Πρεμιέρα";
+"webimage.tile.metadataTitle" = "Πληροφορίες εικόνας";
+"webimage.tile.done" = "Γινώμενος";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Εναλλακτικό κείμενο";
+"webimage.tile.metadata.title" = "Τίτλος";
+"webimage.tile.metadata.recognizedText" = "Αναγνωρισμένο κείμενο";
+"webimage.tile.metadata.contentType" = "Τύπος περιεχομένου";
+"webimage.tile.metadata.dimensions" = "Διαστάσεις";
+"webimage.tile.metadata.loading" = "Φόρτωση…";
+"webimage.tile.metadata.unknown" = "Αγνωστος";
+"webimage.error.pasteboardCopyFailed" = "Δεν ήταν δυνατή η αντιγραφή στο πρόχειρο.";
+"webimage.error.subjectLiftFailed" = "Δεν ήταν δυνατή η αποκοπή του θέματος από αυτήν την εικόνα.";
+"webimage.error.subjectLiftUnavailable" = "Το θέμα αποκοπής δεν είναι διαθέσιμο σε αυτήν τη συσκευή.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

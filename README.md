@@ -47,19 +47,19 @@ For **exact, step-by-step integration** (including SPM path rules, Xcode, entitl
 
 **Repository:** [github.com/fennelouski/SwiftUI-Web-Image-Picker](https://github.com/fennelouski/SwiftUI-Web-Image-Picker)
 
-**URL-based (recommended for most apps):** depend on the repo root and a [SemVer tag](https://github.com/fennelouski/SwiftUI-Web-Image-Picker/tags) (e.g. `1.3.0`):
+**URL-based (recommended for most apps):** depend on the repo root and a [SemVer tag](https://github.com/fennelouski/SwiftUI-Web-Image-Picker/tags) (e.g. `1.4.0`):
 
 ```swift
 dependencies: [
-    .package(name: "WebImagePicker", url: "https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git", from: "1.3.0"),
+    .package(name: "WebImagePicker", url: "https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git", from: "1.4.0"),
 ]
 ```
 
-A rule such as `from: "1.0.0"` still resolves any compatible **1.x** release (including `1.3.0`). After a new tag is published:
+A rule such as `from: "1.0.0"` still resolves any compatible **1.x** release (including `1.4.0`). After a new tag is published:
 
 - **Xcode** — **File → Packages → Update to Latest Package Versions**, or right-click the package in the Project Navigator → **Update Package**.
 - **SwiftPM CLI** — run **`swift package update`** from the directory that contains `Package.swift`.
-- **Pinned revision / exact version** — bump your rule (for example to `from: "1.3.0"`) and resolve again.
+- **Pinned revision / exact version** — bump your rule (for example to `from: "1.4.0"`) and resolve again.
 
 If you use a **local path** dependency (clone next to your app), **`git pull`** inside `SwiftUI-Web-Image-Picker` updates sources; match [releases](https://github.com/fennelouski/SwiftUI-Web-Image-Picker/releases) or tags when you care about a specific version.
 
@@ -148,7 +148,19 @@ For example, **`selectionLimit: 10`** allows up to ten images before the user ta
 
 **Multiple pages** — Off by default. Set **`isMultiplePageEntryEnabled`** to `true` to show extra page URL rows in the picker and merge images from the primary URL, **`additionalPageURLs`** (host pre-seed), and any URLs the user adds. When disabled, only the primary URL field is used and **`additionalPageURLs`** is ignored.
 
+**Auto-load on appear** — Off by default. Set **`automaticallyLoadOnAppear`** to `true` with **`initialURLString`** (or **`additionalPageURLs`** when multi-page entry is enabled) to start discovery when the picker opens instead of waiting for **Load page**.
+
 **In-image text search (Vision OCR)** — Off by default. Set **`isImageTextSearchEnabled`** to `true` to run **`VNRecognizeTextRequest`** on the first **`maximumImageTextSearchImages`** discovered URLs (ranged GET + thumbnail decode, similar to face-count analysis). Recognized text is cached per URL for the browsing session and participates in the same search field as alt text, `title`, and the image address. Use **`imageTextRecognitionLanguages`** (BCP‑47 tags, e.g. `"en-US"`) when you want explicit languages; **`maximumConcurrentImageTextRecognition`** bounds parallel probes (default `2`). This sends additional image-byte requests and performs on-device OCR — review privacy labels and performance for your app.
+
+**Tile context menu (long-press)** — Off by default (`WebImageTileContextMenuConfiguration.disabled`). Set **`imageTileContextMenu`** on your configuration:
+
+| Field | Purpose |
+|-------|---------|
+| `isEnabled` | Master switch; when `false`, no menu is shown. |
+| `actions` | `WebImageTileContextMenuAction` set: `copyImage`, `copyImageURL`, `liftSubject`, `preview`, `showMetadata`. |
+| `clipboardPresentation` | `.separateMenuItems` (one row per clipboard action) or `.groupedPicker` (single **Image Actions** submenu). |
+
+Long-press on iOS or right-click on macOS opens the menu; tap-to-select is unchanged. Copy, preview, and metadata may download full image bytes (subject to **`maximumImageDownloadBytes`**). **`liftSubject`** uses on-device Vision on **iOS and macOS** only; it is ignored on tvOS and visionOS. See DocC article **Tile context menu** for a full reference.
 
 **Metadata blocklist** — **`excludedImageMetadataSubstrings`** (case-insensitive substring hits) and **`excludedImageMetadataRegularExpressionPatterns`** (``NSRegularExpression`` syntax, case-insensitive) hide images when **any** pattern matches the image’s URL, path, alt, `title`, or indexed OCR text. The blocklist is evaluated **first**; the user’s browsing search runs on the remaining set. Regex patterns are compiled on each filter pass—keep the list small to avoid unnecessary CPU work.
 
@@ -160,7 +172,7 @@ For example, **`selectionLimit: 10`** allows up to ten images before the user ta
 
 ### Localization
 
-UI strings and errors load from **`Localizable.strings`** under `Packages/WebImagePicker/Sources/WebImagePicker/Resources/` (e.g. `en.lproj`, `es.lproj`). The picker follows the user’s preferred language when a matching localization exists. To add or adjust translations, edit those files in the package and ship an updated dependency revision.
+UI strings and errors load from **`Localizable.strings`** under `Packages/WebImagePicker/Sources/WebImagePicker/Resources/` (90+ `.lproj` bundles, including tile context-menu copy). The picker follows the user’s preferred language when a matching localization exists. To add or adjust translations, edit those files in the package (or run `Scripts/add_tile_localizations.py` when introducing new keys) and ship an updated dependency revision.
 
 ## How it works
 
@@ -170,7 +182,7 @@ UI strings and errors load from **`Localizable.strings`** under `Packages/WebIma
 **Static HTML — what is included:** `<img>` / `srcset`, `<picture>` `<source>`, Open Graph and Twitter image meta tags, and CSS `url(...)` strings taken from (1) any inline `style` attribute and (2) `background-image` / `background` values inside `<style>` elements.
 
 **Static HTML — what is excluded (by design):** **`data:` URLs** (including `data:image/svg+xml`, …) are dropped so extraction stays bounded and avoids inlining huge payloads. **Same-document references** (`url(#id)`) are ignored because they do not name a network image. **Inline `<svg>` markup** is not traversed for nested raster `<image>` references in static mode (use **`.webView`** if you need the live DOM). External `.svg` files linked like any other `https` URL remain eligible when the scheme is allowed. Stylesheets loaded only via `<link rel="stylesheet">` are not fetched or parsed in static mode.
-3. **Present** — **`AsyncImage`** loads thumbnails in a **`MasonryLayout`**; the user selects one or more items (subject to the limit). While browsing, the search field matches **alt text**, optional **`title`**, and the image **URL** (case-insensitive). You can narrow by file type using tokens **`format:<extension>`** (for example `format:png`, `format:webp`, `format:jpeg`). Tokens are **case-insensitive**, can appear anywhere in the query (with or without other search words), and multiple `format:` tokens combine with **OR**. Unknown extensions after `format:` match nothing. When **`allowedImageTypeIdentifiers`** is set, format filters only show types that are both requested and allowed by that allowlist (the same rules as discovery).
+3. **Present** — **`AsyncImage`** loads thumbnails in a **`MasonryLayout`**; the user selects one or more items (subject to the limit) by tapping. When **`imageTileContextMenu`** is enabled, long-press (or right-click on macOS) can copy the image or URL, cut out the subject (iOS/macOS), open a preview sheet, or show metadata—without completing a pick. While browsing, the search field matches **alt text**, optional **`title`**, and the image **URL** (case-insensitive). You can narrow by file type using tokens **`format:<extension>`** (for example `format:png`, `format:webp`, `format:jpeg`). Tokens are **case-insensitive**, can appear anywhere in the query (with or without other search words), and multiple `format:` tokens combine with **OR**. Unknown extensions after `format:` match nothing. When **`allowedImageTypeIdentifiers`** is set, format filters only show types that are both requested and allowed by that allowlist (the same rules as discovery).
 4. **Deliver** — On Done (or single-tap when limit is 1), selected URLs are downloaded in bounded concurrency into **`WebImageSelection`** values.
 
 Use **`.staticHTML`** for fastest extraction on server-rendered pages. Use **`.webView`** when content is injected by JavaScript and missing from initial HTML.
@@ -186,7 +198,7 @@ The Swift package ships a **DocC** catalog for the public API:
 
 - **Location:** [`Packages/WebImagePicker/Sources/WebImagePicker/WebImagePicker.docc/`](Packages/WebImagePicker/Sources/WebImagePicker/WebImagePicker.docc/)
 
-**Browse in Xcode:** open `SwiftUI Web Image Picker.xcodeproj` or add the package, then choose **Product → Build Documentation** and open the **WebImagePicker** documentation in the Documentation navigator. Entry points include `WebImagePicker`, the `webImagePicker` view modifier, `WebImagePickerConfiguration`, and `WebImageSelection`.
+**Browse in Xcode:** open `SwiftUI Web Image Picker.xcodeproj` or add the package, then choose **Product → Build Documentation** and open the **WebImagePicker** documentation in the Documentation navigator. Entry points include `WebImagePicker`, the `webImagePicker` view modifier, `WebImagePickerConfiguration`, `WebImageSelection`, and articles **Getting started** and **Tile context menu** (`WebImageTileContextMenuConfiguration`, `WebImageTileContextMenuAction`, `WebImageTileClipboardPresentation`).
 
 ## Development
 

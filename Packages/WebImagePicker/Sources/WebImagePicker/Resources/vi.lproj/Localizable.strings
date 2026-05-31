@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld trang không thể tải. Hình ảnh từ các trang khác được hiển thị.";
 "webimage.searchPlaceholder" = "Tìm kiếm theo alt, tiêu đề hoặc URL";
 
+"webimage.tile.copyImage" = "Sao chép hình ảnh";
+"webimage.tile.copyImageURL" = "Sao chép URL hình ảnh";
+"webimage.tile.liftSubject" = "Cắt bỏ chủ đề";
+"webimage.tile.imageActions" = "Tác vụ hình ảnh";
+"webimage.tile.preview" = "Xem trước";
+"webimage.tile.metadata" = "Thông tin hình ảnh";
+"webimage.tile.previewTitle" = "Xem trước";
+"webimage.tile.metadataTitle" = "Thông tin hình ảnh";
+"webimage.tile.done" = "Xong";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Văn bản thay thế";
+"webimage.tile.metadata.title" = "Tiêu đề";
+"webimage.tile.metadata.recognizedText" = "Văn bản được nhận dạng";
+"webimage.tile.metadata.contentType" = "Loại nội dung";
+"webimage.tile.metadata.dimensions" = "Kích thước";
+"webimage.tile.metadata.loading" = "Đang tải…";
+"webimage.tile.metadata.unknown" = "Không xác định";
+"webimage.error.pasteboardCopyFailed" = "Không thể sao chép vào bảng nhớ tạm.";
+"webimage.error.subjectLiftFailed" = "Không thể cắt chủ đề khỏi hình ảnh này.";
+"webimage.error.subjectLiftUnavailable" = "Chủ đề cắt bỏ không có sẵn trên thiết bị này.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

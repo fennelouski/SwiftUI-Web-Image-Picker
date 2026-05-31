@@ -148,6 +148,11 @@ struct ContentView: View {
     private func presentPicker(sample: DemoSample) {
         var config = WebImagePickerConfiguration(initialURLString: sample.urlString)
         config.extractionMode = sample.extractionMode
+        config.imageTileContextMenu = WebImageTileContextMenuConfiguration(
+            isEnabled: true,
+            actions: [.copyImage, .copyImageURL, .preview, .showMetadata],
+            clipboardPresentation: .groupedPicker
+        )
         pickerConfiguration = config
         showPicker = true
     }

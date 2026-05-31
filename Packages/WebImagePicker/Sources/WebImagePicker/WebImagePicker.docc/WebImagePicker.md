@@ -8,7 +8,7 @@ Browse and pick images discovered on a web page, with a Photos-style sheet, conf
 
 ## Overview
 
-Add the library to your app target, then present ``WebImagePicker`` or use the ``View/webImagePicker(isPresented:configuration:onPick:)`` modifier. Configure behavior with ``WebImagePickerConfiguration`` (including ``WebImageExtractionMode``). User choices are delivered as ``WebImageSelection`` values containing raw bytes, optional MIME type, and source URL.
+Add the library to your app target, then present ``WebImagePicker`` or use the ``View/webImagePicker(isPresented:configuration:onPick:)`` modifier. Configure behavior with ``WebImagePickerConfiguration`` (including ``WebImageExtractionMode`` and optional ``WebImageTileContextMenuConfiguration`` on ``WebImagePickerConfiguration/imageTileContextMenu``). User choices are delivered as ``WebImageSelection`` values containing raw bytes, optional MIME type, and source URL.
 
 On Apple platforms, use ``WebImageSelection/makeUIImage()`` or ``WebImageSelection/makeNSImage()`` to decode platform images when available.
 
@@ -23,6 +23,9 @@ On Apple platforms, use ``WebImageSelection/makeUIImage()`` or ``WebImageSelecti
 
 - ``WebImagePickerConfiguration``
 - ``WebImageExtractionMode``
+- ``WebImageTileContextMenuConfiguration``
+- ``WebImageTileContextMenuAction``
+- ``WebImageTileClipboardPresentation``
 
 ### Selection
 
@@ -31,3 +34,4 @@ On Apple platforms, use ``WebImageSelection/makeUIImage()`` or ``WebImageSelecti
 ### Articles
 
 - <doc:GettingStarted>
+- <doc:TileContextMenu>

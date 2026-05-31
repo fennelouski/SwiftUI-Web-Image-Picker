@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld 个页面无法加载。将显示其他页面的图片。";
 "webimage.searchPlaceholder" = "按替代文字、标题或 URL 搜索";
 
+"webimage.tile.copyImage" = "拷贝图像";
+"webimage.tile.copyImageURL" = "拷贝图像 URL";
+"webimage.tile.liftSubject" = "抠出主体";
+"webimage.tile.imageActions" = "图像操作";
+"webimage.tile.preview" = "预览";
+"webimage.tile.metadata" = "图像信息";
+"webimage.tile.previewTitle" = "预览";
+"webimage.tile.metadataTitle" = "图像信息";
+"webimage.tile.done" = "完成";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "替代文本";
+"webimage.tile.metadata.title" = "标题";
+"webimage.tile.metadata.recognizedText" = "识别的文本";
+"webimage.tile.metadata.contentType" = "内容类型";
+"webimage.tile.metadata.dimensions" = "尺寸";
+"webimage.tile.metadata.loading" = "正在加载…";
+"webimage.tile.metadata.unknown" = "未知";
+"webimage.error.pasteboardCopyFailed" = "无法复制到剪贴板。";
+"webimage.error.subjectLiftFailed" = "无法从此图像中抠出主体。";
+"webimage.error.subjectLiftUnavailable" = "此设备不支持抠出主体。";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

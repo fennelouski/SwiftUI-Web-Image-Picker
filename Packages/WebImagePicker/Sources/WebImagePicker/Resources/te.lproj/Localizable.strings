@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld పేజీ(లు) లోడ్ చేయడం సాధ్యపడలేదు. ఇతర పేజీల నుండి చిత్రాలు చూపించబడుతున్నాయి.";
 "webimage.searchPlaceholder" = "alt, శీర్షిక లేదా URL ద్వారా వెతకండి";
 
+"webimage.tile.copyImage" = "చిత్రాన్ని కాపీ చేయండి";
+"webimage.tile.copyImageURL" = "చిత్ర URLని కాపీ చేయండి";
+"webimage.tile.liftSubject" = "కట్ అవుట్ సబ్జెక్ట్";
+"webimage.tile.imageActions" = "చిత్రం చర్యలు";
+"webimage.tile.preview" = "ప్రివ్యూ";
+"webimage.tile.metadata" = "చిత్రం సమాచారం";
+"webimage.tile.previewTitle" = "ప్రివ్యూ";
+"webimage.tile.metadataTitle" = "చిత్రం సమాచారం";
+"webimage.tile.done" = "పూర్తయింది";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "ప్రత్యామ్నాయ వచనం";
+"webimage.tile.metadata.title" = "శీర్షిక";
+"webimage.tile.metadata.recognizedText" = "గుర్తించబడిన వచనం";
+"webimage.tile.metadata.contentType" = "కంటెంట్ రకం";
+"webimage.tile.metadata.dimensions" = "కొలతలు";
+"webimage.tile.metadata.loading" = "లోడ్ అవుతోంది...";
+"webimage.tile.metadata.unknown" = "తెలియదు";
+"webimage.error.pasteboardCopyFailed" = "క్లిప్‌బోర్డ్‌కి కాపీ చేయడం సాధ్యపడలేదు.";
+"webimage.error.subjectLiftFailed" = "ఈ చిత్రం నుండి విషయాన్ని కత్తిరించడం సాధ్యపడలేదు.";
+"webimage.error.subjectLiftUnavailable" = "ఈ పరికరంలో కట్ అవుట్ సబ్జెక్ట్ అందుబాటులో లేదు.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld էջ չի կարողացել բեռնվել: Ցուցադրվում են մյուս էջերի պատկերները:";
 "webimage.searchPlaceholder" = "Որոնել ըստ alt-ի, վերնագրի կամ URL-ի";
 
+"webimage.tile.copyImage" = "Պատճենել պատկերը";
+"webimage.tile.copyImageURL" = "Պատճենել պատկերի URL-ը";
+"webimage.tile.liftSubject" = "Կտրել թեման";
+"webimage.tile.imageActions" = "Պատկերային գործողություններ";
+"webimage.tile.preview" = "Նախադիտում";
+"webimage.tile.metadata" = "Image Info";
+"webimage.tile.previewTitle" = "Նախադիտում";
+"webimage.tile.metadataTitle" = "Image Info";
+"webimage.tile.done" = "Կատարված է";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Այլընտրանքային տեքստ";
+"webimage.tile.metadata.title" = "Վերնագիր";
+"webimage.tile.metadata.recognizedText" = "Ճանաչված տեքստ";
+"webimage.tile.metadata.contentType" = "Բովանդակության տեսակը";
+"webimage.tile.metadata.dimensions" = "Չափերը";
+"webimage.tile.metadata.loading" = "Բեռնվում է…";
+"webimage.tile.metadata.unknown" = "Անհայտ";
+"webimage.error.pasteboardCopyFailed" = "Չհաջողվեց պատճենել սեղմատախտակին:";
+"webimage.error.subjectLiftFailed" = "Չհաջողվեց կտրել թեման այս պատկերից:";
+"webimage.error.subjectLiftUnavailable" = "Կտրված թեման հասանելի չէ այս սարքում:";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

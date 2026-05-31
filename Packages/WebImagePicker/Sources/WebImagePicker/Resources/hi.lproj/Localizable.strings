@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld पृष्ठ लोड नहीं हो सके। अन्य पृष्ठों से छवियाँ दिखाई जा रही हैं।";
 "webimage.searchPlaceholder" = "alt, शीर्षक या URL से खोजें";
 
+"webimage.tile.copyImage" = "नकल छवि";
+"webimage.tile.copyImageURL" = "छवि यूआरएल कॉपी करें";
+"webimage.tile.liftSubject" = "विषय को काटें";
+"webimage.tile.imageActions" = "छवि क्रियाएँ";
+"webimage.tile.preview" = "पूर्व दर्शन";
+"webimage.tile.metadata" = "छवि जानकारी";
+"webimage.tile.previewTitle" = "पूर्व दर्शन";
+"webimage.tile.metadataTitle" = "छवि जानकारी";
+"webimage.tile.done" = "हो गया";
+"webimage.tile.metadata.url" = "यूआरएल";
+"webimage.tile.metadata.alt" = "वैकल्पिक पाठ";
+"webimage.tile.metadata.title" = "शीर्षक";
+"webimage.tile.metadata.recognizedText" = "मान्यता प्राप्त पाठ";
+"webimage.tile.metadata.contentType" = "सामग्री प्रकार";
+"webimage.tile.metadata.dimensions" = "DIMENSIONS";
+"webimage.tile.metadata.loading" = "लोड हो रहा है...";
+"webimage.tile.metadata.unknown" = "अज्ञात";
+"webimage.error.pasteboardCopyFailed" = "क्लिपबोर्ड पर कॉपी नहीं किया जा सका.";
+"webimage.error.subjectLiftFailed" = "इस छवि से विषय को काटा नहीं जा सका.";
+"webimage.error.subjectLiftUnavailable" = "इस डिवाइस पर कट आउट विषय उपलब्ध नहीं है.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

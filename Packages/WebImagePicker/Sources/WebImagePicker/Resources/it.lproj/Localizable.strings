@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld pagina/e non ha/hanno potuto essere caricata/e. Vengono mostrate le immagini delle altre pagine.";
 "webimage.searchPlaceholder" = "Cerca per alt, titolo o URL";
 
+"webimage.tile.copyImage" = "Copia immagine";
+"webimage.tile.copyImageURL" = "Copia URL immagine";
+"webimage.tile.liftSubject" = "Ritaglia soggetto";
+"webimage.tile.imageActions" = "Azioni immagine";
+"webimage.tile.preview" = "Anteprima";
+"webimage.tile.metadata" = "Info immagine";
+"webimage.tile.previewTitle" = "Anteprima";
+"webimage.tile.metadataTitle" = "Info immagine";
+"webimage.tile.done" = "Fine";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Testo alternativo";
+"webimage.tile.metadata.title" = "Titolo";
+"webimage.tile.metadata.recognizedText" = "Testo riconosciuto";
+"webimage.tile.metadata.contentType" = "Tipo di contenuto";
+"webimage.tile.metadata.dimensions" = "Dimensioni";
+"webimage.tile.metadata.loading" = "Caricamento…";
+"webimage.tile.metadata.unknown" = "Sconosciuto";
+"webimage.error.pasteboardCopyFailed" = "Impossibile copiare negli appunti.";
+"webimage.error.subjectLiftFailed" = "Impossibile ritagliare il soggetto da questa immagine.";
+"webimage.error.subjectLiftUnavailable" = "Il ritaglio del soggetto non è disponibile su questo dispositivo.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld страница/и не можа/можаха да бъде/бъдат заредена/и. Изображенията от останалите страници се показват.";
 "webimage.searchPlaceholder" = "Търсене по alt, заглавие или URL";
 
+"webimage.tile.copyImage" = "Копиране на изображение";
+"webimage.tile.copyImageURL" = "Копирайте URL адреса на изображението";
+"webimage.tile.liftSubject" = "Изрежете темата";
+"webimage.tile.imageActions" = "Действия с изображения";
+"webimage.tile.preview" = "Преглед";
+"webimage.tile.metadata" = "Информация за изображението";
+"webimage.tile.previewTitle" = "Преглед";
+"webimage.tile.metadataTitle" = "Информация за изображението";
+"webimage.tile.done" = "Готово";
+"webimage.tile.metadata.url" = "URL адрес";
+"webimage.tile.metadata.alt" = "Алтернативен текст";
+"webimage.tile.metadata.title" = "Заглавие";
+"webimage.tile.metadata.recognizedText" = "Разпознат текст";
+"webimage.tile.metadata.contentType" = "Тип съдържание";
+"webimage.tile.metadata.dimensions" = "Размери";
+"webimage.tile.metadata.loading" = "Зарежда се...";
+"webimage.tile.metadata.unknown" = "неизвестен";
+"webimage.error.pasteboardCopyFailed" = "Не можа да се копира в клипборда.";
+"webimage.error.subjectLiftFailed" = "Не можах да изрежа обекта от това изображение.";
+"webimage.error.subjectLiftUnavailable" = "Изрязаният обект не е наличен на това устройство.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

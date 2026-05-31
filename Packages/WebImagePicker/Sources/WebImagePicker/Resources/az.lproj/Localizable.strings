@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld səhifə yüklənə bilmədi. Digər səhifələrdən şəkillər göstərilir.";
 "webimage.searchPlaceholder" = "Alt, başlıq və ya URL-ə görə axtar";
 
+"webimage.tile.copyImage" = "Şəkli kopyalayın";
+"webimage.tile.copyImageURL" = "Şəklin URL-sini kopyalayın";
+"webimage.tile.liftSubject" = "Mövzunu kəsin";
+"webimage.tile.imageActions" = "Şəkil hərəkətləri";
+"webimage.tile.preview" = "Önizləmə";
+"webimage.tile.metadata" = "Şəkil məlumatı";
+"webimage.tile.previewTitle" = "Önizləmə";
+"webimage.tile.metadataTitle" = "Şəkil məlumatı";
+"webimage.tile.done" = "Bitdi";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Alternativ mətn";
+"webimage.tile.metadata.title" = "Başlıq";
+"webimage.tile.metadata.recognizedText" = "Tanınmış mətn";
+"webimage.tile.metadata.contentType" = "Məzmun növü";
+"webimage.tile.metadata.dimensions" = "Ölçülər";
+"webimage.tile.metadata.loading" = "Yüklənir...";
+"webimage.tile.metadata.unknown" = "Naməlum";
+"webimage.error.pasteboardCopyFailed" = "Buferə kopyalamaq mümkün olmadı.";
+"webimage.error.subjectLiftFailed" = "Bu şəkildən mövzunu kəsmək mümkün olmadı.";
+"webimage.error.subjectLiftUnavailable" = "Kəsilmiş mövzu bu cihazda mövcud deyil.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

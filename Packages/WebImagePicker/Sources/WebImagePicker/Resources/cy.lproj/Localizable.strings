@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "Nid oedd modd llwytho %lld tudalen. Dangosir delweddau o'r tudalennau eraill.";
 "webimage.searchPlaceholder" = "Chwilio yn ôl alt, teitl neu URL";
 
+"webimage.tile.copyImage" = "Copïo Delwedd";
+"webimage.tile.copyImageURL" = "Copïo URL Delwedd";
+"webimage.tile.liftSubject" = "Torri Allan Pwnc";
+"webimage.tile.imageActions" = "Gweithredoedd Delwedd";
+"webimage.tile.preview" = "Rhagolwg";
+"webimage.tile.metadata" = "Gwybodaeth Delwedd";
+"webimage.tile.previewTitle" = "Rhagolwg";
+"webimage.tile.metadataTitle" = "Gwybodaeth Delwedd";
+"webimage.tile.done" = "Wedi'i wneud";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Testun alt";
+"webimage.tile.metadata.title" = "Teitl";
+"webimage.tile.metadata.recognizedText" = "Testun cydnabyddedig";
+"webimage.tile.metadata.contentType" = "Math o gynnwys";
+"webimage.tile.metadata.dimensions" = "Dimensiynau";
+"webimage.tile.metadata.loading" = "Wrthi'n llwytho…";
+"webimage.tile.metadata.unknown" = "Anhysbys";
+"webimage.error.pasteboardCopyFailed" = "Methu â chopïo i'r clipfwrdd.";
+"webimage.error.subjectLiftFailed" = "Methu torri'r pwnc allan o'r ddelwedd hon.";
+"webimage.error.subjectLiftUnavailable" = "Nid yw pwnc torri allan ar gael ar y ddyfais hon.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

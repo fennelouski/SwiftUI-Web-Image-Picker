@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld sayfa yüklenemedi. Diğer sayfalardan görseller gösteriliyor.";
 "webimage.searchPlaceholder" = "Alt, başlık veya URL'ye göre ara";
 
+"webimage.tile.copyImage" = "Resmi Kopyala";
+"webimage.tile.copyImageURL" = "Resim URL'sini Kopyala";
+"webimage.tile.liftSubject" = "Konuyu Kes";
+"webimage.tile.imageActions" = "Resim Eylemleri";
+"webimage.tile.preview" = "Önizleme";
+"webimage.tile.metadata" = "Resim Bilgisi";
+"webimage.tile.previewTitle" = "Önizleme";
+"webimage.tile.metadataTitle" = "Resim Bilgisi";
+"webimage.tile.done" = "Tamamlamak";
+"webimage.tile.metadata.url" = "URL'si";
+"webimage.tile.metadata.alt" = "Alternatif metin";
+"webimage.tile.metadata.title" = "Başlık";
+"webimage.tile.metadata.recognizedText" = "Tanınan metin";
+"webimage.tile.metadata.contentType" = "İçerik türü";
+"webimage.tile.metadata.dimensions" = "Boyutlar";
+"webimage.tile.metadata.loading" = "Yükleniyor…";
+"webimage.tile.metadata.unknown" = "Bilinmiyor";
+"webimage.error.pasteboardCopyFailed" = "Panoya kopyalanamadı.";
+"webimage.error.subjectLiftFailed" = "Bu görüntüden konu çıkarılamadı.";
+"webimage.error.subjectLiftUnavailable" = "Konunun kesilmesi bu cihazda mevcut değil.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

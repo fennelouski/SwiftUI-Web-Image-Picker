@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld pagină(i) nu a/au putut fi încărcată(e). Imaginile de pe celelalte pagini sunt afișate.";
 "webimage.searchPlaceholder" = "Caută după alt, titlu sau URL";
 
+"webimage.tile.copyImage" = "Copiați imaginea";
+"webimage.tile.copyImageURL" = "Copiați adresa URL a imaginii";
+"webimage.tile.liftSubject" = "Decupați subiectul";
+"webimage.tile.imageActions" = "Acțiuni de imagine";
+"webimage.tile.preview" = "Previzualizare";
+"webimage.tile.metadata" = "Informații despre imagine";
+"webimage.tile.previewTitle" = "Previzualizare";
+"webimage.tile.metadataTitle" = "Informații despre imagine";
+"webimage.tile.done" = "Făcut";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Alt text";
+"webimage.tile.metadata.title" = "Titlu";
+"webimage.tile.metadata.recognizedText" = "Text recunoscut";
+"webimage.tile.metadata.contentType" = "Tip de conținut";
+"webimage.tile.metadata.dimensions" = "Dimensiuni";
+"webimage.tile.metadata.loading" = "Încărcare…";
+"webimage.tile.metadata.unknown" = "Necunoscut";
+"webimage.error.pasteboardCopyFailed" = "Nu s-a putut copia în clipboard.";
+"webimage.error.subjectLiftFailed" = "Nu s-a putut decupa subiectul din această imagine.";
+"webimage.error.subjectLiftUnavailable" = "Subiectul decupat nu este disponibil pe acest dispozitiv.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

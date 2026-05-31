@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld דף/דפים לא ניתנו לטעינה. מוצגות תמונות מהדפים האחרים.";
 "webimage.searchPlaceholder" = "חפש לפי alt, כותרת או URL";
 
+"webimage.tile.copyImage" = "העתק תמונה";
+"webimage.tile.copyImageURL" = "העתק את כתובת האתר של התמונה";
+"webimage.tile.liftSubject" = "גזור נושא";
+"webimage.tile.imageActions" = "פעולות תמונה";
+"webimage.tile.preview" = "תצוגה מקדימה";
+"webimage.tile.metadata" = "מידע על תמונה";
+"webimage.tile.previewTitle" = "תצוגה מקדימה";
+"webimage.tile.metadataTitle" = "מידע על תמונה";
+"webimage.tile.done" = "נַעֲשָׂה";
+"webimage.tile.metadata.url" = "כתובת אתר";
+"webimage.tile.metadata.alt" = "טקסט חלופי";
+"webimage.tile.metadata.title" = "כּוֹתֶרֶת";
+"webimage.tile.metadata.recognizedText" = "טקסט מזוהה";
+"webimage.tile.metadata.contentType" = "סוג תוכן";
+"webimage.tile.metadata.dimensions" = "מידות";
+"webimage.tile.metadata.loading" = "טְעִינָה…";
+"webimage.tile.metadata.unknown" = "לֹא יְדוּעַ";
+"webimage.error.pasteboardCopyFailed" = "לא ניתן היה להעתיק ללוח.";
+"webimage.error.subjectLiftFailed" = "לא ניתן היה לגזור את הנושא מהתמונה הזו.";
+"webimage.error.subjectLiftUnavailable" = "נושא הגזירה אינו זמין במכשיר זה.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

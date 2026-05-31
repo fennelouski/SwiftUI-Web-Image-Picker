@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld ໜ້າໂຫລດບໍ່ໄດ້. ຮູບພາບຈາກໜ້າອື່ນຖືກສະແດງ.";
 "webimage.searchPlaceholder" = "ຄົ້ນຫາຕາມ alt, ຫົວຂໍ້, ຫຼື URL";
 
+"webimage.tile.copyImage" = "ສຳເນົາຮູບພາບ";
+"webimage.tile.copyImageURL" = "ສຳເນົາ URL ຮູບພາບ";
+"webimage.tile.liftSubject" = "ຕັດ​ຫົວ​ຂໍ້​";
+"webimage.tile.imageActions" = "ການປະຕິບັດຮູບພາບ";
+"webimage.tile.preview" = "ເບິ່ງຕົວຢ່າງ";
+"webimage.tile.metadata" = "ຂໍ້ມູນຮູບພາບ";
+"webimage.tile.previewTitle" = "ເບິ່ງຕົວຢ່າງ";
+"webimage.tile.metadataTitle" = "ຂໍ້ມູນຮູບພາບ";
+"webimage.tile.done" = "ສຳເລັດແລ້ວ";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "ຂໍ້ຄວາມສຳຮອງ";
+"webimage.tile.metadata.title" = "ຫົວຂໍ້";
+"webimage.tile.metadata.recognizedText" = "ຂໍ້ຄວາມທີ່ຮັບຮູ້";
+"webimage.tile.metadata.contentType" = "ປະເພດເນື້ອຫາ";
+"webimage.tile.metadata.dimensions" = "ຂະໜາດ";
+"webimage.tile.metadata.loading" = "ກຳລັງໂຫລດ...";
+"webimage.tile.metadata.unknown" = "ບໍ່ຮູ້ຈັກ";
+"webimage.error.pasteboardCopyFailed" = "ບໍ່ສາມາດສຳເນົາໃສ່ຄລິບບອດໄດ້.";
+"webimage.error.subjectLiftFailed" = "ບໍ່ສາມາດຕັດຫົວຂໍ້ອອກຈາກຮູບນີ້ໄດ້.";
+"webimage.error.subjectLiftUnavailable" = "ຫົວຂໍ້ຕັດອອກບໍ່ສາມາດໃຊ້ໄດ້ໃນອຸປະກອນນີ້.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

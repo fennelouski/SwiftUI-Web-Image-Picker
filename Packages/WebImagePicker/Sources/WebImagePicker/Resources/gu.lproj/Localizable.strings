@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld પૃષ્ઠ(ઓ) લોડ થઈ શક્યા નહીં. અન્ય પૃષ્ઠોની છબીઓ બતાવવામાં આવી છે.";
 "webimage.searchPlaceholder" = "alt, શીર્ષક અથવા URL દ્વારા શોધો";
 
+"webimage.tile.copyImage" = "ઇમેજ કૉપિ કરો";
+"webimage.tile.copyImageURL" = "છબી URL કૉપિ કરો";
+"webimage.tile.liftSubject" = "કટ આઉટ વિષય";
+"webimage.tile.imageActions" = "છબી ક્રિયાઓ";
+"webimage.tile.preview" = "પૂર્વાવલોકન";
+"webimage.tile.metadata" = "છબી માહિતી";
+"webimage.tile.previewTitle" = "પૂર્વાવલોકન";
+"webimage.tile.metadataTitle" = "છબી માહિતી";
+"webimage.tile.done" = "થઈ ગયું";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "વૈકલ્પિક ટેક્સ્ટ";
+"webimage.tile.metadata.title" = "શીર્ષક";
+"webimage.tile.metadata.recognizedText" = "ઓળખાયેલ ટેક્સ્ટ";
+"webimage.tile.metadata.contentType" = "સામગ્રી પ્રકાર";
+"webimage.tile.metadata.dimensions" = "પરિમાણો";
+"webimage.tile.metadata.loading" = "લોડ કરી રહ્યું છે...";
+"webimage.tile.metadata.unknown" = "અજ્ઞાત";
+"webimage.error.pasteboardCopyFailed" = "ક્લિપબોર્ડ પર કૉપિ કરી શકાયું નથી.";
+"webimage.error.subjectLiftFailed" = "આ ઈમેજમાંથી વિષયને કાપી શકાયો નથી.";
+"webimage.error.subjectLiftUnavailable" = "આ ઉપકરણ પર કટ આઉટ વિષય ઉપલબ્ધ નથી.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

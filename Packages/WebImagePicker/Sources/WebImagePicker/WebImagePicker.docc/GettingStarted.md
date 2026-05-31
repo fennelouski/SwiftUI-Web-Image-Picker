@@ -37,6 +37,21 @@ To allow cleartext `http:` for pages and images, include `"http"` in ``WebImageP
 
 On Apple platforms, loading HTTP still requires the **host app** to satisfy [App Transport Security](https://developer.apple.com/documentation/bundleresources/information-property-list/nsapptransportsecurity): for example per-domain exceptions under `NSExceptionDomains`, or `NSAllowsArbitraryLoads` (broad and usually discouraged). The package does not change ATS for you.
 
+### Tile context menu (optional)
+
+By default, browsing tiles only respond to tap. To add copy, preview, metadata, or cut-out-subject actions, set ``WebImagePickerConfiguration/imageTileContextMenu``:
+
+```swift
+var config = WebImagePickerConfiguration.default
+config.imageTileContextMenu = WebImageTileContextMenuConfiguration(
+    isEnabled: true,
+    actions: [.copyImage, .copyImageURL, .preview],
+    clipboardPresentation: .separateMenuItems
+)
+```
+
+See <doc:TileContextMenu> for all ``WebImageTileContextMenuAction`` members, ``WebImageTileClipboardPresentation``, and platform notes.
+
 ## Use the selection
 
 Each ``WebImageSelection`` exposes `data`, `contentType`, and `sourceURL`. On iOS, tvOS, or visionOS, call ``WebImageSelection/makeUIImage()``; on macOS, ``WebImageSelection/makeNSImage()``.

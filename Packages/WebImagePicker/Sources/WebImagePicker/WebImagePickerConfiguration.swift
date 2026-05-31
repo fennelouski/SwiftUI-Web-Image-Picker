@@ -108,6 +108,11 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     /// Session used for HTML fetches and image downloads. Defaults to `URLSession.shared`.
     public var urlSession: URLSession
 
+    /// Long-press / right-click context menu on browsing grid tiles. Default ``WebImageTileContextMenuConfiguration/disabled``.
+    ///
+    /// Copy, preview, and metadata actions may download image bytes (subject to ``maximumImageDownloadBytes``).
+    public var imageTileContextMenu: WebImageTileContextMenuConfiguration
+
     /// Creates a configuration with explicit limits and networking options.
     /// - Parameters:
     ///   - selectionLimit: Maximum selections; clamped to at least `1`.
@@ -139,6 +144,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     ///   - excludedImageMetadataRegularExpressionPatterns: Regex patterns that hide matching images.
     ///   - cachePolicy: ``URLRequest`` cache policy plus optional discovered-image-list memo (count, TTL, per-domain).
     ///   - urlSession: Session used for fetches; defaults to `URLSession.shared`.
+    ///   - imageTileContextMenu: Optional long-press context menu on grid tiles during browsing.
     public init(
         selectionLimit: Int = 1,
         maximumConcurrentImageLoads: Int = 4,
@@ -168,7 +174,8 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         excludedImageMetadataSubstrings: [String] = [],
         excludedImageMetadataRegularExpressionPatterns: [String] = [],
         cachePolicy: WebImagePickerCachePolicy = .ephemeral,
-        urlSession: URLSession = .shared
+        urlSession: URLSession = .shared,
+        imageTileContextMenu: WebImageTileContextMenuConfiguration = .disabled
     ) {
         self.selectionLimit = max(1, selectionLimit)
         self.maximumConcurrentImageLoads = max(1, maximumConcurrentImageLoads)
@@ -203,6 +210,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
             .filter { !$0.isEmpty }
         self.cachePolicy = cachePolicy
         self.urlSession = urlSession
+        self.imageTileContextMenu = imageTileContextMenu
     }
 
     public static let `default` = WebImagePickerConfiguration()
@@ -248,6 +256,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
             && lhs.excludedImageMetadataSubstrings == rhs.excludedImageMetadataSubstrings
             && lhs.excludedImageMetadataRegularExpressionPatterns == rhs.excludedImageMetadataRegularExpressionPatterns
             && lhs.cachePolicy == rhs.cachePolicy
+            && lhs.imageTileContextMenu == rhs.imageTileContextMenu
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -279,6 +288,7 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         hasher.combine(excludedImageMetadataSubstrings)
         hasher.combine(excludedImageMetadataRegularExpressionPatterns)
         hasher.combine(cachePolicy)
+        hasher.combine(imageTileContextMenu)
     }
 
     private static func hashCGSizeOptional(_ size: CGSize?, into hasher: inout Hasher) {

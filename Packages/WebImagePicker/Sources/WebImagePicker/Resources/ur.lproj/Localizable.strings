@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld صفحہ/صفحات لوڈ نہیں ہو سکے۔ دیگر صفحات کی تصاویر دکھائی جا رہی ہیں۔";
 "webimage.searchPlaceholder" = "alt، عنوان یا URL سے تلاش کریں";
 
+"webimage.tile.copyImage" = "تصویر کاپی کریں۔";
+"webimage.tile.copyImageURL" = "تصویری URL کاپی کریں۔";
+"webimage.tile.liftSubject" = "کٹ آؤٹ سبجیکٹ";
+"webimage.tile.imageActions" = "تصویری ایکشن";
+"webimage.tile.preview" = "پیش نظارہ";
+"webimage.tile.metadata" = "تصویری معلومات";
+"webimage.tile.previewTitle" = "پیش نظارہ";
+"webimage.tile.metadataTitle" = "تصویری معلومات";
+"webimage.tile.done" = "ہو گیا";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Alt متن";
+"webimage.tile.metadata.title" = "عنوان";
+"webimage.tile.metadata.recognizedText" = "تسلیم شدہ متن";
+"webimage.tile.metadata.contentType" = "مواد کی قسم";
+"webimage.tile.metadata.dimensions" = "طول و عرض";
+"webimage.tile.metadata.loading" = "لوڈ ہو رہا ہے…";
+"webimage.tile.metadata.unknown" = "نامعلوم";
+"webimage.error.pasteboardCopyFailed" = "کلپ بورڈ پر کاپی نہیں کیا جا سکا۔";
+"webimage.error.subjectLiftFailed" = "اس تصویر سے موضوع کاٹ نہیں سکا۔";
+"webimage.error.subjectLiftUnavailable" = "کٹ آؤٹ مضمون اس ڈیوائس پر دستیاب نہیں ہے۔";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

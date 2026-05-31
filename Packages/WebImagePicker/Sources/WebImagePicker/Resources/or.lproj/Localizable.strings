@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld ପୃଷ୍ଠ ଲୋଡ ହୋଇ ପାରିଲା ନାହିଁ। ଅନ୍ୟ ପୃଷ୍ଠଗୁଡ଼ିକରୁ ଛବି ଦେଖାଯାଉଛି।";
 "webimage.searchPlaceholder" = "alt, ଶୀର୍ଷକ ବା URL ଦ୍ୱାରା ଖୋଜ";
 
+"webimage.tile.copyImage" = "ପ୍ରତିଛବି କପି କରନ୍ତୁ |";
+"webimage.tile.copyImageURL" = "ପ୍ରତିଛବି URL କପି କରନ୍ତୁ |";
+"webimage.tile.liftSubject" = "ବିଷୟ କାଟିଦିଅ |";
+"webimage.tile.imageActions" = "ପ୍ରତିଛବି କ୍ରିୟା";
+"webimage.tile.preview" = "ପୂର୍ବାବଲୋକନ";
+"webimage.tile.metadata" = "ପ୍ରତିଛବି ସୂଚନା";
+"webimage.tile.previewTitle" = "ପୂର୍ବାବଲୋକନ";
+"webimage.tile.metadataTitle" = "ପ୍ରତିଛବି ସୂଚନା";
+"webimage.tile.done" = "ସମାପ୍ତ";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Alt ପାଠ";
+"webimage.tile.metadata.title" = "ଆଖ୍ୟା";
+"webimage.tile.metadata.recognizedText" = "ଚିହ୍ନିତ ପାଠ";
+"webimage.tile.metadata.contentType" = "ବିଷୟବସ୍ତୁ ପ୍ରକାର |";
+"webimage.tile.metadata.dimensions" = "ପରିମାପ";
+"webimage.tile.metadata.loading" = "ଲୋଡିଂ…";
+"webimage.tile.metadata.unknown" = "ଅଜ୍ଞାତ";
+"webimage.error.pasteboardCopyFailed" = "କ୍ଲିପବୋର୍ଡକୁ କପି କରିପାରିଲା ନାହିଁ |";
+"webimage.error.subjectLiftFailed" = "ଏହି ପ୍ରତିଛବିରୁ ବିଷୟ କାଟି ପାରିଲା ନାହିଁ |";
+"webimage.error.subjectLiftUnavailable" = "ଏହି ଡିଭାଇସରେ କଟ ଆଉଟ୍ ବିଷୟ ଉପଲବ୍ଧ ନାହିଁ |";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

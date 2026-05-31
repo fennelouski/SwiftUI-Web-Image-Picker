@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "تعذّر تحميل %lld صفحة. تُعرض الصور من الصفحات الأخرى.";
 "webimage.searchPlaceholder" = "البحث حسب alt أو العنوان أو الرابط";
 
+"webimage.tile.copyImage" = "نسخ الصورة";
+"webimage.tile.copyImageURL" = "نسخ عنوان URL للصورة";
+"webimage.tile.liftSubject" = "قصّ الموضوع";
+"webimage.tile.imageActions" = "إجراءات الصورة";
+"webimage.tile.preview" = "معاينة";
+"webimage.tile.metadata" = "معلومات الصورة";
+"webimage.tile.previewTitle" = "معاينة";
+"webimage.tile.metadataTitle" = "معلومات الصورة";
+"webimage.tile.done" = "تم";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "النص البديل";
+"webimage.tile.metadata.title" = "العنوان";
+"webimage.tile.metadata.recognizedText" = "النص المعروف";
+"webimage.tile.metadata.contentType" = "نوع المحتوى";
+"webimage.tile.metadata.dimensions" = "الأبعاد";
+"webimage.tile.metadata.loading" = "جارٍ التحميل…";
+"webimage.tile.metadata.unknown" = "غير معروف";
+"webimage.error.pasteboardCopyFailed" = "تعذّر النسخ إلى الحافظة.";
+"webimage.error.subjectLiftFailed" = "تعذّر قصّ الموضوع من هذه الصورة.";
+"webimage.error.subjectLiftUnavailable" = "قصّ الموضوع غير متاح على هذا الجهاز.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

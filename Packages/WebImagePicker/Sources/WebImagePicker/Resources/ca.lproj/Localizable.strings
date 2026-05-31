@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld pàgina(es) no s'ha/n pogut carregar. Es mostren les imatges de les altres pàgines.";
 "webimage.searchPlaceholder" = "Cerca per alt, títol o URL";
 
+"webimage.tile.copyImage" = "Copia la imatge";
+"webimage.tile.copyImageURL" = "Copia l'URL de la imatge";
+"webimage.tile.liftSubject" = "Retalla el tema";
+"webimage.tile.imageActions" = "Accions d'Imatge";
+"webimage.tile.preview" = "Vista prèvia";
+"webimage.tile.metadata" = "Informació de la imatge";
+"webimage.tile.previewTitle" = "Vista prèvia";
+"webimage.tile.metadataTitle" = "Informació de la imatge";
+"webimage.tile.done" = "Fet";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Text alternatiu";
+"webimage.tile.metadata.title" = "Títol";
+"webimage.tile.metadata.recognizedText" = "Text reconegut";
+"webimage.tile.metadata.contentType" = "Tipus de contingut";
+"webimage.tile.metadata.dimensions" = "Dimensions";
+"webimage.tile.metadata.loading" = "S'està carregant…";
+"webimage.tile.metadata.unknown" = "Desconegut";
+"webimage.error.pasteboardCopyFailed" = "No s'ha pogut copiar al porta-retalls.";
+"webimage.error.subjectLiftFailed" = "No s'ha pogut retallar el tema d'aquesta imatge.";
+"webimage.error.subjectLiftUnavailable" = "El tema retallat no està disponible en aquest dispositiu.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

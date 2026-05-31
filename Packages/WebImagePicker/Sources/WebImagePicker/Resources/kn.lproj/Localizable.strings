@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld ಪುಟ(ಗಳು) ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಇತರ ಪುಟಗಳಿಂದ ಚಿತ್ರಗಳನ್ನು ತೋರಿಸಲಾಗಿದೆ.";
 "webimage.searchPlaceholder" = "alt, ಶೀರ್ಷಿಕೆ ಅಥವಾ URL ಮೂಲಕ ಹುಡುಕಿ";
 
+"webimage.tile.copyImage" = "ಚಿತ್ರವನ್ನು ನಕಲಿಸಿ";
+"webimage.tile.copyImageURL" = "ಚಿತ್ರದ URL ಅನ್ನು ನಕಲಿಸಿ";
+"webimage.tile.liftSubject" = "ಕಟ್ ಔಟ್ ಸಬ್ಜೆಕ್ಟ್";
+"webimage.tile.imageActions" = "ಚಿತ್ರ ಕ್ರಿಯೆಗಳು";
+"webimage.tile.preview" = "ಪೂರ್ವವೀಕ್ಷಣೆ";
+"webimage.tile.metadata" = "ಚಿತ್ರದ ಮಾಹಿತಿ";
+"webimage.tile.previewTitle" = "ಪೂರ್ವವೀಕ್ಷಣೆ";
+"webimage.tile.metadataTitle" = "ಚಿತ್ರದ ಮಾಹಿತಿ";
+"webimage.tile.done" = "ಮುಗಿದಿದೆ";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "ಪರ್ಯಾಯ ಪಠ್ಯ";
+"webimage.tile.metadata.title" = "ಶೀರ್ಷಿಕೆ";
+"webimage.tile.metadata.recognizedText" = "ಗುರುತಿಸಲ್ಪಟ್ಟ ಪಠ್ಯ";
+"webimage.tile.metadata.contentType" = "ವಿಷಯ ಪ್ರಕಾರ";
+"webimage.tile.metadata.dimensions" = "ಆಯಾಮಗಳು";
+"webimage.tile.metadata.loading" = "ಲೋಡ್ ಆಗುತ್ತಿದೆ...";
+"webimage.tile.metadata.unknown" = "ಅಜ್ಞಾತ";
+"webimage.error.pasteboardCopyFailed" = "ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.";
+"webimage.error.subjectLiftFailed" = "ಈ ಚಿತ್ರದಿಂದ ವಿಷಯವನ್ನು ಕತ್ತರಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.";
+"webimage.error.subjectLiftUnavailable" = "ಈ ಸಾಧನದಲ್ಲಿ ಕಟ್ ಔಟ್ ವಿಷಯ ಲಭ್ಯವಿಲ್ಲ.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

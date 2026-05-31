@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld страница(и) не можеа да се вчитаат. Сликите од другите страници се прикажани.";
 "webimage.searchPlaceholder" = "Барај по alt, наслов или URL";
 
+"webimage.tile.copyImage" = "Копирај слика";
+"webimage.tile.copyImageURL" = "Копирај URL на сликата";
+"webimage.tile.liftSubject" = "Исечете го предметот";
+"webimage.tile.imageActions" = "Акции на сликата";
+"webimage.tile.preview" = "Преглед";
+"webimage.tile.metadata" = "Информации за сликата";
+"webimage.tile.previewTitle" = "Преглед";
+"webimage.tile.metadataTitle" = "Информации за сликата";
+"webimage.tile.done" = "Готово";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Алтернативен текст";
+"webimage.tile.metadata.title" = "Наслов";
+"webimage.tile.metadata.recognizedText" = "Препознат текст";
+"webimage.tile.metadata.contentType" = "Тип на содржина";
+"webimage.tile.metadata.dimensions" = "Димензии";
+"webimage.tile.metadata.loading" = "Се вчитува…";
+"webimage.tile.metadata.unknown" = "Непознат";
+"webimage.error.pasteboardCopyFailed" = "Не може да се копира на таблата со исечоци.";
+"webimage.error.subjectLiftFailed" = "Не може да се отсече темата од оваа слика.";
+"webimage.error.subjectLiftUnavailable" = "Отсечениот предмет не е достапен на овој уред.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

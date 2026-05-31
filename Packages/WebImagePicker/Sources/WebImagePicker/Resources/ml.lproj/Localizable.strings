@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld പേജ് ലോഡ് ചെയ്യാനായില്ല. മറ്റ് പേജുകളിൽ നിന്നുള്ള ചിത്രങ്ങൾ കാണിക്കുന്നു.";
 "webimage.searchPlaceholder" = "alt, ശീർഷകം അല്ലെങ്കിൽ URL വഴി തിരയുക";
 
+"webimage.tile.copyImage" = "ചിത്രം പകർത്തുക";
+"webimage.tile.copyImageURL" = "ഇമേജ് URL പകർത്തുക";
+"webimage.tile.liftSubject" = "കട്ട് ഔട്ട് വിഷയം";
+"webimage.tile.imageActions" = "ചിത്ര പ്രവർത്തനങ്ങൾ";
+"webimage.tile.preview" = "പ്രിവ്യൂ";
+"webimage.tile.metadata" = "ചിത്ര വിവരം";
+"webimage.tile.previewTitle" = "പ്രിവ്യൂ";
+"webimage.tile.metadataTitle" = "ചിത്ര വിവരം";
+"webimage.tile.done" = "ചെയ്തു";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "ഇതര വാചകം";
+"webimage.tile.metadata.title" = "തലക്കെട്ട്";
+"webimage.tile.metadata.recognizedText" = "അംഗീകൃത വാചകം";
+"webimage.tile.metadata.contentType" = "ഉള്ളടക്ക തരം";
+"webimage.tile.metadata.dimensions" = "അളവുകൾ";
+"webimage.tile.metadata.loading" = "ലോഡ് ചെയ്യുന്നു...";
+"webimage.tile.metadata.unknown" = "അജ്ഞാതം";
+"webimage.error.pasteboardCopyFailed" = "ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്താൻ കഴിഞ്ഞില്ല.";
+"webimage.error.subjectLiftFailed" = "ഈ ചിത്രത്തിൽ നിന്ന് വിഷയം വെട്ടിമാറ്റാൻ കഴിഞ്ഞില്ല.";
+"webimage.error.subjectLiftUnavailable" = "കട്ട് ഔട്ട് വിഷയം ഈ ഉപകരണത്തിൽ ലഭ്യമല്ല.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

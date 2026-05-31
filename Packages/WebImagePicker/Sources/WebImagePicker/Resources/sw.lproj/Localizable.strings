@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "Kurasa %lld hazikuweza kupakiwa. Picha kutoka kurasa nyingine zinaonyeshwa.";
 "webimage.searchPlaceholder" = "Tafuta kwa alt, kichwa, au URL";
 
+"webimage.tile.copyImage" = "Nakili Picha";
+"webimage.tile.copyImageURL" = "Nakili URL ya Picha";
+"webimage.tile.liftSubject" = "Kata Somo";
+"webimage.tile.imageActions" = "Vitendo vya Picha";
+"webimage.tile.preview" = "Hakiki";
+"webimage.tile.metadata" = "Maelezo ya Picha";
+"webimage.tile.previewTitle" = "Hakiki";
+"webimage.tile.metadataTitle" = "Maelezo ya Picha";
+"webimage.tile.done" = "Imekamilika";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Maandishi mbadala";
+"webimage.tile.metadata.title" = "Kichwa";
+"webimage.tile.metadata.recognizedText" = "Maandishi yanayotambulika";
+"webimage.tile.metadata.contentType" = "Aina ya maudhui";
+"webimage.tile.metadata.dimensions" = "Vipimo";
+"webimage.tile.metadata.loading" = "Inapakia...";
+"webimage.tile.metadata.unknown" = "Haijulikani";
+"webimage.error.pasteboardCopyFailed" = "Haikuweza kunakili kwenye ubao wa kunakili.";
+"webimage.error.subjectLiftFailed" = "Haikuweza kukata mada kutoka kwa picha hii.";
+"webimage.error.subjectLiftUnavailable" = "Mada ya Kata haipatikani kwenye kifaa hiki.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

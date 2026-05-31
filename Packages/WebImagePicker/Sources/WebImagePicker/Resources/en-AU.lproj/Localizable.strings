@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld page(s) could not be loaded. Images from the other pages are shown.";
 "webimage.searchPlaceholder" = "Search by alt, title, or URL";
 
+"webimage.tile.copyImage" = "Copy Image";
+"webimage.tile.copyImageURL" = "Copy Image URL";
+"webimage.tile.liftSubject" = "Cut Out Subject";
+"webimage.tile.imageActions" = "Image Actions";
+"webimage.tile.preview" = "Preview";
+"webimage.tile.metadata" = "Image Info";
+"webimage.tile.previewTitle" = "Preview";
+"webimage.tile.metadataTitle" = "Image Info";
+"webimage.tile.done" = "Done";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Alt text";
+"webimage.tile.metadata.title" = "Title";
+"webimage.tile.metadata.recognizedText" = "Recognized text";
+"webimage.tile.metadata.contentType" = "Content type";
+"webimage.tile.metadata.dimensions" = "Dimensions";
+"webimage.tile.metadata.loading" = "Loading…";
+"webimage.tile.metadata.unknown" = "Unknown";
+"webimage.error.pasteboardCopyFailed" = "Could not copy to the clipboard.";
+"webimage.error.subjectLiftFailed" = "Could not cut out the subject from this image.";
+"webimage.error.subjectLiftUnavailable" = "Cut out subject is not available on this device.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

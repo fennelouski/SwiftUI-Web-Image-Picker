@@ -39,13 +39,13 @@ If the consumer only vendors the library subtree, the path is whatever folder co
 
 **Repository:** **https://github.com/fennelouski/SwiftUI-Web-Image-Picker**
 
-Use a **version requirement** that matches a **tag** on the default branch (e.g. `from: "1.3.0"`).
+Use a **version requirement** that matches a **tag** on the default branch (e.g. `from: "1.4.0"`).
 
 ```swift
 .package(
     name: "WebImagePicker",
     url: "https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git",
-    from: "1.3.0"
+    from: "1.4.0"
 ),
 ```
 
@@ -99,7 +99,7 @@ Use when the host is an **`.xcodeproj`** / **`.xcworkspace`** app, not necessari
 
 1. Open the host project in Xcode.
 2. **File → Add Package Dependencies…**
-3. For a **remote** dependency: enter **https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git** and a **version rule** (e.g. **Up to Next Major** from **1.3.0**, or **1.0.0** if you want any compatible **1.x**).
+3. For a **remote** dependency: enter **https://github.com/fennelouski/SwiftUI-Web-Image-Picker.git** and a **version rule** (e.g. **Up to Next Major** from **1.4.0**, or **1.0.0** if you want any compatible **1.x**).
 4. For **Add Local…**: select the **repository root** (recommended; uses root `Package.swift`) or **`Packages/WebImagePicker`**.
 5. Add the product **`WebImagePicker`** to the **application** target (or the framework target that needs the UI).
 6. **macOS:** Enable **App Sandbox** → check **Outgoing Connections (Client)** (maps to `com.apple.security.network.client`).
@@ -192,6 +192,7 @@ Default is **`.staticHTML`**. On your configuration, **`configuration.extraction
 | Property | Role |
 |----------|------|
 | `initialURLString` | Optional text pre-filled in the URL field when the picker appears (whitespace trimmed); `nil` or empty = blank field. |
+| `automaticallyLoadOnAppear` | When `true`, calls `loadPage()` on first appearance if **`initialURLString`** (or, when multi-page entry is enabled, **`additionalPageURLs`**) provides a usable URL. Default **`false`**. |
 | `isMultiplePageEntryEnabled` | When `true`, shows extra page URL rows and aggregates `additionalPageURLs` with the primary URL. Default **`false`** (single URL field only). |
 | `additionalPageURLs` | Extra page URLs to load in order and merge into one grid (with deduplication); host can pre-seed several pages. Used only when **`isMultiplePageEntryEnabled`** is `true`. |
 | `maximumDiscoveredImagesPerPage` | Optional cap on candidates **per page** after deduplication and **`discoveredImageSort`**; `nil` = unlimited. Applies per page in multi-URL mode before cross-page merge. |
@@ -206,7 +207,7 @@ Default is **`.staticHTML`**. On your configuration, **`configuration.extraction
 | `maximumImageDimensions` | Optional maximum pixel width/height; same axis rule as minimum. |
 | `allowedImageTypeIdentifiers` | Optional `UTType` identifier allowlist (e.g. JPEG id); `nil` or empty disables type filtering at discovery/download. |
 | `unknownImageTypePolicy` | When the allowlist is active, how to treat types that cannot be inferred from URL or `Content-Type`. |
-| `selectionOutputMode` | Whether **`WebImageSelection`** is filled with **`data`** only (default), or a **`temporaryFileURL`** with typically empty **`data`**. |
+| `selectionOutputMode` | **`WebImageSelectionOutputMode`**: **`.dataOnly`** (default, bytes in `data`), **`.platformImage`** (decode check before `onPick`; bytes still in `data`), or **`.temporaryFileURL`** (empty `data`, path in `temporaryFileURL`). |
 
 #### Vision (faces, in-image text)
 
@@ -224,6 +225,47 @@ Default is **`.staticHTML`**. On your configuration, **`configuration.extraction
 |----------|------|
 | `excludedImageMetadataSubstrings` | Case-insensitive substrings; images matching **any** entry on URL, path, alt, `title`, or OCR text (when indexed) are hidden before the user’s search filter. |
 | `excludedImageMetadataRegularExpressionPatterns` | **`NSRegularExpression`** patterns (case-insensitive) against the same haystacks; invalid patterns ignored—keep the list short for CPU cost. |
+
+#### Cache
+
+| Property | Role |
+|----------|------|
+| `cachePolicy` | **`WebImagePickerCachePolicy`**: `requestCachePolicy` on every package `URLRequest` (HTML, probes, downloads), plus optional in-memory memo of per-page discovery URL lists (LRU, TTL, per-host cap). Default **`.ephemeral`**. Preset **`.sessionBounded`** enables discovery memo. Cleared when the user taps **Change URL**. |
+
+#### Tile context menu (browsing grid)
+
+| Property | Role |
+|----------|------|
+| `imageTileContextMenu` | **`WebImageTileContextMenuConfiguration`**. Default **`WebImageTileContextMenuConfiguration.disabled`**. When enabled, long-press (iOS) or right-click (macOS) on a tile shows a context menu; tap-to-select is unchanged. Copy, preview, metadata, and subject lift may download image bytes (subject to **`maximumImageDownloadBytes`**). |
+
+**`WebImageTileContextMenuConfiguration`** fields:
+
+| Field | Role |
+|-------|------|
+| `isEnabled` | Master switch. When `false`, no context menu is shown even if **`actions`** is non-empty. Default **`false`**. |
+| `actions` | **`WebImageTileContextMenuAction`** option set (combine with `[]` or `[.copyImage, .preview]`). Default empty. |
+| `clipboardPresentation` | **`WebImageTileClipboardPresentation`**: **`.separateMenuItems`** (one row per enabled clipboard action) or **`.groupedPicker`** (single **Image Actions** row with a nested menu). Default **`.separateMenuItems`**. Applies only to clipboard-related actions. |
+
+**`WebImageTileContextMenuAction`** members:
+
+| Member | Behavior |
+|--------|----------|
+| `copyImage` | Full download, then copy PNG to the pasteboard. |
+| `copyImageURL` | Copy `DiscoveredImage.sourceURL` string (no download). |
+| `liftSubject` | Download, run on-device **`VNGenerateForegroundInstanceMaskRequest`**, copy transparent PNG. **iOS and macOS only**; omitted from the menu on tvOS and visionOS even if set in config. |
+| `preview` | In-picker sheet with a larger image (may upgrade after full download). Does not call `onPick`. |
+| `showMetadata` | Sheet with URL, alt, title, optional OCR text, and probed dimensions/content-type. |
+| `clipboardActions` | Convenience set: `[.copyImage, .copyImageURL, .liftSubject]` (for documentation; use when reasoning about **`clipboardPresentation`**). |
+
+Example:
+
+```swift
+config.imageTileContextMenu = WebImageTileContextMenuConfiguration(
+    isEnabled: true,
+    actions: [.copyImage, .copyImageURL, .preview, .showMetadata],
+    clipboardPresentation: .groupedPicker
+)
+```
 
 Defaults: see `WebImagePickerConfiguration.init` in `Packages/WebImagePicker/Sources/WebImagePicker/WebImagePickerConfiguration.swift`.
 
@@ -243,9 +285,9 @@ Platform helpers (import still `WebImagePicker`):
 
 ## Localization
 
-- **Tables:** `Packages/WebImagePicker/Sources/WebImagePicker/Resources/<locale>.lproj/Localizable.strings` (keys prefixed with `webimage.`). The package declares `defaultLocalization: "en"` and ships **English** plus **Spanish** as reference locales.
+- **Tables:** `Packages/WebImagePicker/Sources/WebImagePicker/Resources/<locale>.lproj/Localizable.strings` (keys prefixed with `webimage.`). The package declares `defaultLocalization: "en"` and ships **90+** locale bundles, including tile context-menu keys (`webimage.tile.*`, `webimage.error.pasteboardCopyFailed`, `webimage.error.subjectLift*`).
 - **Runtime:** Strings resolve from **WebImagePicker’s resource bundle** (`Bundle.module` inside the library). The host app does not need to copy those files; system language / locale drives which translation loads when available.
-- **Contributors:** Add locales by adding a new `.lproj` folder with `Localizable.strings` (or extending an existing one) and submitting a PR. For one-off custom copy, wrap or fork the UI; there is no public string-replacement API.
+- **Contributors:** Add locales by adding a new `.lproj` folder with `Localizable.strings` (or extending an existing one) and submitting a PR. When adding new keys, run `Scripts/add_tile_localizations.py` (uses curated strings for major languages and `Scripts/tile_localization_generated.json` for the rest). For one-off custom copy, wrap or fork the UI; there is no public string-replacement API.
 
 ## Behavioral constraints (tell the user / product owner)
 

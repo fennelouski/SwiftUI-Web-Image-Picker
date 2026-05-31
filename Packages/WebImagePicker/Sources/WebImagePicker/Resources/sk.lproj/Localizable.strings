@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld stránka/stránky sa nepodarilo načítať. Zobrazujú sa obrázky z ostatných stránok.";
 "webimage.searchPlaceholder" = "Hľadať podľa alt, názvu alebo URL";
 
+"webimage.tile.copyImage" = "Kopírovať obrázok";
+"webimage.tile.copyImageURL" = "Kopírovať adresu URL obrázka";
+"webimage.tile.liftSubject" = "Vystrihnúť predmet";
+"webimage.tile.imageActions" = "Akcie s obrázkami";
+"webimage.tile.preview" = "Ukážka";
+"webimage.tile.metadata" = "Informácie o obrázku";
+"webimage.tile.previewTitle" = "Ukážka";
+"webimage.tile.metadataTitle" = "Informácie o obrázku";
+"webimage.tile.done" = "Hotovo";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Alternatívny text";
+"webimage.tile.metadata.title" = "Názov";
+"webimage.tile.metadata.recognizedText" = "Rozpoznaný text";
+"webimage.tile.metadata.contentType" = "Typ obsahu";
+"webimage.tile.metadata.dimensions" = "Rozmery";
+"webimage.tile.metadata.loading" = "Načítava sa…";
+"webimage.tile.metadata.unknown" = "Neznámy";
+"webimage.error.pasteboardCopyFailed" = "Nepodarilo sa skopírovať do schránky.";
+"webimage.error.subjectLiftFailed" = "Predmet z tohto obrázku sa nepodarilo vystrihnúť.";
+"webimage.error.subjectLiftUnavailable" = "Vystrihnutý predmet nie je na tomto zariadení k dispozícii.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

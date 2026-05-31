@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld টি পেজ লোড করা যায়নি। অন্য পেজের ছবি দেখানো হচ্ছে।";
 "webimage.searchPlaceholder" = "alt, শিরোনাম বা URL দিয়ে অনুসন্ধান";
 
+"webimage.tile.copyImage" = "ছবি কপি করুন";
+"webimage.tile.copyImageURL" = "ছবির URL কপি করুন";
+"webimage.tile.liftSubject" = "কাট আউট বিষয়";
+"webimage.tile.imageActions" = "ইমেজ অ্যাকশন";
+"webimage.tile.preview" = "পূর্বরূপ";
+"webimage.tile.metadata" = "ইমেজ তথ্য";
+"webimage.tile.previewTitle" = "পূর্বরূপ";
+"webimage.tile.metadataTitle" = "ইমেজ তথ্য";
+"webimage.tile.done" = "সম্পন্ন";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Alt টেক্সট";
+"webimage.tile.metadata.title" = "শিরোনাম";
+"webimage.tile.metadata.recognizedText" = "স্বীকৃত পাঠ্য";
+"webimage.tile.metadata.contentType" = "বিষয়বস্তুর প্রকার";
+"webimage.tile.metadata.dimensions" = "মাত্রা";
+"webimage.tile.metadata.loading" = "লোড হচ্ছে...";
+"webimage.tile.metadata.unknown" = "অজানা";
+"webimage.error.pasteboardCopyFailed" = "ক্লিপবোর্ডে অনুলিপি করা যায়নি।";
+"webimage.error.subjectLiftFailed" = "এই চিত্র থেকে বিষয় কাটা যায়নি.";
+"webimage.error.subjectLiftUnavailable" = "কাট আউট বিষয় এই ডিভাইসে উপলব্ধ নেই.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

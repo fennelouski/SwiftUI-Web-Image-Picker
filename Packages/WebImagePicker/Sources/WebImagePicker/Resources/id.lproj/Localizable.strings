@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld halaman tidak dapat dimuat. Gambar dari halaman lain ditampilkan.";
 "webimage.searchPlaceholder" = "Cari berdasarkan alt, judul, atau URL";
 
+"webimage.tile.copyImage" = "Salin Gambar";
+"webimage.tile.copyImageURL" = "Salin URL Gambar";
+"webimage.tile.liftSubject" = "Potong Subjek";
+"webimage.tile.imageActions" = "Tindakan Gambar";
+"webimage.tile.preview" = "Pratinjau";
+"webimage.tile.metadata" = "Info Gambar";
+"webimage.tile.previewTitle" = "Pratinjau";
+"webimage.tile.metadataTitle" = "Info Gambar";
+"webimage.tile.done" = "Selesai";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "teks alternatif";
+"webimage.tile.metadata.title" = "Judul";
+"webimage.tile.metadata.recognizedText" = "Teks yang dikenali";
+"webimage.tile.metadata.contentType" = "Jenis konten";
+"webimage.tile.metadata.dimensions" = "Ukuran";
+"webimage.tile.metadata.loading" = "Memuat…";
+"webimage.tile.metadata.unknown" = "Tidak dikenal";
+"webimage.error.pasteboardCopyFailed" = "Tidak dapat menyalin ke papan klip.";
+"webimage.error.subjectLiftFailed" = "Tidak dapat memotong subjek dari gambar ini.";
+"webimage.error.subjectLiftUnavailable" = "Subjek yang dipotong tidak tersedia di perangkat ini.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

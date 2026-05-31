@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld страниц(у) не удалось загрузить. Отображаются изображения с других страниц.";
 "webimage.searchPlaceholder" = "Поиск по alt, заголовку или URL";
 
+"webimage.tile.copyImage" = "Копировать изображение";
+"webimage.tile.copyImageURL" = "Копировать URL изображения";
+"webimage.tile.liftSubject" = "Вырезать объект";
+"webimage.tile.imageActions" = "Действия с изображением";
+"webimage.tile.preview" = "Просмотр";
+"webimage.tile.metadata" = "Сведения об изображении";
+"webimage.tile.previewTitle" = "Просмотр";
+"webimage.tile.metadataTitle" = "Сведения об изображении";
+"webimage.tile.done" = "Готово";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Альтернативный текст";
+"webimage.tile.metadata.title" = "Заголовок";
+"webimage.tile.metadata.recognizedText" = "Распознанный текст";
+"webimage.tile.metadata.contentType" = "Тип содержимого";
+"webimage.tile.metadata.dimensions" = "Размеры";
+"webimage.tile.metadata.loading" = "Загрузка…";
+"webimage.tile.metadata.unknown" = "Неизвестно";
+"webimage.error.pasteboardCopyFailed" = "Не удалось скопировать в буфер обмена.";
+"webimage.error.subjectLiftFailed" = "Не удалось вырезать объект на этом изображении.";
+"webimage.error.subjectLiftUnavailable" = "Вырезание объекта недоступно на этом устройстве.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

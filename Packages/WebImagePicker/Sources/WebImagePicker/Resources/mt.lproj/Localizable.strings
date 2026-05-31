@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld paġna/i ma setgħu/seta' jitgħabbu. Jintweru l-immaġnijiet mill-paġni l-oħra.";
 "webimage.searchPlaceholder" = "Fittex skont alt, titlu jew URL";
 
+"webimage.tile.copyImage" = "Ikkopja l-Immaġni";
+"webimage.tile.copyImageURL" = "Ikkopja l-URL tal-Immaġni";
+"webimage.tile.liftSubject" = "Aqta Suġġett";
+"webimage.tile.imageActions" = "Azzjonijiet tal-Immaġni";
+"webimage.tile.preview" = "Preview";
+"webimage.tile.metadata" = "Informazzjoni dwar l-Immaġini";
+"webimage.tile.previewTitle" = "Preview";
+"webimage.tile.metadataTitle" = "Informazzjoni dwar l-Immaġini";
+"webimage.tile.done" = "Magħmul";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Test alternattiv";
+"webimage.tile.metadata.title" = "Titolu";
+"webimage.tile.metadata.recognizedText" = "Test rikonoxxut";
+"webimage.tile.metadata.contentType" = "Tip ta' kontenut";
+"webimage.tile.metadata.dimensions" = "Dimensjonijiet";
+"webimage.tile.metadata.loading" = "Tagħbija...";
+"webimage.tile.metadata.unknown" = "Mhux magħruf";
+"webimage.error.pasteboardCopyFailed" = "Ma setgħetx tikkopja fil-clipboard.";
+"webimage.error.subjectLiftFailed" = "Ma setgħetx taqta' s-suġġett minn din l-immaġni.";
+"webimage.error.subjectLiftUnavailable" = "Is-suġġett maqtugħ mhuwiex disponibbli fuq dan l-apparat.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

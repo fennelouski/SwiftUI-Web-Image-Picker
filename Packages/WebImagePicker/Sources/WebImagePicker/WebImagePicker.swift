@@ -352,18 +352,23 @@ public struct WebImagePicker: View {
                     )
                     MasonryLayout(columns: columns, spacing: 8) {
                         ForEach(model.discoveredForDisplay) { item in
-                            DiscoveredImageTile(
+                            DiscoveredImageTileView(
                                 item: item,
                                 selected: model.selectedURLs.contains(item.sourceURL),
                                 maxTileWidth: maxTileWidth,
                                 loadingMinHeight: minHeights.loading,
                                 failureMinHeight: minHeights.failure,
+                                configuration: configuration,
+                                recognizedText: model.imageRecognizedTextByURL[item.sourceURL],
                                 onTap: {
                                     if configuration.selectionLimit == 1 {
                                         Task { await pickSingle(item) }
                                     } else {
                                         model.toggleSelection(item)
                                     }
+                                },
+                                onActionError: { message in
+                                    model.errorMessage = message
                                 }
                             )
                         }
@@ -460,65 +465,6 @@ private struct MasonryHeightPreferenceKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
         value = max(value, nextValue())
-    }
-}
-
-// MARK: - Tile
-
-private struct DiscoveredImageTile: View {
-    let item: DiscoveredImage
-    let selected: Bool
-    var maxTileWidth: CGFloat?
-    var loadingMinHeight: CGFloat = MasonryThumbnailScale.todayLoadingMinHeight
-    var failureMinHeight: CGFloat = MasonryThumbnailScale.todayFailureMinHeight
-    let onTap: () -> Void
-
-    var body: some View {
-        ZStack(alignment: .topTrailing) {
-            AsyncImage(url: item.sourceURL) { phase in
-                switch phase {
-                case .empty:
-                    ProgressView()
-                        .frame(maxWidth: tileContentMaxWidth, alignment: .center)
-                        .frame(minHeight: loadingMinHeight)
-                        .frame(maxWidth: .infinity)
-                        .background(Color.secondary.opacity(0.12))
-                case .success(let image):
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: tileContentMaxWidth)
-                        .frame(maxWidth: .infinity)
-                case .failure:
-                    EmptyView()
-                        .frame(width: 0, height: 0)
-                @unknown default:
-                    EmptyView()
-                }
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-
-            if selected {
-                Image(systemName: "checkmark.circle.fill")
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(.white, Color.accentColor)
-                    .padding(6)
-                    .shadow(radius: 2)
-            }
-        }
-        .contentShape(Rectangle())
-        .onTapGesture(perform: onTap)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(
-            item.accessibilityLabel
-                ?? String(localized: String.LocalizationValue("webimage.a11y.imageFromWeb"), bundle: WebImagePickerBundle.module)
-        )
-        .accessibilityAddTraits(selected ? .isSelected : [])
-    }
-
-    private var tileContentMaxWidth: CGFloat? {
-        guard let maxTileWidth, maxTileWidth.isFinite, maxTileWidth > 0 else { return nil }
-        return maxTileWidth
     }
 }
 

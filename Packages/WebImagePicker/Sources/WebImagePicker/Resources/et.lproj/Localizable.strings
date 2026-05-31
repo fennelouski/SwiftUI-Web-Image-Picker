@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld lehte ei õnnestunud laadida. Teiste lehtede pildid on kuvatud.";
 "webimage.searchPlaceholder" = "Otsi alt-teksti, pealkirja või URL-i järgi";
 
+"webimage.tile.copyImage" = "Kopeeri pilt";
+"webimage.tile.copyImageURL" = "Kopeeri pildi URL";
+"webimage.tile.liftSubject" = "Lõika välja teema";
+"webimage.tile.imageActions" = "Pilditoimingud";
+"webimage.tile.preview" = "Eelvaade";
+"webimage.tile.metadata" = "Pildi teave";
+"webimage.tile.previewTitle" = "Eelvaade";
+"webimage.tile.metadataTitle" = "Pildi teave";
+"webimage.tile.done" = "Valmis";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Alternatiivne tekst";
+"webimage.tile.metadata.title" = "Pealkiri";
+"webimage.tile.metadata.recognizedText" = "Tunnustatud tekst";
+"webimage.tile.metadata.contentType" = "Sisu tüüp";
+"webimage.tile.metadata.dimensions" = "Mõõtmed";
+"webimage.tile.metadata.loading" = "Laadimine…";
+"webimage.tile.metadata.unknown" = "Tundmatu";
+"webimage.error.pasteboardCopyFailed" = "Lõikepuhvrisse ei saanud kopeerida.";
+"webimage.error.subjectLiftFailed" = "Sellelt pildilt ei saanud teemat välja lõigata.";
+"webimage.error.subjectLiftUnavailable" = "Väljalõigatud teema pole selles seadmes saadaval.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

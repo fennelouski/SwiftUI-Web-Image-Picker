@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld 個頁面無法載入。將顯示其他頁面的圖片。";
 "webimage.searchPlaceholder" = "依替代文字、標題或 URL 搜尋";
 
+"webimage.tile.copyImage" = "拷貝圖像";
+"webimage.tile.copyImageURL" = "拷貝圖像 URL";
+"webimage.tile.liftSubject" = "去背主體";
+"webimage.tile.imageActions" = "圖像操作";
+"webimage.tile.preview" = "預覽";
+"webimage.tile.metadata" = "圖像資訊";
+"webimage.tile.previewTitle" = "預覽";
+"webimage.tile.metadataTitle" = "圖像資訊";
+"webimage.tile.done" = "完成";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "替代文字";
+"webimage.tile.metadata.title" = "標題";
+"webimage.tile.metadata.recognizedText" = "辨識的文字";
+"webimage.tile.metadata.contentType" = "內容類型";
+"webimage.tile.metadata.dimensions" = "尺寸";
+"webimage.tile.metadata.loading" = "載入中…";
+"webimage.tile.metadata.unknown" = "未知";
+"webimage.error.pasteboardCopyFailed" = "無法拷貝到剪貼板。";
+"webimage.error.subjectLiftFailed" = "無法從此圖像去背主體。";
+"webimage.error.subjectLiftUnavailable" = "此裝置不支援去背主體。";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

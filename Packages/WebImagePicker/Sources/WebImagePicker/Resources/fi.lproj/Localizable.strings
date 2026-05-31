@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld sivua ei voitu ladata. Muiden sivujen kuvat näytetään.";
 "webimage.searchPlaceholder" = "Hae alt-tekstin, otsikon tai URL:n mukaan";
 
+"webimage.tile.copyImage" = "Kopioi kuva";
+"webimage.tile.copyImageURL" = "Kopioi kuvan URL-osoite";
+"webimage.tile.liftSubject" = "Leikkaa aihe pois";
+"webimage.tile.imageActions" = "Kuvatoiminnot";
+"webimage.tile.preview" = "Esikatselu";
+"webimage.tile.metadata" = "Kuvan tiedot";
+"webimage.tile.previewTitle" = "Esikatselu";
+"webimage.tile.metadataTitle" = "Kuvan tiedot";
+"webimage.tile.done" = "Tehty";
+"webimage.tile.metadata.url" = "URL-osoite";
+"webimage.tile.metadata.alt" = "Vaihtoehtoinen teksti";
+"webimage.tile.metadata.title" = "Otsikko";
+"webimage.tile.metadata.recognizedText" = "Tunnistettu teksti";
+"webimage.tile.metadata.contentType" = "Sisällön tyyppi";
+"webimage.tile.metadata.dimensions" = "Mitat";
+"webimage.tile.metadata.loading" = "Ladataan…";
+"webimage.tile.metadata.unknown" = "Tuntematon";
+"webimage.error.pasteboardCopyFailed" = "Ei voitu kopioida leikepöydälle.";
+"webimage.error.subjectLiftFailed" = "Kohdetta ei voitu leikata pois tästä kuvasta.";
+"webimage.error.subjectLiftUnavailable" = "Leikattu aihe ei ole käytettävissä tällä laitteella.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

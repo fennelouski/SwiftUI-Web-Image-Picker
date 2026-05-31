@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld сторінку(и) не вдалося завантажити. Відображаються зображення з інших сторінок.";
 "webimage.searchPlaceholder" = "Шукати за alt, заголовком або URL";
 
+"webimage.tile.copyImage" = "Копіювати зображення";
+"webimage.tile.copyImageURL" = "Копіювати URL зображення";
+"webimage.tile.liftSubject" = "Вирізати тему";
+"webimage.tile.imageActions" = "Дії із зображеннями";
+"webimage.tile.preview" = "Попередній перегляд";
+"webimage.tile.metadata" = "Інформація про зображення";
+"webimage.tile.previewTitle" = "Попередній перегляд";
+"webimage.tile.metadataTitle" = "Інформація про зображення";
+"webimage.tile.done" = "Готово";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Альтернативний текст";
+"webimage.tile.metadata.title" = "Назва";
+"webimage.tile.metadata.recognizedText" = "Розпізнаний текст";
+"webimage.tile.metadata.contentType" = "Тип вмісту";
+"webimage.tile.metadata.dimensions" = "Розміри";
+"webimage.tile.metadata.loading" = "Завантаження…";
+"webimage.tile.metadata.unknown" = "Невідомий";
+"webimage.error.pasteboardCopyFailed" = "Не вдалося скопіювати в буфер обміну.";
+"webimage.error.subjectLiftFailed" = "Не вдалося вирізати об’єкт із цього зображення.";
+"webimage.error.subjectLiftUnavailable" = "Вирізаний предмет недоступний на цьому пристрої.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

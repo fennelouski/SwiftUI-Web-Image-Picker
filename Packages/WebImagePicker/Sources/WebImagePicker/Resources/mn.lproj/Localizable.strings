@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld хуудсыг ачааллах боломжгүй байлаа. Бусад хуудаснуудын зургуудыг харуулж байна.";
 "webimage.searchPlaceholder" = "Alt, гарчиг эсвэл URL-ээр хайх";
 
+"webimage.tile.copyImage" = "Зургийг хуулах";
+"webimage.tile.copyImageURL" = "Зургийн URL-г хуулах";
+"webimage.tile.liftSubject" = "Сэдвийг хайчилж ав";
+"webimage.tile.imageActions" = "Зургийн үйлдлүүд";
+"webimage.tile.preview" = "Урьдчилан үзэх";
+"webimage.tile.metadata" = "Зургийн мэдээлэл";
+"webimage.tile.previewTitle" = "Урьдчилан үзэх";
+"webimage.tile.metadataTitle" = "Зургийн мэдээлэл";
+"webimage.tile.done" = "Дууслаа";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Өөр текст";
+"webimage.tile.metadata.title" = "Гарчиг";
+"webimage.tile.metadata.recognizedText" = "Хүлээн зөвшөөрөгдсөн текст";
+"webimage.tile.metadata.contentType" = "Агуулгын төрөл";
+"webimage.tile.metadata.dimensions" = "Хэмжээ";
+"webimage.tile.metadata.loading" = "Ачааж байна…";
+"webimage.tile.metadata.unknown" = "Тодорхойгүй";
+"webimage.error.pasteboardCopyFailed" = "Түр санах ой руу хуулж чадсангүй.";
+"webimage.error.subjectLiftFailed" = "Энэ зурган дээрх сэдвийг хасаж чадсангүй.";
+"webimage.error.subjectLiftUnavailable" = "Таслах сэдвийг энэ төхөөрөмж дээр ашиглах боломжгүй.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

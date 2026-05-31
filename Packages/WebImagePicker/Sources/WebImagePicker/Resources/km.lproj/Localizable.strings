@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld ទំព័រមិនអាចផ្ទុកបានទេ។ រូបភាពពីទំព័រផ្សេងៗត្រូវបានបង្ហាញ។";
 "webimage.searchPlaceholder" = "ស្វែងរកតាម alt ចំណងជើង ឬ URL";
 
+"webimage.tile.copyImage" = "ចម្លងរូបភាព";
+"webimage.tile.copyImageURL" = "ចម្លង URL រូបភាព";
+"webimage.tile.liftSubject" = "កាត់ប្រធានបទ";
+"webimage.tile.imageActions" = "សកម្មភាពរូបភាព";
+"webimage.tile.preview" = "មើលជាមុន";
+"webimage.tile.metadata" = "ព័ត៌មានរូបភាព";
+"webimage.tile.previewTitle" = "មើលជាមុន";
+"webimage.tile.metadataTitle" = "ព័ត៌មានរូបភាព";
+"webimage.tile.done" = "រួចរាល់";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "អត្ថបទជំនួស";
+"webimage.tile.metadata.title" = "ចំណងជើង";
+"webimage.tile.metadata.recognizedText" = "អត្ថបទដែលទទួលស្គាល់";
+"webimage.tile.metadata.contentType" = "ប្រភេទមាតិកា";
+"webimage.tile.metadata.dimensions" = "វិមាត្រ";
+"webimage.tile.metadata.loading" = "កំពុង​ផ្ទុក...";
+"webimage.tile.metadata.unknown" = "មិនស្គាល់";
+"webimage.error.pasteboardCopyFailed" = "មិនអាចចម្លងទៅក្ដារតម្បៀតខ្ទាស់បានទេ។";
+"webimage.error.subjectLiftFailed" = "មិនអាចកាត់ប្រធានបទចេញពីរូបភាពនេះបានទេ។";
+"webimage.error.subjectLiftUnavailable" = "ប្រធានបទកាត់ចេញមិនមាននៅលើឧបករណ៍នេះទេ។";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

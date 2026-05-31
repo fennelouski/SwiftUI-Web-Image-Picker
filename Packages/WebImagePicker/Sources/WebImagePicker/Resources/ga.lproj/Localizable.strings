@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "Níorbh fhéidir %lld leathanach a lódáil. Taispeántar íomhánna ó na leathanaigh eile.";
 "webimage.searchPlaceholder" = "Cuardaigh de réir alt, teideal nó URL";
 
+"webimage.tile.copyImage" = "Cóipeáil Íomhá";
+"webimage.tile.copyImageURL" = "Cóipeáil URL Íomhá";
+"webimage.tile.liftSubject" = "Gearr Amach Ábhar";
+"webimage.tile.imageActions" = "Gníomhartha Íomhá";
+"webimage.tile.preview" = "Réamhamharc";
+"webimage.tile.metadata" = "Eolas Íomhá";
+"webimage.tile.previewTitle" = "Réamhamharc";
+"webimage.tile.metadataTitle" = "Eolas Íomhá";
+"webimage.tile.done" = "Déanta";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Téacs alt";
+"webimage.tile.metadata.title" = "Teideal";
+"webimage.tile.metadata.recognizedText" = "Téacs aitheanta";
+"webimage.tile.metadata.contentType" = "Cineál ábhair";
+"webimage.tile.metadata.dimensions" = "Toisí";
+"webimage.tile.metadata.loading" = "Á lódáil…";
+"webimage.tile.metadata.unknown" = "Anaithnid";
+"webimage.error.pasteboardCopyFailed" = "Níorbh fhéidir cóip a dhéanamh chuig an ngearrthaisce.";
+"webimage.error.subjectLiftFailed" = "Níorbh fhéidir an t-ábhar a ghearradh amach ón íomhá seo.";
+"webimage.error.subjectLiftUnavailable" = "Níl ábhar gearrtha amach ar fáil ar an ngléas seo.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

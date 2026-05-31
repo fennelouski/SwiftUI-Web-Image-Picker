@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld გვერდი ვერ ჩაიტვირთა. სხვა გვერდებიდან სურათები ნაჩვენებია.";
 "webimage.searchPlaceholder" = "ძებნა alt-ის, სათაურის ან URL-ის მიხედვით";
 
+"webimage.tile.copyImage" = "სურათის კოპირება";
+"webimage.tile.copyImageURL" = "დააკოპირეთ სურათის URL";
+"webimage.tile.liftSubject" = "ამოჭრა თემა";
+"webimage.tile.imageActions" = "გამოსახულების მოქმედებები";
+"webimage.tile.preview" = "გადახედვა";
+"webimage.tile.metadata" = "სურათის ინფორმაცია";
+"webimage.tile.previewTitle" = "გადახედვა";
+"webimage.tile.metadataTitle" = "სურათის ინფორმაცია";
+"webimage.tile.done" = "შესრულებულია";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "ალტერნატიული ტექსტი";
+"webimage.tile.metadata.title" = "სათაური";
+"webimage.tile.metadata.recognizedText" = "აღიარებული ტექსტი";
+"webimage.tile.metadata.contentType" = "შინაარსის ტიპი";
+"webimage.tile.metadata.dimensions" = "ზომები";
+"webimage.tile.metadata.loading" = "იტვირთება…";
+"webimage.tile.metadata.unknown" = "უცნობი";
+"webimage.error.pasteboardCopyFailed" = "გაცვლის ბუფერში კოპირება ვერ მოხერხდა.";
+"webimage.error.subjectLiftFailed" = "ამ სურათიდან თემის ამოღება ვერ მოხერხდა.";
+"webimage.error.subjectLiftUnavailable" = "ამოჭრილი თემა მიუწვდომელია ამ მოწყობილობაზე.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

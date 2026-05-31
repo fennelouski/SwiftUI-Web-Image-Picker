@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld páxina(s) non se puido/puideron cargar. Móstranse as imaxes das outras páxinas.";
 "webimage.searchPlaceholder" = "Buscar por alt, título ou URL";
 
+"webimage.tile.copyImage" = "Copiar Imaxe";
+"webimage.tile.copyImageURL" = "Copiar URL da imaxe";
+"webimage.tile.liftSubject" = "Recortar Tema";
+"webimage.tile.imageActions" = "Accións de imaxe";
+"webimage.tile.preview" = "Vista previa";
+"webimage.tile.metadata" = "Información da imaxe";
+"webimage.tile.previewTitle" = "Vista previa";
+"webimage.tile.metadataTitle" = "Información da imaxe";
+"webimage.tile.done" = "Feito";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Texto alternativo";
+"webimage.tile.metadata.title" = "Título";
+"webimage.tile.metadata.recognizedText" = "Texto recoñecido";
+"webimage.tile.metadata.contentType" = "Tipo de contido";
+"webimage.tile.metadata.dimensions" = "Dimensións";
+"webimage.tile.metadata.loading" = "Cargando…";
+"webimage.tile.metadata.unknown" = "Descoñecido";
+"webimage.error.pasteboardCopyFailed" = "Non se puido copiar no portapapeis.";
+"webimage.error.subjectLiftFailed" = "Non se puido cortar o tema desta imaxe.";
+"webimage.error.subjectLiftUnavailable" = "O tema recortado non está dispoñible neste dispositivo.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

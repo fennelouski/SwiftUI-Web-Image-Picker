@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld страница није могла бити учитана. Приказане су слике са осталих страница.";
 "webimage.searchPlaceholder" = "Претражи по alt, наслову или URL";
 
+"webimage.tile.copyImage" = "Копирај слику";
+"webimage.tile.copyImageURL" = "Копирајте УРЛ слике";
+"webimage.tile.liftSubject" = "Цут Оут Субјецт";
+"webimage.tile.imageActions" = "Акције са сликама";
+"webimage.tile.preview" = "Преглед";
+"webimage.tile.metadata" = "Информације о слици";
+"webimage.tile.previewTitle" = "Преглед";
+"webimage.tile.metadataTitle" = "Информације о слици";
+"webimage.tile.done" = "Готово";
+"webimage.tile.metadata.url" = "УРЛ";
+"webimage.tile.metadata.alt" = "Алт тект";
+"webimage.tile.metadata.title" = "Наслов";
+"webimage.tile.metadata.recognizedText" = "Препознати текст";
+"webimage.tile.metadata.contentType" = "Тип садржаја";
+"webimage.tile.metadata.dimensions" = "Димензије";
+"webimage.tile.metadata.loading" = "Учитавање…";
+"webimage.tile.metadata.unknown" = "Непознато";
+"webimage.error.pasteboardCopyFailed" = "Није могуће копирати у међуспремник.";
+"webimage.error.subjectLiftFailed" = "Није могуће изрезати субјект са ове слике.";
+"webimage.error.subjectLiftUnavailable" = "Изрезани предмет није доступан на овом уређају.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

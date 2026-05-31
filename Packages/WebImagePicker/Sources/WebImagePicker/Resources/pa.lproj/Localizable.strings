@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld ਪੰਨੇ ਲੋਡ ਨਹੀਂ ਹੋ ਸਕੇ। ਦੂਜੇ ਪੰਨਿਆਂ ਦੇ ਚਿੱਤਰ ਦਿਖਾਏ ਜਾ ਰਹੇ ਹਨ।";
 "webimage.searchPlaceholder" = "alt, ਸਿਰਲੇਖ ਜਾਂ URL ਨਾਲ ਖੋਜੋ";
 
+"webimage.tile.copyImage" = "ਚਿੱਤਰ ਕਾਪੀ ਕਰੋ";
+"webimage.tile.copyImageURL" = "ਚਿੱਤਰ URL ਨੂੰ ਕਾਪੀ ਕਰੋ";
+"webimage.tile.liftSubject" = "ਵਿਸ਼ਾ ਕੱਟੋ";
+"webimage.tile.imageActions" = "ਚਿੱਤਰ ਕਾਰਵਾਈਆਂ";
+"webimage.tile.preview" = "ਝਲਕ";
+"webimage.tile.metadata" = "ਚਿੱਤਰ ਜਾਣਕਾਰੀ";
+"webimage.tile.previewTitle" = "ਝਲਕ";
+"webimage.tile.metadataTitle" = "ਚਿੱਤਰ ਜਾਣਕਾਰੀ";
+"webimage.tile.done" = "ਹੋ ਗਿਆ";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Alt ਟੈਕਸਟ";
+"webimage.tile.metadata.title" = "ਸਿਰਲੇਖ";
+"webimage.tile.metadata.recognizedText" = "ਮਾਨਤਾ ਪ੍ਰਾਪਤ ਟੈਕਸਟ";
+"webimage.tile.metadata.contentType" = "ਸਮੱਗਰੀ ਦੀ ਕਿਸਮ";
+"webimage.tile.metadata.dimensions" = "ਮਾਪ";
+"webimage.tile.metadata.loading" = "ਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ...";
+"webimage.tile.metadata.unknown" = "ਅਗਿਆਤ";
+"webimage.error.pasteboardCopyFailed" = "ਕਲਿੱਪਬੋਰਡ 'ਤੇ ਕਾਪੀ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ।";
+"webimage.error.subjectLiftFailed" = "ਇਸ ਚਿੱਤਰ ਵਿੱਚੋਂ ਵਿਸ਼ੇ ਨੂੰ ਕੱਟਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ।";
+"webimage.error.subjectLiftUnavailable" = "ਕੱਟ ਆਊਟ ਵਿਸ਼ਾ ਇਸ ਡਿਵਾਈਸ 'ਤੇ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

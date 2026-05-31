@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld lapa(s) nevarēja ielādēt. Tiek rādīti attēli no pārējām lapām.";
 "webimage.searchPlaceholder" = "Meklēt pēc alt, virsraksta vai URL";
 
+"webimage.tile.copyImage" = "Kopēt attēlu";
+"webimage.tile.copyImageURL" = "Kopēt attēla URL";
+"webimage.tile.liftSubject" = "Izgriezt tēmu";
+"webimage.tile.imageActions" = "Attēlu darbības";
+"webimage.tile.preview" = "Priekšskatījums";
+"webimage.tile.metadata" = "Informācija par attēlu";
+"webimage.tile.previewTitle" = "Priekšskatījums";
+"webimage.tile.metadataTitle" = "Informācija par attēlu";
+"webimage.tile.done" = "Gatavs";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Alternatīvais teksts";
+"webimage.tile.metadata.title" = "Nosaukums";
+"webimage.tile.metadata.recognizedText" = "Atpazīts teksts";
+"webimage.tile.metadata.contentType" = "Satura veids";
+"webimage.tile.metadata.dimensions" = "Izmēri";
+"webimage.tile.metadata.loading" = "Notiek ielāde…";
+"webimage.tile.metadata.unknown" = "Nezināms";
+"webimage.error.pasteboardCopyFailed" = "Nevarēja kopēt starpliktuvē.";
+"webimage.error.subjectLiftFailed" = "Nevarēja izgriezt objektu no šī attēla.";
+"webimage.error.subjectLiftUnavailable" = "Šajā ierīcē izgrieztā tēma nav pieejama.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

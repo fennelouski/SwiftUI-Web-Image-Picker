@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.4.0] — 2026-05-31
+
+### Added
+
+- **Tile context menu (long-press)** — Opt-in `WebImageTileContextMenuConfiguration` on `WebImagePickerConfiguration` for copy image, copy URL, cut out subject (iOS/macOS), in-picker preview, and metadata sheets. Clipboard actions can appear as separate menu items or a grouped picker. Documented in README, `AI_INTEGRATION.md`, and DocC (`TileContextMenu` article).
+- **Tile context menu localizations** — All bundled `Localizable.strings` locales include menu, sheet, metadata, and error strings for tile actions (see `Scripts/add_tile_localizations.py` and `Scripts/tile_localization_generated.json`).
+
 ## [1.3.0] — 2026-05-26
 
 ### Added

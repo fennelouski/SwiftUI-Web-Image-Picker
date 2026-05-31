@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld side(r) kunne ikke lastes inn. Bilder fra de andre sidene vises.";
 "webimage.searchPlaceholder" = "Søk etter alt, tittel eller URL";
 
+"webimage.tile.copyImage" = "Kopier bilde";
+"webimage.tile.copyImageURL" = "Kopier bilde-URL";
+"webimage.tile.liftSubject" = "Klipp ut emne";
+"webimage.tile.imageActions" = "Bildehandlinger";
+"webimage.tile.preview" = "Forhåndsvisning";
+"webimage.tile.metadata" = "Bildeinfo";
+"webimage.tile.previewTitle" = "Forhåndsvisning";
+"webimage.tile.metadataTitle" = "Bildeinfo";
+"webimage.tile.done" = "Ferdig";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Alt tekst";
+"webimage.tile.metadata.title" = "Tittel";
+"webimage.tile.metadata.recognizedText" = "Gjenkjent tekst";
+"webimage.tile.metadata.contentType" = "Innholdstype";
+"webimage.tile.metadata.dimensions" = "Dimensjoner";
+"webimage.tile.metadata.loading" = "Laster inn …";
+"webimage.tile.metadata.unknown" = "Ukjent";
+"webimage.error.pasteboardCopyFailed" = "Kunne ikke kopiere til utklippstavlen.";
+"webimage.error.subjectLiftFailed" = "Kunne ikke klippe ut motivet fra dette bildet.";
+"webimage.error.subjectLiftUnavailable" = "Utklippet emne er ikke tilgjengelig på denne enheten.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld صفحه قابل بارگذاری نبود. تصاویر سایر صفحات نمایش داده می‌شوند.";
 "webimage.searchPlaceholder" = "جستجو بر اساس alt، عنوان یا آدرس";
 
+"webimage.tile.copyImage" = "کپی تصویر";
+"webimage.tile.copyImageURL" = "URL تصویر را کپی کنید";
+"webimage.tile.liftSubject" = "برش موضوع";
+"webimage.tile.imageActions" = "اقدامات تصویری";
+"webimage.tile.preview" = "پیش نمایش";
+"webimage.tile.metadata" = "اطلاعات تصویر";
+"webimage.tile.previewTitle" = "پیش نمایش";
+"webimage.tile.metadataTitle" = "اطلاعات تصویر";
+"webimage.tile.done" = "انجام شد";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "متن جایگزین";
+"webimage.tile.metadata.title" = "عنوان";
+"webimage.tile.metadata.recognizedText" = "متن شناخته شده";
+"webimage.tile.metadata.contentType" = "نوع محتوا";
+"webimage.tile.metadata.dimensions" = "ابعاد";
+"webimage.tile.metadata.loading" = "در حال بارگیری…";
+"webimage.tile.metadata.unknown" = "ناشناس";
+"webimage.error.pasteboardCopyFailed" = "در کلیپ بورد کپی نشد.";
+"webimage.error.subjectLiftFailed" = "نمی توان سوژه را از این تصویر جدا کرد.";
+"webimage.error.subjectLiftUnavailable" = "موضوع بریده شده در این دستگاه موجود نیست.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld 페이지를 로드할 수 없습니다. 다른 페이지의 이미지가 표시됩니다.";
 "webimage.searchPlaceholder" = "alt, 제목 또는 URL로 검색";
 
+"webimage.tile.copyImage" = "이미지 복사";
+"webimage.tile.copyImageURL" = "이미지 URL 복사";
+"webimage.tile.liftSubject" = "피사체 잘라내기";
+"webimage.tile.imageActions" = "이미지 작업";
+"webimage.tile.preview" = "미리보기";
+"webimage.tile.metadata" = "이미지 정보";
+"webimage.tile.previewTitle" = "미리보기";
+"webimage.tile.metadataTitle" = "이미지 정보";
+"webimage.tile.done" = "완료";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "대체 텍스트";
+"webimage.tile.metadata.title" = "제목";
+"webimage.tile.metadata.recognizedText" = "인식된 텍스트";
+"webimage.tile.metadata.contentType" = "콘텐츠 유형";
+"webimage.tile.metadata.dimensions" = "크기";
+"webimage.tile.metadata.loading" = "로드 중…";
+"webimage.tile.metadata.unknown" = "알 수 없음";
+"webimage.error.pasteboardCopyFailed" = "클립보드에 복사할 수 없습니다.";
+"webimage.error.subjectLiftFailed" = "이 이미지에서 피사체를 잘라낼 수 없습니다.";
+"webimage.error.subjectLiftUnavailable" = "이 기기에서는 피사체 잘라내기를 사용할 수 없습니다.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

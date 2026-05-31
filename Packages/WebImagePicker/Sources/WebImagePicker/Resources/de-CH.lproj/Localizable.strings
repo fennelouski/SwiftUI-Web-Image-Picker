@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld Seite(n) konnten nicht geladen werden. Bilder von den anderen Seiten werden angezeigt.";
 "webimage.searchPlaceholder" = "Nach Alt, Titel oder URL suchen";
 
+"webimage.tile.copyImage" = "Bild kopieren";
+"webimage.tile.copyImageURL" = "Bild-URL kopieren";
+"webimage.tile.liftSubject" = "Motiv freistellen";
+"webimage.tile.imageActions" = "Bildaktionen";
+"webimage.tile.preview" = "Vorschau";
+"webimage.tile.metadata" = "Bildinfo";
+"webimage.tile.previewTitle" = "Vorschau";
+"webimage.tile.metadataTitle" = "Bildinfo";
+"webimage.tile.done" = "Fertig";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Alt-Text";
+"webimage.tile.metadata.title" = "Titel";
+"webimage.tile.metadata.recognizedText" = "Erkannter Text";
+"webimage.tile.metadata.contentType" = "Inhaltstyp";
+"webimage.tile.metadata.dimensions" = "Abmessungen";
+"webimage.tile.metadata.loading" = "Laden…";
+"webimage.tile.metadata.unknown" = "Unbekannt";
+"webimage.error.pasteboardCopyFailed" = "Kopieren in die Zwischenablage fehlgeschlagen.";
+"webimage.error.subjectLiftFailed" = "Motiv konnte nicht freigestellt werden.";
+"webimage.error.subjectLiftUnavailable" = "Motiv freistellen ist auf diesem Gerät nicht verfügbar.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld stránka/stránky se nepodařilo načíst. Zobrazují se obrázky z ostatních stránek.";
 "webimage.searchPlaceholder" = "Hledat podle alt, názvu nebo URL";
 
+"webimage.tile.copyImage" = "Kopírovat obrázek";
+"webimage.tile.copyImageURL" = "Zkopírujte adresu URL obrázku";
+"webimage.tile.liftSubject" = "Vyjmout předmět";
+"webimage.tile.imageActions" = "Akce s obrázky";
+"webimage.tile.preview" = "Náhled";
+"webimage.tile.metadata" = "Informace o obrázku";
+"webimage.tile.previewTitle" = "Náhled";
+"webimage.tile.metadataTitle" = "Informace o obrázku";
+"webimage.tile.done" = "Hotovo";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Alternativní text";
+"webimage.tile.metadata.title" = "Titul";
+"webimage.tile.metadata.recognizedText" = "Rozpoznaný text";
+"webimage.tile.metadata.contentType" = "Typ obsahu";
+"webimage.tile.metadata.dimensions" = "Rozměry";
+"webimage.tile.metadata.loading" = "Načítání…";
+"webimage.tile.metadata.unknown" = "Neznámý";
+"webimage.error.pasteboardCopyFailed" = "Nelze zkopírovat do schránky.";
+"webimage.error.subjectLiftFailed" = "Předmět z tohoto obrázku nelze vyjmout.";
+"webimage.error.subjectLiftUnavailable" = "Vyjmout předmět není na tomto zařízení k dispozici.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

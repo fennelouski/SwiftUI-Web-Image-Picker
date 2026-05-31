@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld ページを読み込めませんでした。他のページの画像が表示されています。";
 "webimage.searchPlaceholder" = "alt、タイトル、または URL で検索";
 
+"webimage.tile.copyImage" = "画像をコピー";
+"webimage.tile.copyImageURL" = "画像URLをコピー";
+"webimage.tile.liftSubject" = "被写体を切り抜く";
+"webimage.tile.imageActions" = "画像の操作";
+"webimage.tile.preview" = "プレビュー";
+"webimage.tile.metadata" = "画像情報";
+"webimage.tile.previewTitle" = "プレビュー";
+"webimage.tile.metadataTitle" = "画像情報";
+"webimage.tile.done" = "完了";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "代替テキスト";
+"webimage.tile.metadata.title" = "タイトル";
+"webimage.tile.metadata.recognizedText" = "認識されたテキスト";
+"webimage.tile.metadata.contentType" = "コンテンツタイプ";
+"webimage.tile.metadata.dimensions" = "寸法";
+"webimage.tile.metadata.loading" = "読み込み中…";
+"webimage.tile.metadata.unknown" = "不明";
+"webimage.error.pasteboardCopyFailed" = "クリップボードにコピーできませんでした。";
+"webimage.error.subjectLiftFailed" = "この画像から被写体を切り抜けませんでした。";
+"webimage.error.subjectLiftUnavailable" = "このデバイスでは被写体の切り抜きは利用できません。";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

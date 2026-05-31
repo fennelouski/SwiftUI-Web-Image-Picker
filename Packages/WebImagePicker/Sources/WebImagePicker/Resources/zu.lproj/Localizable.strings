@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "Amakhasi %lld awakwazanga ukulayishwa. Izithombe kumakhasi amanye ziboniswa.";
 "webimage.searchPlaceholder" = "Sesha nge-alt, isihloko, noma i-URL";
 
+"webimage.tile.copyImage" = "Kopisha Isithombe";
+"webimage.tile.copyImageURL" = "Kopisha i-URL yesithombe";
+"webimage.tile.liftSubject" = "Sika Isihloko";
+"webimage.tile.imageActions" = "Izenzo zesithombe";
+"webimage.tile.preview" = "Buka kuqala";
+"webimage.tile.metadata" = "Ulwazi Lwesithombe";
+"webimage.tile.previewTitle" = "Buka kuqala";
+"webimage.tile.metadataTitle" = "Ulwazi Lwesithombe";
+"webimage.tile.done" = "Kwenziwe";
+"webimage.tile.metadata.url" = "I-URL";
+"webimage.tile.metadata.alt" = "Omunye umbhalo";
+"webimage.tile.metadata.title" = "Isihloko";
+"webimage.tile.metadata.recognizedText" = "Umbhalo owaziwayo";
+"webimage.tile.metadata.contentType" = "Uhlobo lokuqukethwe";
+"webimage.tile.metadata.dimensions" = "Ubukhulu";
+"webimage.tile.metadata.loading" = "Iyalayisha...";
+"webimage.tile.metadata.unknown" = "Akwaziwa";
+"webimage.error.pasteboardCopyFailed" = "Ayikwazanga ukukopisha ebhodini lokunamathisela.";
+"webimage.error.subjectLiftFailed" = "Ayikwazanga ukusika isihloko kulesi sithombe.";
+"webimage.error.subjectLiftUnavailable" = "Isihloko sokusika asitholakali kule divayisi.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

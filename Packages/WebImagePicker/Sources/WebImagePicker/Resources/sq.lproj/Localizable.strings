@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld faqe nuk u arritën të ngarkohen. Shfaqen imazhet nga faqet e tjera.";
 "webimage.searchPlaceholder" = "Kërko sipas alt, titullit ose URL-it";
 
+"webimage.tile.copyImage" = "Kopjo imazhin";
+"webimage.tile.copyImageURL" = "Kopjo URL-në e imazhit";
+"webimage.tile.liftSubject" = "Tema e prerë";
+"webimage.tile.imageActions" = "Veprimet e imazhit";
+"webimage.tile.preview" = "Parapamje";
+"webimage.tile.metadata" = "Informacion mbi imazhin";
+"webimage.tile.previewTitle" = "Parapamje";
+"webimage.tile.metadataTitle" = "Informacion mbi imazhin";
+"webimage.tile.done" = "U krye";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Teksti alternativ";
+"webimage.tile.metadata.title" = "Titulli";
+"webimage.tile.metadata.recognizedText" = "Teksti i njohur";
+"webimage.tile.metadata.contentType" = "Lloji i përmbajtjes";
+"webimage.tile.metadata.dimensions" = "Dimensionet";
+"webimage.tile.metadata.loading" = "Po ngarkohet…";
+"webimage.tile.metadata.unknown" = "E panjohur";
+"webimage.error.pasteboardCopyFailed" = "Nuk mund të kopjohej në kujtesën e fragmenteve.";
+"webimage.error.subjectLiftFailed" = "Subjekti nuk mund të shkëputej nga ky imazh.";
+"webimage.error.subjectLiftUnavailable" = "Subjekti i prerë nuk disponohet në këtë pajisje.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

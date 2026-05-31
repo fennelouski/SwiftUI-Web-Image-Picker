@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "පිටු %lld ක් පූරණය කළ නොහැකි විය. අනෙකුත් පිටු වලින් රූප පෙන්වේ.";
 "webimage.searchPlaceholder" = "alt, මාතෘකා හෝ URL මගින් සොයන්න";
 
+"webimage.tile.copyImage" = "රූපය පිටපත් කරන්න";
+"webimage.tile.copyImageURL" = "පින්තූර URL පිටපත් කරන්න";
+"webimage.tile.liftSubject" = "විෂය කපා දමන්න";
+"webimage.tile.imageActions" = "රූප ක්‍රියා";
+"webimage.tile.preview" = "පෙරදසුන";
+"webimage.tile.metadata" = "රූප තොරතුරු";
+"webimage.tile.previewTitle" = "පෙරදසුන";
+"webimage.tile.metadataTitle" = "රූප තොරතුරු";
+"webimage.tile.done" = "කළා";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "විකල්ප පෙළ";
+"webimage.tile.metadata.title" = "මාතෘකාව";
+"webimage.tile.metadata.recognizedText" = "පිළිගත් පෙළ";
+"webimage.tile.metadata.contentType" = "අන්තර්ගත වර්ගය";
+"webimage.tile.metadata.dimensions" = "මානයන්";
+"webimage.tile.metadata.loading" = "පූරණය වෙමින්...";
+"webimage.tile.metadata.unknown" = "නොදන්නා";
+"webimage.error.pasteboardCopyFailed" = "පසුරු පුවරුවට පිටපත් කිරීමට නොහැකි විය.";
+"webimage.error.subjectLiftFailed" = "මෙම රූපයෙන් විෂය කපා හැරීමට නොහැකි විය.";
+"webimage.error.subjectLiftUnavailable" = "මෙම උපාංගය මත කැපූ විෂය ලබා ගත නොහැක.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

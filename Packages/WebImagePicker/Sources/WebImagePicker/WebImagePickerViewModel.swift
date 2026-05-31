@@ -532,6 +532,21 @@ final class WebImagePickerViewModel {
                     localized: String.LocalizationValue("webimage.error.imageDecodeFailed"),
                     bundle: WebImagePickerBundle.module
                 )
+            case .pasteboardCopyFailed:
+                return String(
+                    localized: String.LocalizationValue("webimage.error.pasteboardCopyFailed"),
+                    bundle: WebImagePickerBundle.module
+                )
+            case .subjectLiftFailed:
+                return String(
+                    localized: String.LocalizationValue("webimage.error.subjectLiftFailed"),
+                    bundle: WebImagePickerBundle.module
+                )
+            case .subjectLiftUnavailable:
+                return String(
+                    localized: String.LocalizationValue("webimage.error.subjectLiftUnavailable"),
+                    bundle: WebImagePickerBundle.module
+                )
             }
         }
         return String(

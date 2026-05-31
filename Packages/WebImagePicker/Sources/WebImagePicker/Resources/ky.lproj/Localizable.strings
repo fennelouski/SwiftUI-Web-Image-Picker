@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld баракча жүктөлгөн жок. Башка баракчалардын сүрөттөрү көрсөтүлүп жатат.";
 "webimage.searchPlaceholder" = "Alt, аталыш же URL боюнча издөө";
 
+"webimage.tile.copyImage" = "Сүрөттү көчүрүү";
+"webimage.tile.copyImageURL" = "Сүрөттүн URL'ин көчүрүү";
+"webimage.tile.liftSubject" = "Теманы кесип";
+"webimage.tile.imageActions" = "Сүрөт аракеттери";
+"webimage.tile.preview" = "Алдын ала көрүү";
+"webimage.tile.metadata" = "Сүрөт маалыматы";
+"webimage.tile.previewTitle" = "Алдын ала көрүү";
+"webimage.tile.metadataTitle" = "Сүрөт маалыматы";
+"webimage.tile.done" = "Бүттү";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Кошумча текст";
+"webimage.tile.metadata.title" = "Title";
+"webimage.tile.metadata.recognizedText" = "Таанылган текст";
+"webimage.tile.metadata.contentType" = "Мазмун түрү";
+"webimage.tile.metadata.dimensions" = "Өлчөмдөр";
+"webimage.tile.metadata.loading" = "Жүктөлүүдө…";
+"webimage.tile.metadata.unknown" = "Белгисиз";
+"webimage.error.pasteboardCopyFailed" = "Алмашуу буферине көчүрүлгөн жок.";
+"webimage.error.subjectLiftFailed" = "Бул сүрөттөн теманы кесип салуу мүмкүн эмес.";
+"webimage.error.subjectLiftUnavailable" = "Кесилген тема бул түзмөктө жеткиликсиз.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

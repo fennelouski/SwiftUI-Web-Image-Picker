@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld bladsy(e) kon nie gelaai word nie. Beelde van die ander bladsye word gewys.";
 "webimage.searchPlaceholder" = "Soek op alt, titel of URL";
 
+"webimage.tile.copyImage" = "Kopieer prent";
+"webimage.tile.copyImageURL" = "Kopieer prent-URL";
+"webimage.tile.liftSubject" = "Knip Onderwerp uit";
+"webimage.tile.imageActions" = "Beeldaksies";
+"webimage.tile.preview" = "Voorskou";
+"webimage.tile.metadata" = "Beeld inligting";
+"webimage.tile.previewTitle" = "Voorskou";
+"webimage.tile.metadataTitle" = "Beeld inligting";
+"webimage.tile.done" = "Klaar";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Alt teks";
+"webimage.tile.metadata.title" = "Titel";
+"webimage.tile.metadata.recognizedText" = "Herkende teks";
+"webimage.tile.metadata.contentType" = "Inhoud tipe";
+"webimage.tile.metadata.dimensions" = "Afmetings";
+"webimage.tile.metadata.loading" = "Laai tans …";
+"webimage.tile.metadata.unknown" = "Onbekend";
+"webimage.error.pasteboardCopyFailed" = "Kon nie na die knipbord kopieer nie.";
+"webimage.error.subjectLiftFailed" = "Kon nie die onderwerp uit hierdie prent uitknip nie.";
+"webimage.error.subjectLiftUnavailable" = "Uitgesnyde onderwerp is nie op hierdie toestel beskikbaar nie.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

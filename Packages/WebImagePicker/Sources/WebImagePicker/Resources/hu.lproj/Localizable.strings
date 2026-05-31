@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld oldalt nem sikerült betölteni. A többi oldal képei megjelennek.";
 "webimage.searchPlaceholder" = "Keresés alt, cím vagy URL alapján";
 
+"webimage.tile.copyImage" = "Kép másolása";
+"webimage.tile.copyImageURL" = "Másolja a kép URL-címét";
+"webimage.tile.liftSubject" = "Tárgy kivágása";
+"webimage.tile.imageActions" = "Képműveletek";
+"webimage.tile.preview" = "Előnézet";
+"webimage.tile.metadata" = "Kép információ";
+"webimage.tile.previewTitle" = "Előnézet";
+"webimage.tile.metadataTitle" = "Kép információ";
+"webimage.tile.done" = "Kész";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Alt szöveg";
+"webimage.tile.metadata.title" = "Cím";
+"webimage.tile.metadata.recognizedText" = "Felismert szöveg";
+"webimage.tile.metadata.contentType" = "Tartalom típusa";
+"webimage.tile.metadata.dimensions" = "Méretek";
+"webimage.tile.metadata.loading" = "Terhelés…";
+"webimage.tile.metadata.unknown" = "Ismeretlen";
+"webimage.error.pasteboardCopyFailed" = "Nem sikerült a vágólapra másolni.";
+"webimage.error.subjectLiftFailed" = "Nem sikerült kivágni a témát erről a képről.";
+"webimage.error.subjectLiftUnavailable" = "A kivágott téma nem érhető el ezen az eszközön.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

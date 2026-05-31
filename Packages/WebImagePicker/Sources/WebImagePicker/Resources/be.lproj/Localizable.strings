@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld старонку(і) не ўдалося загрузіць. Паказаны выявы з іншых старонак.";
 "webimage.searchPlaceholder" = "Шукаць па alt, назве або URL";
 
+"webimage.tile.copyImage" = "Скапіраваць малюнак";
+"webimage.tile.copyImageURL" = "Скапіруйце URL выявы";
+"webimage.tile.liftSubject" = "Выразаць тэму";
+"webimage.tile.imageActions" = "Дзеянні з малюнкамі";
+"webimage.tile.preview" = "Папярэдні прагляд";
+"webimage.tile.metadata" = "Інфармацыя аб выяве";
+"webimage.tile.previewTitle" = "Папярэдні прагляд";
+"webimage.tile.metadataTitle" = "Інфармацыя аб выяве";
+"webimage.tile.done" = "Гатова";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Альтэрнатыўны тэкст";
+"webimage.tile.metadata.title" = "Назва";
+"webimage.tile.metadata.recognizedText" = "Распазнаны тэкст";
+"webimage.tile.metadata.contentType" = "Тып кантэнту";
+"webimage.tile.metadata.dimensions" = "Памеры";
+"webimage.tile.metadata.loading" = "Загрузка...";
+"webimage.tile.metadata.unknown" = "Невядомы";
+"webimage.error.pasteboardCopyFailed" = "Не ўдалося скапіраваць у буфер абмену.";
+"webimage.error.subjectLiftFailed" = "Не атрымалася выразаць аб'ект з гэтага відарыса.";
+"webimage.error.subjectLiftUnavailable" = "Выразаны прадмет недаступны на гэтай прыладзе.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

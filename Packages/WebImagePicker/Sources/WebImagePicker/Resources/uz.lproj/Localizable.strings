@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld sahifa yuklanmadi. Boshqa sahifalardan rasmlar ko'rsatilmoqda.";
 "webimage.searchPlaceholder" = "Alt, sarlavha yoki URL bo'yicha qidirish";
 
+"webimage.tile.copyImage" = "Rasmni nusxalash";
+"webimage.tile.copyImageURL" = "Rasm URL manzilidan nusxa oling";
+"webimage.tile.liftSubject" = "Mavzuni kesib tashlash";
+"webimage.tile.imageActions" = "Rasm harakatlari";
+"webimage.tile.preview" = "Ko‘rib chiqish";
+"webimage.tile.metadata" = "Rasm haqida ma'lumot";
+"webimage.tile.previewTitle" = "Ko‘rib chiqish";
+"webimage.tile.metadataTitle" = "Rasm haqida ma'lumot";
+"webimage.tile.done" = "Bajarildi";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Muqobil matn";
+"webimage.tile.metadata.title" = "Sarlavha";
+"webimage.tile.metadata.recognizedText" = "Taniqli matn";
+"webimage.tile.metadata.contentType" = "Kontent turi";
+"webimage.tile.metadata.dimensions" = "O'lchamlari";
+"webimage.tile.metadata.loading" = "Yuklanmoqda…";
+"webimage.tile.metadata.unknown" = "Noma'lum";
+"webimage.error.pasteboardCopyFailed" = "Vaqtinchalik xotiraga nusxalanib bo‘lmadi.";
+"webimage.error.subjectLiftFailed" = "Ushbu rasmdan mavzuni kesib bo'lmadi.";
+"webimage.error.subjectLiftUnavailable" = "Kesilgan mavzu bu qurilmada mavjud emas.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld strani(e) ni bilo mogoče naložiti. Prikazane so slike z ostalih strani.";
 "webimage.searchPlaceholder" = "Išči po alt, naslovu ali URL-ju";
 
+"webimage.tile.copyImage" = "Kopiraj sliko";
+"webimage.tile.copyImageURL" = "Kopiraj URL slike";
+"webimage.tile.liftSubject" = "Izreži zadevo";
+"webimage.tile.imageActions" = "Dejanja slike";
+"webimage.tile.preview" = "Predogled";
+"webimage.tile.metadata" = "Informacije o sliki";
+"webimage.tile.previewTitle" = "Predogled";
+"webimage.tile.metadataTitle" = "Informacije o sliki";
+"webimage.tile.done" = "Končano";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "Nadomestno besedilo";
+"webimage.tile.metadata.title" = "Naslov";
+"webimage.tile.metadata.recognizedText" = "Prepoznano besedilo";
+"webimage.tile.metadata.contentType" = "Vrsta vsebine";
+"webimage.tile.metadata.dimensions" = "Dimenzije";
+"webimage.tile.metadata.loading" = "Nalaganje ...";
+"webimage.tile.metadata.unknown" = "Neznano";
+"webimage.error.pasteboardCopyFailed" = "Ni bilo mogoče kopirati v odložišče.";
+"webimage.error.subjectLiftFailed" = "Teme ni bilo mogoče izrezati s te slike.";
+"webimage.error.subjectLiftUnavailable" = "Izrezan predmet ni na voljo v tej napravi.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";

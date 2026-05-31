@@ -34,6 +34,26 @@
 "webimage.partialPageFailuresFormat" = "%lld பக்கம்/பக்கங்கள் ஏற்ற முடியவில்லை. மற்ற பக்கங்களிலிருந்து படங்கள் காட்டப்படுகின்றன.";
 "webimage.searchPlaceholder" = "alt, தலைப்பு அல்லது URL மூலம் தேட";
 
+"webimage.tile.copyImage" = "படத்தை நகலெடுக்கவும்";
+"webimage.tile.copyImageURL" = "பட URL ஐ நகலெடுக்கவும்";
+"webimage.tile.liftSubject" = "கட் அவுட் சப்ஜெக்ட்";
+"webimage.tile.imageActions" = "படச் செயல்கள்";
+"webimage.tile.preview" = "முன்னோட்டம்";
+"webimage.tile.metadata" = "படத் தகவல்";
+"webimage.tile.previewTitle" = "முன்னோட்டம்";
+"webimage.tile.metadataTitle" = "படத் தகவல்";
+"webimage.tile.done" = "முடிந்தது";
+"webimage.tile.metadata.url" = "URL";
+"webimage.tile.metadata.alt" = "மாற்று உரை";
+"webimage.tile.metadata.title" = "தலைப்பு";
+"webimage.tile.metadata.recognizedText" = "அங்கீகரிக்கப்பட்ட உரை";
+"webimage.tile.metadata.contentType" = "உள்ளடக்க வகை";
+"webimage.tile.metadata.dimensions" = "பரிமாணங்கள்";
+"webimage.tile.metadata.loading" = "ஏற்றுகிறது…";
+"webimage.tile.metadata.unknown" = "தெரியவில்லை";
+"webimage.error.pasteboardCopyFailed" = "கிளிப்போர்டுக்கு நகலெடுக்க முடியவில்லை.";
+"webimage.error.subjectLiftFailed" = "இந்தப் படத்திலிருந்து தலைப்பைக் குறைக்க முடியவில்லை.";
+"webimage.error.subjectLiftUnavailable" = "இந்தச் சாதனத்தில் கட் அவுட் பொருள் இல்லை.";
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";
