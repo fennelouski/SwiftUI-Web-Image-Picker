@@ -1,5 +1,6 @@
 .DS_Store
 .venv-l10n/
+Scripts/__pycache__/
 .build/
 Packages/WebImagePicker/.build/
 *.xcodeproj/xcuserdata/

@@ -24,7 +24,7 @@ When you are ready to integrate, follow **[Installation](#installation)** and **
 ## Features
 
 - **Photos-like sheet** — Navigation stack with Cancel, Done (multi-select), and “Change URL” while browsing.
-- **URL entry first** — Text field with URL-friendly keyboard options where supported; loads the page on demand. Bare hosts (e.g. `example.com/path`) are **best-effort normalized** by prepending an allowed scheme (`https` preferred, then `http`, then other schemes in `allowedURLSchemes`). Users can still type an explicit `http://` URL when `http` is allowed.
+- **URL entry first** — Text field with URL-friendly keyboard options where supported; loads the page on demand. Bare hosts (e.g. `example.com/path`) are **best-effort normalized** by prepending an allowed scheme (`https` preferred, then `http`, then other schemes in `allowedURLSchemes`). If the first attempt fails, optional smart fallback can retry likely host/TLD fixes (for example `google.c` -> `google.com`) using `WebImagePickerConfiguration.isSmartURLFallbackEnabled`.
 - **Static HTML extraction** — Collects `<img>`, `srcset`, `<picture>` sources, Open Graph, Twitter card images, and **`url(...)` targets** from inline `style` attributes plus `<style>` blocks for `background-image` / `background` declarations; resolves relative URLs and deduplicates.
 - **WebView extraction mode** — Optional `WKWebView`-based discovery for JavaScript-rendered pages.
 - **Masonry layout** — Custom SwiftUI `Layout` with staggered columns (column count adapts by platform, size class, and image count — sparse pages show larger thumbnails, up to 3× the legacy size).

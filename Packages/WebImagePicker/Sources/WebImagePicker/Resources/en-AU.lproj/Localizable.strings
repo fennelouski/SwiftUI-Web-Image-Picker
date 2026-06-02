@@ -46,7 +46,7 @@
 "webimage.tile.metadata.url" = "URL";
 "webimage.tile.metadata.alt" = "Alt text";
 "webimage.tile.metadata.title" = "Title";
-"webimage.tile.metadata.recognizedText" = "Recognized text";
+"webimage.tile.metadata.recognizedText" = "Recognised text";
 "webimage.tile.metadata.contentType" = "Content type";
 "webimage.tile.metadata.dimensions" = "Dimensions";
 "webimage.tile.metadata.loading" = "Loading…";
@@ -57,3 +57,4 @@
 "webimage.skippedHTTPImagesNoticeFormat.release" = "Some images were skipped because they use HTTP (%lld). Use HTTPS image URLs.";
 "webimage.error.httpNotAllowed.release" = "This URL uses HTTP. Only HTTPS is allowed. Change the URL to HTTPS.";
 "webimage.httpSkippedImagesCollapsed" = "Some images were skipped";
+"webimage.urlCorrectedFormat" = "Loaded a corrected URL: \"%@\" -> \"%@\".";
