@@ -6,9 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.5.0] — 2026-06-02
+
 ### Added
 
 - **Smart URL fallback (post-failure)** — optional retry heuristics for likely host/TLD mistakes after a failed first load (for example `google.c` -> `google.com`), configurable via `isSmartURLFallbackEnabled`, `maximumSmartURLFallbackAttempts`, and `smartURLFallbackTLDStrategy`.
+- **Smart URL fallback localizations** — `webimage.urlCorrectedFormat` in all bundled `Localizable.strings` locales when a corrected URL is loaded.
 
 ## [1.4.0] — 2026-05-31
 
