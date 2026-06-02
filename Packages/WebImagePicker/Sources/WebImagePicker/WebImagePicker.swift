@@ -295,6 +295,15 @@ public struct WebImagePicker: View {
                         .background(Color.secondary.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                         .accessibilityIdentifier("webimage.aggregationNotice")
                 }
+                if let correction = model.urlCorrectionNotice {
+                    Text(correction)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(12)
+                        .background(Color.secondary.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        .accessibilityIdentifier("webimage.urlCorrectionNotice")
+                }
                 if let httpSkip = model.httpSkippedImagesNotice {
                     VStack(alignment: .leading, spacing: 0) {
                         Button {

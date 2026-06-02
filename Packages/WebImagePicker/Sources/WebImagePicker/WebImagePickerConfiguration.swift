@@ -113,6 +113,15 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     /// Copy, preview, and metadata actions may download image bytes (subject to ``maximumImageDownloadBytes``).
     public var imageTileContextMenu: WebImageTileContextMenuConfiguration
 
+    /// When `true`, after the first load attempt fails the picker retries with host/TLD corrections (e.g. `google.c` → `google.com`). Default `true`.
+    public var isSmartURLFallbackEnabled: Bool
+
+    /// Maximum alternate URLs to try per user-entered field when ``isSmartURLFallbackEnabled`` is `true`. Default `8`.
+    public var maximumSmartURLFallbackAttempts: Int
+
+    /// How aggressively to rewrite hosts and TLDs during smart fallback. Default ``SmartURLFallbackTLDStrategy/aggressive``.
+    public var smartURLFallbackTLDStrategy: SmartURLFallbackTLDStrategy
+
     /// Creates a configuration with explicit limits and networking options.
     /// - Parameters:
     ///   - selectionLimit: Maximum selections; clamped to at least `1`.
@@ -145,6 +154,9 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
     ///   - cachePolicy: ``URLRequest`` cache policy plus optional discovered-image-list memo (count, TTL, per-domain).
     ///   - urlSession: Session used for fetches; defaults to `URLSession.shared`.
     ///   - imageTileContextMenu: Optional long-press context menu on grid tiles during browsing.
+    ///   - isSmartURLFallbackEnabled: Retry with corrected hosts/TLDs after a failed first load.
+    ///   - maximumSmartURLFallbackAttempts: Cap on alternate URLs tried per user field.
+    ///   - smartURLFallbackTLDStrategy: Aggressiveness of host/TLD rewrites during fallback.
     public init(
         selectionLimit: Int = 1,
         maximumConcurrentImageLoads: Int = 4,
@@ -175,7 +187,10 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         excludedImageMetadataRegularExpressionPatterns: [String] = [],
         cachePolicy: WebImagePickerCachePolicy = .ephemeral,
         urlSession: URLSession = .shared,
-        imageTileContextMenu: WebImageTileContextMenuConfiguration = .disabled
+        imageTileContextMenu: WebImageTileContextMenuConfiguration = .disabled,
+        isSmartURLFallbackEnabled: Bool = true,
+        maximumSmartURLFallbackAttempts: Int = 8,
+        smartURLFallbackTLDStrategy: SmartURLFallbackTLDStrategy = .aggressive
     ) {
         self.selectionLimit = max(1, selectionLimit)
         self.maximumConcurrentImageLoads = max(1, maximumConcurrentImageLoads)
@@ -211,6 +226,9 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         self.cachePolicy = cachePolicy
         self.urlSession = urlSession
         self.imageTileContextMenu = imageTileContextMenu
+        self.isSmartURLFallbackEnabled = isSmartURLFallbackEnabled
+        self.maximumSmartURLFallbackAttempts = max(0, maximumSmartURLFallbackAttempts)
+        self.smartURLFallbackTLDStrategy = smartURLFallbackTLDStrategy
     }
 
     public static let `default` = WebImagePickerConfiguration()
@@ -257,6 +275,9 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
             && lhs.excludedImageMetadataRegularExpressionPatterns == rhs.excludedImageMetadataRegularExpressionPatterns
             && lhs.cachePolicy == rhs.cachePolicy
             && lhs.imageTileContextMenu == rhs.imageTileContextMenu
+            && lhs.isSmartURLFallbackEnabled == rhs.isSmartURLFallbackEnabled
+            && lhs.maximumSmartURLFallbackAttempts == rhs.maximumSmartURLFallbackAttempts
+            && lhs.smartURLFallbackTLDStrategy == rhs.smartURLFallbackTLDStrategy
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -289,6 +310,9 @@ public struct WebImagePickerConfiguration: Sendable, Hashable {
         hasher.combine(excludedImageMetadataRegularExpressionPatterns)
         hasher.combine(cachePolicy)
         hasher.combine(imageTileContextMenu)
+        hasher.combine(isSmartURLFallbackEnabled)
+        hasher.combine(maximumSmartURLFallbackAttempts)
+        hasher.combine(smartURLFallbackTLDStrategy)
     }
 
     private static func hashCGSizeOptional(_ size: CGSize?, into hasher: inout Hasher) {

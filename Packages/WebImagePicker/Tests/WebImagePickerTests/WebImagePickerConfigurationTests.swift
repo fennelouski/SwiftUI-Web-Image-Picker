@@ -38,6 +38,18 @@ final class WebImagePickerConfigurationTests: XCTestCase {
         XCTAssertEqual(config.maximumConcurrentImageLoads, 1)
     }
 
+    func testSmartURLFallbackDefaults() {
+        let config = WebImagePickerConfiguration.default
+        XCTAssertTrue(config.isSmartURLFallbackEnabled)
+        XCTAssertEqual(config.maximumSmartURLFallbackAttempts, 8)
+        XCTAssertEqual(config.smartURLFallbackTLDStrategy, .aggressive)
+    }
+
+    func testMaximumSmartURLFallbackAttemptsClampedNonNegative() {
+        let config = WebImagePickerConfiguration(maximumSmartURLFallbackAttempts: -1)
+        XCTAssertEqual(config.maximumSmartURLFallbackAttempts, 0)
+    }
+
     func testEqualityMatchesVisibleFields() {
         let a = WebImagePickerConfiguration(
             selectionLimit: 3,

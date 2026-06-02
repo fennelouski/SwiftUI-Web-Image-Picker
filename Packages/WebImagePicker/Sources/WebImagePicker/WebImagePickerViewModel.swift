@@ -27,6 +27,8 @@ final class WebImagePickerViewModel {
     var aggregationNotice: String?
     /// Shown when discovery skipped HTTP image URLs because `http` is not in ``WebImagePickerConfiguration/allowedURLSchemes``.
     var httpSkippedImagesNotice: String?
+    /// Shown after a successful smart URL fallback (e.g. loaded `google.com` instead of `google.c`).
+    var urlCorrectionNotice: String?
     var isConfirming: Bool = false
     /// Page URLs that were successfully loaded in the most recent ``loadPage()`` call.
     var loadedPageURLs: [URL] = []
@@ -136,97 +138,328 @@ final class WebImagePickerViewModel {
     func loadPage() async {
         aggregationNotice = nil
         httpSkippedImagesNotice = nil
-        guard let pageURLs = resolveOrderedPageURLsOrSetError() else { return }
+        urlCorrectionNotice = nil
+        errorMessage = nil
 
+        let batch = buildPageURLBatchResolution()
         phase = .loadingPage
 
-        let merge: AggregatedPageImageDiscovery.MergeResult
-        if let cached = prefetchedResult, prefetchedPageURLs == pageURLs {
-            merge = cached
-            cancelPrefetch()
-        } else {
-            cancelPrefetch()
-            merge = await AggregatedPageImageDiscovery.discoverImages(
-                pageURLs: pageURLs,
-                configuration: configuration,
-                extractor: extractor,
-                discoveryListCache: discoveryListCache
-            )
-        }
+        var triedURLs = Set<String>()
+        var merge: AggregatedPageImageDiscovery.MergeResult?
+        var loadedURLs: [URL] = []
 
-        if merge.images.isEmpty {
-            if merge.failedPageURLs.count == pageURLs.count {
-                errorMessage = String(
-                    localized: String.LocalizationValue("webimage.error.allPagesFailed"),
-                    bundle: WebImagePickerBundle.module
+        if batch.entries.isEmpty {
+            if let fallback = await attemptSmartURLFallback(
+                failedEntries: [],
+                triedURLs: &triedURLs
+            ) {
+                applyBrowsingSuccess(
+                    merge: fallback.merge,
+                    loadedPageURLs: fallback.loadedPageURLs,
+                    urlCorrection: fallback.urlCorrection
                 )
-            } else {
-                errorMessage = String(
-                    localized: String.LocalizationValue("webimage.error.noImagesFound"),
-                    bundle: WebImagePickerBundle.module
-                )
+                return
             }
+            applyResolveFailureMessage(worstFailure: batch.worstFailure)
             phase = .urlEntry
             return
         }
 
+        triedURLs = Set(batch.urls.map(\.absoluteString))
+        merge = await discoverImages(for: batch.urls)
+        loadedURLs = batch.urls
+
+        if merge!.images.isEmpty {
+            if let fallback = await attemptSmartURLFallback(
+                failedEntries: batch.entries,
+                triedURLs: &triedURLs
+            ) {
+                applyBrowsingSuccess(
+                    merge: fallback.merge,
+                    loadedPageURLs: fallback.loadedPageURLs,
+                    urlCorrection: fallback.urlCorrection
+                )
+                return
+            }
+            applyEmptyMergeError(merge: merge!, pageCount: batch.urls.count)
+            phase = .urlEntry
+            return
+        }
+
+        var finalMerge = merge!
+        var finalLoaded = loadedURLs
+        let failedSet = Set(finalMerge.failedPageURLs)
+
+        var correctionNotice: String?
+        var finalFailedPageCount = finalMerge.failedPageURLs.count
+        if !failedSet.isEmpty,
+           configuration.isSmartURLFallbackEnabled,
+           let supplemental = await attemptSmartURLFallback(
+               failedEntries: batch.entries.filter { failedSet.contains($0.url) },
+               triedURLs: &triedURLs
+           ) {
+            finalMerge = mergePartialRecovery(
+                existing: finalMerge,
+                supplemental: supplemental.merge,
+                recoveredPageURLs: supplemental.loadedPageURLs
+            )
+            finalLoaded = batch.urls.filter { !failedSet.contains($0) } + supplemental.loadedPageURLs
+            correctionNotice = supplemental.urlCorrection
+            finalFailedPageCount = max(0, finalFailedPageCount - supplemental.recoveredFailedPageCount)
+        }
+
+        applyBrowsingSuccess(
+            merge: finalMerge,
+            loadedPageURLs: finalLoaded,
+            failedPageCount: finalFailedPageCount,
+            urlCorrection: correctionNotice
+        )
+    }
+
+    private struct ResolvedPageEntry {
+        enum Source: Hashable {
+            case primaryField
+            case extraRow(UUID)
+            case configurationAdditional
+        }
+
+        let url: URL
+        let source: Source
+        /// Present for user-typed primary and extra-row fields.
+        let originalUserText: String?
+    }
+
+    private struct PageURLBatchResolution {
+        let entries: [ResolvedPageEntry]
+        let worstFailure: (rank: WebImagePickerViewModel.ResolveFailureRank, sampleInput: String)?
+
+        var urls: [URL] { entries.map(\.url) }
+    }
+
+    private struct SmartURLFallbackResult {
+        let merge: AggregatedPageImageDiscovery.MergeResult
+        let loadedPageURLs: [URL]
+        let urlCorrection: String?
+        let recoveredFailedPageCount: Int
+    }
+
+    private func applyBrowsingSuccess(
+        merge: AggregatedPageImageDiscovery.MergeResult,
+        loadedPageURLs: [URL],
+        failedPageCount: Int = 0,
+        urlCorrection: String? = nil
+    ) {
         discovered = merge.images
         imageMetadataSearchQuery = ""
         selectedURLs = []
-        let failedSet = Set(merge.failedPageURLs)
-        loadedPageURLs = pageURLs.filter { !failedSet.contains($0) }
+        self.loadedPageURLs = loadedPageURLs
         phase = .browsing
+        urlCorrectionNotice = urlCorrection
         scheduleImageTextSearchIfNeeded()
-        if !merge.failedPageURLs.isEmpty {
+
+        if failedPageCount > 0 {
             let format = String(
                 localized: String.LocalizationValue("webimage.partialPageFailuresFormat"),
                 bundle: WebImagePickerBundle.module
             )
-            aggregationNotice = String.localizedStringWithFormat(format, merge.failedPageURLs.count)
+            aggregationNotice = String.localizedStringWithFormat(format, failedPageCount)
         }
+
         if merge.skippedHTTPImageURLsDueToAllowedSchemes > 0 {
-            let formatKey: String
-#if DEBUG
-            formatKey = "webimage.skippedHTTPImagesNoticeFormat"
-#else
-            formatKey = "webimage.skippedHTTPImagesNoticeFormat.release"
-#endif
-            let format = String(
-                localized: String.LocalizationValue(formatKey),
-                bundle: WebImagePickerBundle.module
-            )
-            httpSkippedImagesNotice = String.localizedStringWithFormat(
-                format,
-                merge.skippedHTTPImageURLsDueToAllowedSchemes
-            )
-#if DEBUG
-            let debugFormat = String(
-                localized: String.LocalizationValue("webimage.skippedHTTPImagesNoticeFormat"),
-                bundle: WebImagePickerBundle.module
-            )
-            let debugMessage = String.localizedStringWithFormat(
-                debugFormat,
-                merge.skippedHTTPImageURLsDueToAllowedSchemes
-            )
-            print("[WebImagePicker] \(debugMessage)")
-#endif
+            applyHTTPSkippedNotice(count: merge.skippedHTTPImageURLsDueToAllowedSchemes)
         }
     }
 
-    private enum ResolveFailureRank: Int, Comparable {
-        case invalid = 1
-        case disallowedNonHTTP = 2
-        case disallowedHTTP = 3
-
-        static func < (lhs: Self, rhs: Self) -> Bool { lhs.rawValue < rhs.rawValue }
+    private func applyEmptyMergeError(
+        merge: AggregatedPageImageDiscovery.MergeResult,
+        pageCount: Int
+    ) {
+        if merge.failedPageURLs.count == pageCount {
+            errorMessage = String(
+                localized: String.LocalizationValue("webimage.error.allPagesFailed"),
+                bundle: WebImagePickerBundle.module
+            )
+        } else {
+            errorMessage = String(
+                localized: String.LocalizationValue("webimage.error.noImagesFound"),
+                bundle: WebImagePickerBundle.module
+            )
+        }
     }
 
-    /// Builds the ordered, de-duplicated list of page URLs, or sets ``errorMessage`` and returns `nil`.
-    private func resolveOrderedPageURLsOrSetError() -> [URL]? {
-        errorMessage = nil
-        let allowed = Set(configuration.allowedURLSchemes.map { $0.lowercased() })
+    private func applyHTTPSkippedNotice(count: Int) {
+        let formatKey: String
+#if DEBUG
+        formatKey = "webimage.skippedHTTPImagesNoticeFormat"
+#else
+        formatKey = "webimage.skippedHTTPImagesNoticeFormat.release"
+#endif
+        let format = String(
+            localized: String.LocalizationValue(formatKey),
+            bundle: WebImagePickerBundle.module
+        )
+        httpSkippedImagesNotice = String.localizedStringWithFormat(format, count)
+#if DEBUG
+        let debugFormat = String(
+            localized: String.LocalizationValue("webimage.skippedHTTPImagesNoticeFormat"),
+            bundle: WebImagePickerBundle.module
+        )
+        let debugMessage = String.localizedStringWithFormat(debugFormat, count)
+        print("[WebImagePicker] \(debugMessage)")
+#endif
+    }
 
-        var urls: [URL] = []
+    private func discoverImages(for pageURLs: [URL], useDiscoveryCache: Bool = true) async -> AggregatedPageImageDiscovery.MergeResult {
+        if useDiscoveryCache,
+           let cached = prefetchedResult,
+           prefetchedPageURLs == pageURLs {
+            cancelPrefetch()
+            return cached
+        }
+        cancelPrefetch()
+        return await AggregatedPageImageDiscovery.discoverImages(
+            pageURLs: pageURLs,
+            configuration: configuration,
+            extractor: extractor,
+            discoveryListCache: useDiscoveryCache ? discoveryListCache : nil
+        )
+    }
+
+    private func mergePartialRecovery(
+        existing: AggregatedPageImageDiscovery.MergeResult,
+        supplemental: AggregatedPageImageDiscovery.MergeResult,
+        recoveredPageURLs: [URL]
+    ) -> AggregatedPageImageDiscovery.MergeResult {
+        var seen = Set<String>()
+        var mergedImages: [DiscoveredImage] = []
+        for item in existing.images + supplemental.images {
+            let key = DiscoveredImageDeduplicationKey.string(
+                for: item.sourceURL,
+                strategy: configuration.similarImageDeduplication
+            )
+            guard seen.insert(key).inserted else { continue }
+            mergedImages.append(item)
+        }
+        let recoveredKeys = Set(recoveredPageURLs.map(\.absoluteString))
+        let remainingFailed = existing.failedPageURLs.filter { !recoveredKeys.contains($0.absoluteString) }
+        return AggregatedPageImageDiscovery.MergeResult(
+            images: mergedImages,
+            failedPageURLs: remainingFailed,
+            skippedHTTPImageURLsDueToAllowedSchemes:
+                existing.skippedHTTPImageURLsDueToAllowedSchemes
+                + supplemental.skippedHTTPImageURLsDueToAllowedSchemes
+        )
+    }
+
+    private func attemptSmartURLFallback(
+        failedEntries: [ResolvedPageEntry],
+        triedURLs: inout Set<String>
+    ) async -> SmartURLFallbackResult? {
+        guard configuration.isSmartURLFallbackEnabled else { return nil }
+        let attemptCap = configuration.maximumSmartURLFallbackAttempts
+        guard attemptCap > 0 else { return nil }
+
+        struct FieldRetry {
+            let source: ResolvedPageEntry.Source
+            let text: String
+        }
+
+        var fields: [FieldRetry] = []
+        if failedEntries.isEmpty {
+            for field in userEnteredFieldsForCorrection() {
+                fields.append(FieldRetry(source: field.source, text: field.text))
+            }
+        } else {
+            for entry in failedEntries {
+                guard let text = entry.originalUserText else { continue }
+                fields.append(FieldRetry(source: entry.source, text: text))
+            }
+        }
+
+        guard !fields.isEmpty else { return nil }
+
+        var attemptsLeft = attemptCap
+        let failedSources = Set(failedEntries.map(\.source))
+
+        for field in fields {
+            let candidates = PageURLCorrection.correctionCandidates(
+                trimmedInput: field.text,
+                strategy: configuration.smartURLFallbackTLDStrategy,
+                maximumCandidates: attemptsLeft
+            )
+            for candidate in candidates {
+                guard attemptsLeft > 0 else { return nil }
+                guard case .success(let url) = PageURLNormalization.resolve(
+                    trimmedInput: candidate,
+                    allowedURLSchemes: configuration.allowedURLSchemes
+                ) else { continue }
+                guard triedURLs.insert(url.absoluteString).inserted else { continue }
+                attemptsLeft -= 1
+
+                let merge = await discoverImages(for: [url], useDiscoveryCache: false)
+                guard !merge.images.isEmpty else { continue }
+
+                applyFieldUpdate(source: field.source, correctedURL: url)
+                let correction = makeURLCorrectionNotice(
+                    originalText: field.text,
+                    correctedURL: url
+                )
+                return SmartURLFallbackResult(
+                    merge: merge,
+                    loadedPageURLs: [url],
+                    urlCorrection: correction,
+                    recoveredFailedPageCount: failedSources.contains(field.source) ? 1 : 0
+                )
+            }
+        }
+
+        return nil
+    }
+
+    private func userEnteredFieldsForCorrection() -> [(source: ResolvedPageEntry.Source, text: String)] {
+        var fields: [(ResolvedPageEntry.Source, String)] = []
+        let primary = urlString.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !primary.isEmpty {
+            fields.append((.primaryField, primary))
+        }
+        guard configuration.isMultiplePageEntryEnabled else { return fields }
+        for row in extraPageRows {
+            let trimmed = row.text.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmed.isEmpty else { continue }
+            fields.append((.extraRow(row.id), trimmed))
+        }
+        return fields
+    }
+
+    private func applyFieldUpdate(source: ResolvedPageEntry.Source, correctedURL: URL) {
+        let display = PageURLCorrection.displayString(for: correctedURL)
+        switch source {
+        case .primaryField:
+            urlString = display
+        case .extraRow(let id):
+            if let index = extraPageRows.firstIndex(where: { $0.id == id }) {
+                extraPageRows[index].text = display
+            }
+        case .configurationAdditional:
+            break
+        }
+    }
+
+    private func makeURLCorrectionNotice(originalText: String, correctedURL: URL) -> String {
+        let format = String(
+            localized: String.LocalizationValue("webimage.urlCorrectedFormat"),
+            bundle: WebImagePickerBundle.module
+        )
+        return String.localizedStringWithFormat(
+            format,
+            originalText,
+            PageURLCorrection.displayString(for: correctedURL)
+        )
+    }
+
+    private func buildPageURLBatchResolution() -> PageURLBatchResolution {
+        let allowed = Set(configuration.allowedURLSchemes.map { $0.lowercased() })
+        var entries: [ResolvedPageEntry] = []
         var seenPages = Set<String>()
         var worstFailure: (rank: ResolveFailureRank, sampleInput: String)?
 
@@ -252,12 +485,12 @@ final class WebImagePickerViewModel {
             }
         }
 
-        func appendPage(_ url: URL) {
+        func appendPage(_ url: URL, source: ResolvedPageEntry.Source, originalUserText: String?) {
             guard let scheme = url.scheme?.lowercased(), allowed.contains(scheme) else { return }
             let key = url.absoluteString
             guard !seenPages.contains(key) else { return }
             seenPages.insert(key)
-            urls.append(url)
+            entries.append(ResolvedPageEntry(url: url, source: source, originalUserText: originalUserText))
         }
 
         let trimmedPrimary = urlString.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -268,7 +501,7 @@ final class WebImagePickerViewModel {
             )
             switch resolved {
             case .success(let u):
-                appendPage(u)
+                appendPage(u, source: .primaryField, originalUserText: trimmedPrimary)
             case .invalid, .disallowedScheme:
                 recordFailure(trimmedInput: trimmedPrimary, result: resolved)
             }
@@ -276,26 +509,31 @@ final class WebImagePickerViewModel {
 
         if configuration.isMultiplePageEntryEnabled {
             for u in configuration.additionalPageURLs {
-                appendPage(u)
+                appendPage(u, source: .configurationAdditional, originalUserText: nil)
             }
 
             for row in extraPageRows {
                 let t = row.text.trimmingCharacters(in: .whitespacesAndNewlines)
                 guard !t.isEmpty else { continue }
-                let resolved = PageURLNormalization.resolve(trimmedInput: t, allowedURLSchemes: configuration.allowedURLSchemes)
+                let resolved = PageURLNormalization.resolve(
+                    trimmedInput: t,
+                    allowedURLSchemes: configuration.allowedURLSchemes
+                )
                 switch resolved {
                 case .success(let u):
-                    appendPage(u)
+                    appendPage(u, source: .extraRow(row.id), originalUserText: t)
                 case .invalid, .disallowedScheme:
                     recordFailure(trimmedInput: t, result: resolved)
                 }
             }
         }
 
-        if !urls.isEmpty {
-            return urls
-        }
+        return PageURLBatchResolution(entries: entries, worstFailure: worstFailure)
+    }
 
+    private func applyResolveFailureMessage(
+        worstFailure: (rank: ResolveFailureRank, sampleInput: String)?
+    ) {
         if let failure = worstFailure {
             switch failure.rank {
             case .invalid:
@@ -325,14 +563,32 @@ final class WebImagePickerViewModel {
                     bundle: WebImagePickerBundle.module
                 )
             }
-            return nil
+            return
         }
 
         errorMessage = String(
             localized: String.LocalizationValue("webimage.error.enterValidURL"),
             bundle: WebImagePickerBundle.module
         )
-        return nil
+    }
+
+    private enum ResolveFailureRank: Int, Comparable {
+        case invalid = 1
+        case disallowedNonHTTP = 2
+        case disallowedHTTP = 3
+
+        static func < (lhs: Self, rhs: Self) -> Bool { lhs.rawValue < rhs.rawValue }
+    }
+
+    /// Builds the ordered, de-duplicated list of page URLs, or sets ``errorMessage`` and returns `nil`.
+    private func resolveOrderedPageURLsOrSetError() -> [URL]? {
+        errorMessage = nil
+        let batch = buildPageURLBatchResolution()
+        guard !batch.entries.isEmpty else {
+            applyResolveFailureMessage(worstFailure: batch.worstFailure)
+            return nil
+        }
+        return batch.urls
     }
 
     // MARK: - WiFi prefetch
@@ -456,6 +712,7 @@ final class WebImagePickerViewModel {
         errorMessage = nil
         aggregationNotice = nil
         httpSkippedImagesNotice = nil
+        urlCorrectionNotice = nil
     }
 
     private func cancelImageTextSearchTask() {
